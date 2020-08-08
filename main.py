@@ -36,7 +36,7 @@ class MainfileApplication():
         self.btnHome_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Home', height = '2', width = '15', command = self.homeInterfaceInterface)
         self.btnHome_leftFrame.pack()
 
-        self.btnLibrary_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'My Library', height = '2', width = '15', command = self.libraryInterface)
+        self.btnLibrary_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Library', height = '2', width = '15', command = self.libraryInterface)
         self.btnLibrary_leftFrame.pack()
 
         self.btnAuthor_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Author', height = '2', width = '15', command = self.AuthorInterface)
@@ -45,7 +45,7 @@ class MainfileApplication():
         self.btnCategory_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Category', height = '2', width = '15', command = self.CategoryInterface)
         self.btnCategory_leftFrame.pack()
 
-        self.btnFavorit_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Favorit', height = '2', width = '15', command = self.FavoritInterface)
+        self.btnFavorit_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Fevorite', height = '2', width = '15', command = self.FavoritInterface)
         self.btnFavorit_leftFrame.pack()
 
         self.btnAlbum_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Album', height = '2', width = '15', command = self.AlbumInterface)
@@ -54,7 +54,8 @@ class MainfileApplication():
         self.btnExit_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Exit', height = '2', width = '15', command = self.Main_Window.destroy)
         self.btnExit_leftFrame.pack(side = 'bottom')
 
-        
+        self.homeInterfaceInterface()
+
         self.Main_Window.mainloop()
 
     def homeInterfaceInterface(self):
@@ -97,13 +98,14 @@ class MainfileApplication():
         # Frame
         self.topFrame_LibraryInterface = tk.Frame(self.rightFrame_mainWindow)
         self.topFrame_LibraryInterface.pack(side = 'top', fill = 'x')
-        
+        self.topFrame_LibraryInterface.config(background = '#c8c8c8')
+
         self.mainFrame_libraryInterface = tk.Frame(self.rightFrame_mainWindow)
         self.mainFrame_libraryInterface.pack(fill = 'both')
         
         # Interface
                             # Tapbar
-        self.lblnameTap_libraryInterface = tk.Label(self.topFrame_LibraryInterface, text = 'Library', font = ('Times',20,'bold'))
+        self.lblnameTap_libraryInterface = tk.Label(self.topFrame_LibraryInterface, text = 'Library', font = ('Times',20,'bold'), bg = '#c8c8c8')
         self.lblnameTap_libraryInterface.pack(side = 'top')
 
                             # main Interface
@@ -129,23 +131,97 @@ class MainfileApplication():
         self.listBook_libraryInterface.heading(6, text = 'Size')
         
         self.listBook_libraryInterface.column(7, width = '80')
-        self.listBook_libraryInterface.heading(7, text = 'Status')
+        self.listBook_libraryInterface.heading(7, text = 'Favorite')
         
     def AuthorInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
+
+        # Frame
+        self.topFrame_AuthorInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.topFrame_AuthorInterface.pack(side = 'top', fill = 'x')
+        self.topFrame_AuthorInterface.config(background = '#dadada')
+
+        self.leftFrame_AuthorInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.leftFrame_AuthorInterface.pack(side = 'left', fill = 'y')
+
+        # Interface
+        self.lblnameTap_AuthorInterface = tk.Label(self.topFrame_AuthorInterface, text = 'Author', font = ('Times',20,'bold'), bg = '#dadada')
+        self.lblnameTap_AuthorInterface.pack()
     
+
     def CategoryInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
+        # Frame
+        self.topFrame_CategoryInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.topFrame_CategoryInterface.pack(side = 'top', fill = 'x')
+        self.topFrame_CategoryInterface.config(background = '#dadada')
+
+        self.leftFrame_CategoryInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.leftFrame_CategoryInterface.pack(side = 'left', fill = 'y')
+
+        # Interface
+        self.lblnameTap_CategoryInterface = tk.Label(self.topFrame_CategoryInterface, text = 'Category', font = ('Times',20,'bold'), bg = '#dadada')
+        self.lblnameTap_CategoryInterface.pack()
+
     
     def FavoritInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
+        # Frame
+        self.topFrame_FavoriteInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.topFrame_FavoriteInterface.pack(side = 'top', fill = 'x')
+        self.topFrame_FavoriteInterface.config(background = '#dadada')
+        
+        self.mainFrame_FevoriteInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.mainFrame_FevoriteInterface.pack(fill = 'both')
+        
+        # Interface
+                            # Tapbar
+        self.lblnameTap_FavoriteInterface = tk.Label(self.topFrame_FavoriteInterface, text = 'Favorite', font = ('Times',20,'bold'), bg = '#dadada')
+        self.lblnameTap_FavoriteInterface.pack(side = 'top')
 
+                            # main Interface
+        self.listBook_FavoriteInterface = tk.ttk.Treeview(self.mainFrame_FevoriteInterface, column = (1,2,3,4,5,6,7), show = 'headings', height = '30')
+        self.listBook_FavoriteInterface.pack(padx = '10', pady = '5')
+
+        self.listBook_FavoriteInterface.column(1, width = '150')
+        self.listBook_FavoriteInterface.heading(1, text = 'Title')
+
+        self.listBook_FavoriteInterface.column(2, width = '150')
+        self.listBook_FavoriteInterface.heading(2, text = 'Authot')
+
+        self.listBook_FavoriteInterface.column(3, width = '150')
+        self.listBook_FavoriteInterface.heading(3, text = 'Category')
+
+        self.listBook_FavoriteInterface.column(4, width = '100')
+        self.listBook_FavoriteInterface.heading(4, text = 'Last Readed')
+        
+        self.listBook_FavoriteInterface.column(5, width = '100')
+        self.listBook_FavoriteInterface.heading(5, text = 'Date Added')
+        
+        self.listBook_FavoriteInterface.column(6, width = '80')
+        self.listBook_FavoriteInterface.heading(6, text = 'Size')
+        
+        self.listBook_FavoriteInterface.column(7, width = '80')
+        self.listBook_FavoriteInterface.heading(7, text = 'Favorite')
+        
     def AlbumInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
+
+        # Frame
+        self.topFrame_AlbumInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.topFrame_AlbumInterface.pack(side = 'top', fill = 'x')
+        self.topFrame_AlbumInterface.config(background = '#dadada')
+
+        self.leftFrame_AlbumInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.leftFrame_AlbumInterface.pack(side = 'left', fill = 'y')
+
+        # Interface
+        self.lblnameTap_AlbumInterface = tk.Label(self.topFrame_AlbumInterface, text = 'Album', font = ('Times',20,'bold'), bg = '#dadada')
+        self.lblnameTap_AlbumInterface.pack()
 
 
 if __name__ == "__main__":
