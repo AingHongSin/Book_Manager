@@ -16,9 +16,18 @@ class MainfileApplication():
         self.Main_Window.resizable(False, False)
 
         # Variable
+                # Author Tuple
         self.btn_All_AuthorName = ['Author1', 'Author2', 'Author3']
-        self.Amount_Of_Button_Authorlist = []
-        self.ListBook_for_each_Author = []
+        self.Author_index = 0
+
+                # Category Tuple
+        self.btn_All_CategoryName = ['Category1', 'Category2', 'Category3']
+        self.Category_index = 0
+
+                # Album Tuple
+
+
+
 
         # Frame
         self.topFrame_mainWindow = tk.Frame(self.Main_Window)
@@ -122,6 +131,8 @@ class MainfileApplication():
         self.btnDeleteBook_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Delete', width = '10', height ='2')
         self.btnDeleteBook_LibraryInterface.pack(side = 'left')      
 
+        self.btnDeleteBook_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Edit', width = '10', height ='2')
+        self.btnDeleteBook_LibraryInterface.pack(side = 'left')      
 
                             # main Interface
         self.listBook_libraryInterface = tk.ttk.Treeview(self.mainFrame_libraryInterface, column = (1,2,3,4,5,6,7), show = 'headings', height = '30')
@@ -150,7 +161,6 @@ class MainfileApplication():
 
     def AuthorInterface(self):
 
-        
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
 
@@ -167,11 +177,17 @@ class MainfileApplication():
         self.mainFrame_AuthorInterface.pack(fill = 'both')
 
                 # Interface
-        self.lblnameTap_AuthorInterface = tk.Label(self.topFrame_AuthorInterface, text = 'Author', font = ('Times',20,'bold'), bg = '#dadada')
-        self.lblnameTap_AuthorInterface.pack()
+        self.btnAddBook_CategoryInterface = tk.Button(self.topFrame_AuthorInterface, text = 'Add Author', width = '10',height = '2')
+        self.btnAddBook_CategoryInterface.pack(side = 'left')
 
-        self.lblNameTapAuthor = tk.Label(self.leftFrame_AuthorInterface, text = 'Author Name',width = '15')
-        self.lblNameTapAuthor.pack()
+        self.btnDeleteBook_CategoryInterface = tk.Button(self.topFrame_AuthorInterface, text = 'Delete Author', width = '10', height ='2')
+        self.btnDeleteBook_CategoryInterface.pack(side = 'left')      
+
+        self.btnDeleteBook_CategoryInterface = tk.Button(self.topFrame_AuthorInterface, text = 'Edit Author', width = '10', height ='2')
+        self.btnDeleteBook_CategoryInterface.pack(side = 'left')      
+
+        self.lblnameTap_AuthorInterface = tk.Label(self.topFrame_AuthorInterface, text = 'Author', font = ('Times',20,'bold'), bg = '#dadada')
+        self.lblnameTap_AuthorInterface.pack(side = 'right')
 
         self.listBook_AuthorInterface = tk.ttk.Treeview(self.mainFrame_AuthorInterface, column = (1,2,3,4,5,6,7), show = 'headings', height = '30')
         self.listBook_AuthorInterface.pack(padx = '10', pady = '5')
@@ -198,20 +214,27 @@ class MainfileApplication():
         self.listBook_AuthorInterface.heading(7, text = 'Favorite')
 
         self.Backenf_of_AuthorInterface()
-        print("work")
 
-    ########################################################################################################################################################################
     def Backenf_of_AuthorInterface(self):
-        for i in range(len(self.btn_All_AuthorName)):
-            self.Amount_Of_Button_Authorlist.append(tk.Button(self.leftFrame_AuthorInterface, text = self.btn_All_AuthorName[i], width = '15', height = '2', command = lambda c=i: self.ListName_for_Each_Author(c)))
-            self.Amount_Of_Button_Authorlist[i].pack()
-    ########################################################################################################################################################################
 
-    ########################################################################################################################################################################
-    def ListName_for_Each_Author(self, c):
+        self.tvListName = tk.ttk.Treeview(self.leftFrame_AuthorInterface, column = ('Author_Name'), show = 'headings', height = '80')
+        self.tvListName.pack()
 
-        for a in self.ListBook_for_each_Author:
-            print('',end = '', sep='')
+        self.tvListName.column('Author_Name', width = '130')
+        self.tvListName.heading('Author_Name', text = 'Author Name')
+
+        for Data in self.btn_All_AuthorName:
+            self.tvListName.insert("", tk.END, self.Author_index, values = Data)
+            self.Author_index = self.Author_index + 1
+        self.tvListName.bind("<Double-1>", self.OnDoubleClick_Author)
+
+    def OnDoubleClick_Author(self, event):
+
+        item = self.tvListName.selection()
+        print("This is ", str(self.tvListName.item(item ,"values")[0]))
+
+    def ListName_for_Each_Author(self):
+
         self.listBook_AuthorInterface = tk.ttk.Treeview(self.mainFrame_AuthorInterface, column = (1,2,3,4,5,6,7), show = 'headings', height = '30')
         self.listBook_AuthorInterface.pack(padx = '10', pady = '5')
 
@@ -254,18 +277,25 @@ class MainfileApplication():
 
 
         # Interface
+        self.btnAddBook_CategoryInterface = tk.Button(self.topFrame_CategoryInterface, text = 'Add Album', width = '10',height = '2')
+        self.btnAddBook_CategoryInterface.pack(side = 'left')
+
+        self.btnDeleteBook_CategoryInterface = tk.Button(self.topFrame_CategoryInterface, text = 'Delete Album', width = '10', height ='2')
+        self.btnDeleteBook_CategoryInterface.pack(side = 'left')      
+
+        self.btnDeleteBook_CategoryInterface = tk.Button(self.topFrame_CategoryInterface, text = 'Edit Album', width = '10', height ='2')
+        self.btnDeleteBook_CategoryInterface.pack(side = 'left')      
+
         self.lblnameTap_CategoryInterface = tk.Label(self.topFrame_CategoryInterface, text = 'Category', font = ('Times',20,'bold'), bg = '#dadada')
-        self.lblnameTap_CategoryInterface.pack()
-
-
+        self.lblnameTap_CategoryInterface.pack(side = 'right')
 
         self.listBook_CategoryInterface = tk.ttk.Treeview(self.mainFrame_CategoryInterface, column = (1,2,3,4,5,6,7), show = 'headings', height = '30')
         self.listBook_CategoryInterface.pack(padx = '10', pady = '5')
 
-        self.listBook_CategoryInterface.column(1, width = '200')
+        self.listBook_CategoryInterface.column(1, width = '150')
         self.listBook_CategoryInterface.heading(1, text = 'Title')
 
-        self.listBook_CategoryInterface.column(2, width = '200')
+        self.listBook_CategoryInterface.column(2, width = '150')
         self.listBook_CategoryInterface.heading(2, text = 'Authot')
 
         self.listBook_CategoryInterface.column(3, width = '150')
@@ -283,6 +313,21 @@ class MainfileApplication():
         self.listBook_CategoryInterface.column(7, width = '80')
         self.listBook_CategoryInterface.heading(7, text = 'Favorite')
 
+        self.tvListCategory = tk.ttk.Treeview(self.leftFrame_CategoryInterface, column = ('Category_Name'), show = 'headings', height = '80')
+        self.tvListCategory.pack()
+
+        self.tvListCategory.column('Category_Name', width = '130')
+        self.tvListCategory.heading('Category_Name', text = 'Category Name')
+
+        for Data in self.btn_All_CategoryName:
+            self.tvListCategory.insert("", tk.END, self.Category_index, values = Data)
+            self.Category_index = self.Category_index + 1
+        self.tvListCategory.bind("<Double-1>", self.OnDoubleClick_Category)
+
+    def OnDoubleClick_Category(self, event):
+
+        item = self.tvListCategory.selection()
+        print("This is ", str(self.tvListCategory.item(item ,"values")[0]))
 
     def FavoritInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
@@ -344,9 +389,46 @@ class MainfileApplication():
         self.leftFrame_AlbumInterface = tk.Frame(self.rightFrame_mainWindow)
         self.leftFrame_AlbumInterface.pack(side = 'left', fill = 'y')
 
+        self.mainFrame_AlbumInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.mainFrame_AlbumInterface.pack(fill = 'both')
+
         # Interface
+        self.btnAddBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Add Album', width = '10',height = '2')
+        self.btnAddBook_AlbumInterface.pack(side = 'left')
+
+        self.btnDeleteBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Delete Album', width = '10', height ='2')
+        self.btnDeleteBook_AlbumInterface.pack(side = 'left')      
+
+        self.btnDeleteBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Edit Album', width = '10', height ='2')
+        self.btnDeleteBook_AlbumInterface.pack(side = 'left')      
+
+
         self.lblnameTap_AlbumInterface = tk.Label(self.topFrame_AlbumInterface, text = 'Album', font = ('Times',20,'bold'), bg = '#dadada')
-        self.lblnameTap_AlbumInterface.pack()
+        self.lblnameTap_AlbumInterface.pack(side = 'right')
+
+        self.listBook_AlbumInterface = tk.ttk.Treeview(self.mainFrame_AlbumInterface, column = (1,2,3,4,5,6,7), show = 'headings', height = '30')
+        self.listBook_AlbumInterface.pack(padx = '10', pady = '5')
+
+        self.listBook_AlbumInterface.column(1, width = '150')
+        self.listBook_AlbumInterface.heading(1, text = 'Title')
+
+        self.listBook_AlbumInterface.column(2, width = '150')
+        self.listBook_AlbumInterface.heading(2, text = 'Authot')
+
+        self.listBook_AlbumInterface.column(3, width = '150')
+        self.listBook_AlbumInterface.heading(3, text = 'Category')
+
+        self.listBook_AlbumInterface.column(4, width = '100')
+        self.listBook_AlbumInterface.heading(4, text = 'Last Readed')
+        
+        self.listBook_AlbumInterface.column(5, width = '100')
+        self.listBook_AlbumInterface.heading(5, text = 'Date Added')
+        
+        self.listBook_AlbumInterface.column(6, width = '80')
+        self.listBook_AlbumInterface.heading(6, text = 'Size')
+        
+        self.listBook_AlbumInterface.column(7, width = '80')
+        self.listBook_AlbumInterface.heading(7, text = 'Favorite')
 
 
 if __name__ == "__main__":
