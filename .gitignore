@@ -6,7 +6,7 @@ __pycache__/
 # C extensions
 *.so
 .DS_Store
-.gittattributes
+.gitattributes
 # Distribution / packaging
 .Python
 build/
