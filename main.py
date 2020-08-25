@@ -6,6 +6,7 @@ from PIL import ImageTk, Image
 import tkinter.filedialog
 from PyPDF2 import PdfFileReader
 from collections import OrderedDict
+import datetime
 
 
 
@@ -58,26 +59,26 @@ class MainfileApplication():
 
 
                             # LeftFrame
-        self.btnHome_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Home', height = '2', width = '15', command = self.homeInterfaceInterface)
+        self.btnHome_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '🏡\tHome', height = '2', width = '15', command = self.homeInterfaceInterface)
         self.btnHome_leftFrame.pack()
         #self.btnHome_leftFrame.configure({"bg": "white", "activebackground": "white"})
 
-        self.btnLibrary_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Library', height = '2', width = '15', command = self.libraryInterface)
+        self.btnLibrary_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '📚\tLibrary', height = '2', width = '15', command = self.libraryInterface)
         self.btnLibrary_leftFrame.pack()
 
-        self.btnAuthor_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Author', height = '2', width = '15', command = self.AuthorInterface)
+        self.btnAuthor_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '👨‍💼\tAuthor', height = '2', width = '15', command = self.AuthorInterface)
         self.btnAuthor_leftFrame.pack()
         
-        self.btnCategory_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Category', height = '2', width = '15', command = self.CategoryInterface)
+        self.btnCategory_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '🗄\tCategory', height = '2', width = '15', command = self.CategoryInterface)
         self.btnCategory_leftFrame.pack()
 
-        self.btnFavorit_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Fevorite', height = '2', width = '15', command = self.FavoritInterface)
+        self.btnFavorit_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '🤍\tFevorite', height = '2', width = '15', command = self.FavoritInterface)
         self.btnFavorit_leftFrame.pack()
 
-        self.btnAlbum_leftFrame = tk.Button(self.leftFrame_mainWindow, text = 'Album', height = '2', width = '15', command = self.AlbumInterface)
+        self.btnAlbum_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '🗃\tAlbum', height = '2', width = '15', command = self.AlbumInterface)
         self.btnAlbum_leftFrame.pack()
 
-        self.btnExit_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '✘ Exit', height = '2', width = '15', command = self.Main_Window.destroy)
+        self.btnExit_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '❌\tExit', height = '2', width = '15', command = self.Main_Window.destroy)
         self.btnExit_leftFrame.pack(side = 'bottom')
 
         self.homeInterfaceInterface()
@@ -104,19 +105,19 @@ class MainfileApplication():
         self.lblTitle_HomeIterface.pack()
 
                         # Main
-        self.btnLibrary_HomeInterface = tk.Button(self.mainFrame_HomeInterface, text = 'Library', width = '20', height = '4', command = self.libraryInterface)
+        self.btnLibrary_HomeInterface = tk.Button(self.mainFrame_HomeInterface, text = '📚\tLIBRARY\t📚', width = '30', height = '3', font = ('default',15), command = self.libraryInterface)
         self.btnLibrary_HomeInterface.grid(row = 0, column = 0)
 
-        self.btnAuthor_homeInterface = tk.Button(self.mainFrame_HomeInterface, text = 'Author', width = '20', height = '4', command = self.AuthorInterface)
+        self.btnAuthor_homeInterface = tk.Button(self.mainFrame_HomeInterface, text = '👨‍💼\tAUTHOR\t👨‍💼', width = '30', height = '3', font = ('default',15), command = self.AuthorInterface)
         self.btnAuthor_homeInterface.grid(row = 0, column = 1)
 
-        self.btnCategory_homeInterface = tk.Button(self.mainFrame_HomeInterface, text = 'Category', width = '20', height = '4', command = self.CategoryInterface)
+        self.btnCategory_homeInterface = tk.Button(self.mainFrame_HomeInterface, text = '🗄\tCATEGORY\t🗄', width = '30', height = '3', font = ('default',15), command = self.CategoryInterface)
         self.btnCategory_homeInterface.grid(row = 1, column = 0)
 
-        self.btnFavorit_homeInterface = tk.Button(self.mainFrame_HomeInterface, text = 'Favorit', width = '20', height = '4', command = self.FavoritInterface)
+        self.btnFavorit_homeInterface = tk.Button(self.mainFrame_HomeInterface, text = '🤍\tFAVORIT\t🤍', width = '30', height = '3', font = ('default',15), command = self.FavoritInterface)
         self.btnFavorit_homeInterface.grid(row = 1, column = 1)
 
-        self.btnAlbum_homeInterfac = tk.Button(self.mainFrame_HomeInterface, text = 'Albun', width = '20', height = '4', command = self.AlbumInterface)
+        self.btnAlbum_homeInterfac = tk.Button(self.mainFrame_HomeInterface, text = '🗃\tALBUM\t🗃', width = '30', height = '3', font = ('default',15), command = self.AlbumInterface)
         self.btnAlbum_homeInterfac.grid(row = 2, column = 0, columnspan = 2)
 
 
@@ -155,33 +156,31 @@ class MainfileApplication():
         self.btnBookDetail_LibraryInterface.pack(side = 'left')   
 
                             # main Interface
-        self.listBook_libraryInterface = tk.ttk.Treeview(self.mainFrame_libraryInterface, column = ('Title', 'Author', 'Category', 'Last Readed', 'Date, Added', 'Lenght', 'Favorit'), show = 'headings', height = '30')
+        self.listBook_libraryInterface = tk.ttk.Treeview(self.mainFrame_libraryInterface, column = ('Title', 'Author', 'Category', 'Lenght', 'Favorit' """, 'Last Readed', 'Date Added'"""), show = 'headings', height = '30')
         self.listBook_libraryInterface.pack(padx = '10', pady = '5')
 
 
-        self.listBook_libraryInterface.column('Title', width = '200')
+        self.listBook_libraryInterface.column('Title', width = '300')
         self.listBook_libraryInterface.heading('Title', text = 'Title')
 
         self.listBook_libraryInterface.column('Author', width = '200')
         self.listBook_libraryInterface.heading('Author', text = 'Author')
 
-               
-        #self.listBook_libraryInterface.column('Category', width = '150')
-        #self.listBook_libraryInterface.heading('Category', text = 'Category')
+        self.listBook_libraryInterface.column('Category', width = '150')
+        self.listBook_libraryInterface.heading('Category', text = 'Category')
 
         #self.listBook_libraryInterface.column('Last Readed', width = '100')
         #self.listBook_libraryInterface.heading('Last Readed', text = 'Last Readed')
-        
+    
         #self.listBook_libraryInterface.column('Date Added', width = '100')
         #self.listBook_libraryInterface.heading('Date Added', text = 'Date Added')
         
-        self.listBook_libraryInterface.column('Lenght', width = '80')
+        self.listBook_libraryInterface.column('Lenght', width = '130')
         self.listBook_libraryInterface.heading('Lenght', text = 'Length')
         
         #self.listBook_libraryInterface.column('Favorit', width = '80')
         #self.listBook_libraryInterface.heading('Favorit', text = 'Favorite')
         
-
         self.Add_Data_Into_App()
         #self.Add_Data_Into_Library_Tree()
 
@@ -426,7 +425,6 @@ class MainfileApplication():
         self.btnDeleteBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Edit Album', width = '10', height ='2')
         self.btnDeleteBook_AlbumInterface.pack(side = 'left')      
 
-
         self.lblnameTap_AlbumInterface = tk.Label(self.topFrame_AlbumInterface, text = 'Album', font = ('Times',20,'bold'), bg = '#dadada')
         self.lblnameTap_AlbumInterface.pack(side = 'right')
 
@@ -462,67 +460,49 @@ class MainfileApplication():
 
         d = os.listdir()
         
-        print('len d :', len(d))
-        print('d File :', d)
+        #print('len d :', len(d))
+        #print('d File :', d)
         
         for row in d:
-            self.disBookList['Title'] = str(row)
-
-            for i in range(self.Amount_Data):
-                self.Amount_Data += 1
-                print(i)
-                self.disBookList['No'] = i
-
-            pdf_path = str(row)
-            print("pdf_path :", pdf_path)
-
-
-            print("Title in Listbook :", self.disBookList['Title'])
-
-            #for n in range(len(pdf_path)): 
-            with open(pdf_path, 'rb') as f:
-                self.pdf = PdfFileReader(f)
-                self.information = self.pdf.getDocumentInfo()
-                self.number_of_pages = self.pdf.getNumPages()
-
-            self.txt = f"""
-                Information about {pdf_path}
-
-                Author: {self.information.author}
-                Creator: {self.information.creator}
-                Producer: {self.information.producer}
-                Subject: {self.information.subject}
-                Title: {self.information.title}
-                Number of pages: {self.number_of_pages}
-            """
-            print((self.txt))
-
-            print(self.disBookList)
-
-            #for a in self.booklist:
-
-            self.disBookList['Author'] = str(self.information.author)
-            self.disBookList['Length'] = str(self.number_of_pages)
-            print("Author :", self.disBookList['Author'])
-            #self.book["Number_of_pages"] = self.number_of_pages
-
-
-            print(self.information.author)
-            #print(len(self.disBookList['Title'][0:]))
-            
-        #for u in range(len(self.disBookList['No'])):
-            self.listBook_libraryInterface.insert("", tk.END, values = (self.disBookList["Title"], self.disBookList["Author"], self.disBookList['Length']))
+            if row != '.DS_Store':
+                self.disBookList['Title'] = str(row)
         
-        print(self.txt)
-        return self.information
+                pdf_path = str(row)
+                #print("pdf_path :", pdf_path)
+    
+    
+                #print("Title in Listbook :", self.disBookList['Title'])
+    
+                #for n in range(len(pdf_path)): 
+                with open(pdf_path, 'rb') as f:
+                    self.pdf = PdfFileReader(f)
+                    self.information = self.pdf.getDocumentInfo()
+                    self.number_of_pages = self.pdf.getNumPages()
+    
+                #print((self.txt))
+    
+                #print(self.disBookList)
+    
+                #for a in self.booklist:
 
-    #def Add_Data_Into_Library_Tree(self):
-    #    print('Full Dist: ', self.disBookList)
-    #    
-    #        #self.Amount_Book += 1        
+                self.disBookList['Category'] = str('None')
+                self.disBookList['Author'] = str(self.information.author)
+                self.disBookList['Length'] = str(self.number_of_pages)
+                #print("Author :", self.disBookList['Author'])
+                #self.book["Number_of_pages"] = self.number_of_pages
+    
+                #print(self.information.author)
+                #print(len(self.disBookList['Title'][0:]))
+                
+                self.listBook_libraryInterface.insert("", tk.END, values = (self.disBookList["Title"], self.disBookList["Author"], self.disBookList['Category'], (self.disBookList['Length'] + '\tPages')))
+                self.listBook_libraryInterface.bind("<Double-Button-1>", self.openFeature)
 
+    def openFeature(self, event):
+        item = self.listBook_libraryInterface.selection()
+        
 
-
+        print(self.listBook_libraryInterface.item(item, "values")[0], 'Open at', datetime.datetime.now().astimezone().strftime("%Y-%m-%d,  %H:%M:%S"))
+        
 
 if __name__ == "__main__":
     MainfileApplication() 
