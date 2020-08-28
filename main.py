@@ -21,7 +21,12 @@ class MainfileApplication():
         #self.Main_Window.resizable(False, False)
 
 
+
         self.disBookList = {}
+        self.disBookList["Title"] = self.Title_List = []
+        self.disBookList["Author"] = self.Author_List = []
+        self.disBookList["Category"] = self.Category_list = []
+        self.disBookList["Length"] = self.Length_list = []
         
         self.Amount_Book = 1
         self.Amount_Data = 1
@@ -37,7 +42,7 @@ class MainfileApplication():
 
                 # Album Tuple
 
-
+        self.Add_Data_Into_App()
 
 
         # Frame
@@ -155,6 +160,9 @@ class MainfileApplication():
         self.btnBookDetail_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Detail', width = '10', height = '2')
         self.btnBookDetail_LibraryInterface.pack(side = 'left')   
 
+        self.btnFavoritAdding_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Favorit Adding', width = '10', height = '2')
+        self.btnFavoritAdding_LibraryInterface.pack(side = 'left')
+
                             # main Interface
         self.listBook_libraryInterface = tk.ttk.Treeview(self.mainFrame_libraryInterface, column = ('Title', 'Author', 'Category', 'Lenght', 'Favorit' """, 'Last Readed', 'Date Added'"""), show = 'headings', height = '30')
         self.listBook_libraryInterface.pack(padx = '10', pady = '5')
@@ -180,9 +188,8 @@ class MainfileApplication():
         
         #self.listBook_libraryInterface.column('Favorit', width = '80')
         #self.listBook_libraryInterface.heading('Favorit', text = 'Favorite')
-        
-        self.Add_Data_Into_App()
-        #self.Add_Data_Into_Library_Tree()
+
+        self.library_Data_Adding()
 
     def AuthorInterface(self):
 
@@ -248,10 +255,7 @@ class MainfileApplication():
         self.tvListName.column('Author_Name', width = '130')
         self.tvListName.heading('Author_Name', text = 'Author Name')
 
-        for Data in self.btn_All_AuthorName:
-            self.tvListName.insert("", tk.END, self.Author_index, values = Data)
-            self.Author_index = self.Author_index + 1
-        self.tvListName.bind("<Double-1>", self.OnDoubleClick_Author)
+        self.AddAuthorlist_into_AuthorInterface()
 
     def OnDoubleClick_Author(self, event):
 
@@ -458,51 +462,47 @@ class MainfileApplication():
     
         os.chdir('/Users/macbook/Documents/Project/Book_Manager/Data')
 
-        d = os.listdir()
-        
-        #print('len d :', len(d))
-        #print('d File :', d)
-        
-        for row in d:
+        self.d = os.listdir()
+
+        for row in self.d:
             if row != '.DS_Store':
-                self.disBookList['Title'] = str(row)
+                self.Title_List.append(str(row))
         
                 pdf_path = str(row)
-                #print("pdf_path :", pdf_path)
-    
-    
-                #print("Title in Listbook :", self.disBookList['Title'])
-    
-                #for n in range(len(pdf_path)): 
                 with open(pdf_path, 'rb') as f:
                     self.pdf = PdfFileReader(f)
                     self.information = self.pdf.getDocumentInfo()
                     self.number_of_pages = self.pdf.getNumPages()
-    
-                #print((self.txt))
-    
-                #print(self.disBookList)
-    
-                #for a in self.booklist:
-
-                self.disBookList['Category'] = str('None')
-                self.disBookList['Author'] = str(self.information.author)
-                self.disBookList['Length'] = str(self.number_of_pages)
-                #print("Author :", self.disBookList['Author'])
-                #self.book["Number_of_pages"] = self.number_of_pages
-    
-                #print(self.information.author)
-                #print(len(self.disBookList['Title'][0:]))
                 
-                self.listBook_libraryInterface.insert("", tk.END, values = (self.disBookList["Title"], self.disBookList["Author"], self.disBookList['Category'], (self.disBookList['Length'] + '\tPages')))
-                self.listBook_libraryInterface.bind("<Double-Button-1>", self.openFeature)
+                self.Author_List.append(str(self.information.author))
+                self.Category_list.append(str(None))
+                self.Length_list.append(str(self.number_of_pages))
+
+
+                print("Author :", self.disBookList['Author'])
+                print(len(self.disBookList['Title'][0:]))
+    
+    def library_Data_Adding(self):
+        print(self.disBookList)
+        for a in range(len(self.disBookList["Title"])):
+            self.listBook_libraryInterface.insert("", tk.END, values = (self.disBookList["Title"][a], self.disBookList["Author"][a], self.disBookList["Category"][a], (self.disBookList["Length"][a] + "\tpages")))
+            self.listBook_libraryInterface.bind("<Double-Button-1>", self.openFeature)
+
 
     def openFeature(self, event):
         item = self.listBook_libraryInterface.selection()
-        
-
         print(self.listBook_libraryInterface.item(item, "values")[0], 'Open at', datetime.datetime.now().astimezone().strftime("%Y-%m-%d,  %H:%M:%S"))
-        
+    
+    def AddAuthorlist_into_AuthorInterface(self):
+            for a in range(len(self.disBookList["Title"])):
+                self.tvListName.insert("", tk.END, values = (self.disBookList["Author"][a]))
+                self.tvListName.bind("<Double-Button-1>", self.AuthorList)
+
+    def AuthorList(self, event):
+        item = self.tvListName.selection()
+        print(self.tvListName.item(item, "values")[0])
+                
+
 
 if __name__ == "__main__":
     MainfileApplication() 
