@@ -65,10 +65,16 @@ class LoginInterface():
             tk.messagebox.showinfo('Login Succesfully' , 'Loadaing...')
             self.LoginWindow.destroy()
         else:
-            tk.messagebox.showinfo('Login' , 'Login Fail Please enter correct User name & Password')
-            print(self.UserNameVar.get())
-            print(self.PasswordVar.get())
-        
+            if (self.UserNameVar.get() == User_Name) and (self.PasswordVar.get() != Password):
+                tk.messagebox.showinfo('Login' , 'Incorrect password. Please enter correct password.')
+                self.InputPassword_LoginInterface.delete(0, 'end')
+            else:
+                if (self.UserNameVar.get() != User_Name) and (self.PasswordVar.get() == Password):
+                    tk.messagebox.showinfo('Login' , 'Incorrect username. Please enter correct username.')
+                    self.InputEmail_LoginInterface.delete(0, 'end')
+                else:
+                    if self.UserNameVar.get() == '' or self.PasswordVar.get() == '' :
+                        tk.messagebox.showerror('Login', 'Please enter username and password')
 
 
 LoginInterface()
