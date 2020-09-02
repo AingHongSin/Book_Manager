@@ -19,7 +19,7 @@ class MainfileApplication():
 
         self.Main_Window = tk.Tk()
         self.Main_Window.title("My_BooK")
-        self.Main_Window.geometry("1100x500+300+200")
+        self.Main_Window.geometry("1500x700+300+200")
         #self.Main_Window.resizable(False, False)
 
         os.chdir('/Users/macbook/Documents/Project/Book_Manager')
@@ -53,41 +53,58 @@ class MainfileApplication():
         self.leftFrame_mainWindow.pack(side = 'left', fill = 'y')
         self.leftFrame_mainWindow.config(background = '#a6a6a6')
 
-        self.topFrame_mainWindow = tk.Frame(self.Main_Window )
-        self.topFrame_mainWindow.pack(side = 'top', fill = 'x')
-        self.topFrame_mainWindow.config(background = '#666666')
+        #self.topFrame_mainWindow = tk.Frame(self.Main_Window )
+        #self.topFrame_mainWindow.pack(side = 'top', fill = 'x')
+        #self.topFrame_mainWindow.config(background = '#666666')
         
         self.rightFrame_mainWindow = tk.Frame(self.Main_Window)
         self.rightFrame_mainWindow.pack(fill = 'both')
-        
+
+            #
+        self.LibraryPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Library2.png")
+        self.LibraryPotho_image = self.LibraryPhoto.subsample(3,3)
+
+        self.AuthorPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Author1.png")
+        self.AuthorPotho_image = self.AuthorPhoto.subsample(3,3)
+
+        self.CategoriesPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Categories.png")
+        self.CategoriesPotho_image = self.CategoriesPhoto.subsample(3,3)
+
+        self.FavoritPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Favorit.png")
+        self.FavoritPhoto_image = self.FavoritPhoto.subsample(3,3)
+
+        self.AlbumPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Album.png")
+        self.AlbumPotho_image = self.AlbumPhoto.subsample(3,3)
+
+
         # InterFace 
                             # TopFrame
-        self.lblTitle_TopFrame = tk.Label(self.topFrame_mainWindow, text = 'My BooK', font = ('defule',28,'bold'), bg = '#666666')
-        self.lblTitle_TopFrame.pack()
+        #self.lblTitle_TopFrame = tk.Label(self.topFrame_mainWindow, text = 'My BooK', height = '2', font = ('defule',36,'bold'), bg = '#666666')
+        #self.lblTitle_TopFrame.pack()
 
 
                             # LeftFrame
         self.homephoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/home.png")
-        self.homePhoto_image = self.homephoto.subsample(10,10)
+        self.homePhoto_image = self.homephoto.subsample(1,1)
 
-        self.btnHome_leftFrame = tk.Button(self.leftFrame_mainWindow, image = self.homePhoto_image, width = '140' , command = self.homeInterfaceInterface)
+        self.btnHome_leftFrame = tk.Button(self.leftFrame_mainWindow, image = self.homePhoto_image, width = '260' , command = self.homeInterfaceInterface)
         self.btnHome_leftFrame.pack()
         #self.btnHome_leftFrame.configure({"bg": "white", "activebackground": "white"})
 
 
-        self.btnLibrary_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '📚\tLibrary', height = '2', width = '15', command = self.libraryInterface)
+        self.btnLibrary_leftFrame = tk.Button(self.leftFrame_mainWindow, image = self.LibraryPotho_image, text = '\tLibrary \t\t', compound = 'left',  command = self.libraryInterface)
         self.btnLibrary_leftFrame.pack()
 
-        self.btnAuthor_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '👨‍💼\tAuthor', height = '2', width = '15', command = self.AuthorInterface)
+        self.btnAuthor_leftFrame = tk.Button(self.leftFrame_mainWindow, image = self.AuthorPotho_image, text = '\tAuthor \t\t', compound = 'left', command = self.AuthorInterface)
         self.btnAuthor_leftFrame.pack()
         
-        self.btnCategory_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '🗄\tCategory', height = '2', width = '15', command = self.CategoryInterface)
+        self.btnCategory_leftFrame = tk.Button(self.leftFrame_mainWindow, image = self.CategoriesPotho_image, text = '\tCategory \t\t', compound = 'left', command = self.CategoryInterface)
         self.btnCategory_leftFrame.pack()
 
-        self.btnFavorit_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '🤍\tFevorite', height = '2', width = '15', command = self.FavoritInterface)
+        self.btnFavorit_leftFrame = tk.Button(self.leftFrame_mainWindow, image = self.FavoritPhoto_image, text = '\tFevorite \t\t',  compound = 'left', command = self.FavoritInterface)
         self.btnFavorit_leftFrame.pack()
 
-        self.btnAlbum_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '🗃\tAlbum', height = '2', width = '15', command = self.AlbumInterface)
+        self.btnAlbum_leftFrame = tk.Button(self.leftFrame_mainWindow, image = self.AlbumPotho_image, text = '\tAlbum \t\t',  compound = 'left', command = self.AlbumInterface)
         self.btnAlbum_leftFrame.pack()
 
         self.btnExit_leftFrame = tk.Button(self.leftFrame_mainWindow, text = '❌\tExit', height = '2', width = '15', command = self.Main_Window.destroy)
@@ -97,9 +114,6 @@ class MainfileApplication():
 
         self.Main_Window.mainloop()
         
-
-
-
     def homeInterfaceInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
@@ -109,7 +123,7 @@ class MainfileApplication():
         self.topFrame_HomeInterface.pack()
 
         self.mainFrame_HomeInterface = tk.Frame(self.rightFrame_mainWindow)
-        self.mainFrame_HomeInterface.pack(pady = 40)
+        self.mainFrame_HomeInterface.pack(pady =  60)
 
         # Interface
                         # Title
@@ -117,30 +131,30 @@ class MainfileApplication():
         self.lblTitle_HomeIterface.pack()
 
                         # Main
-        self.LibraryPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Library2.png")
-        self.LibraryPotho_image = self.LibraryPhoto.subsample(10,10)
-        self.btnLibrary_HomeInterface = tk.Button(self.mainFrame_HomeInterface, image = ( self.LibraryPotho_image), text = '\t\tLibrary     ', compound = 'left', font = ('default',15), command = self.libraryInterface)
-        self.btnLibrary_HomeInterface.pack()
+        self.LibraryPhoto_HomeInterface = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Library2.png")
+        self.LibraryPotho_image_HomeInterface = self.LibraryPhoto_HomeInterface.subsample(1,1)
+        self.btnLibrary_HomeInterface = tk.Button(self.mainFrame_HomeInterface, image = self.LibraryPotho_image_HomeInterface, text = '\t\tLibrary\t\t', compound = 'top', width = 300, font = ('default',15), command = self.libraryInterface)
+        self.btnLibrary_HomeInterface.grid(row = 0, column = 0)
 
-        self.AuthorPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Author1.png")
-        self.AuthorPotho_image = self.AuthorPhoto.subsample(11,11)
-        self.btnAuthor_homeInterface = tk.Button(self.mainFrame_HomeInterface, image = self.AuthorPotho_image, text = '\t\t\tAuthor\t', compound = 'left', font = ('default',15), command = self.AuthorInterface)
-        self.btnAuthor_homeInterface.pack()
+        self.AuthorPhoto_HomeInterface = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Author1.png")
+        self.AuthorPotho_image_HomeInterface = self.AuthorPhoto_HomeInterface.subsample(1,1)
+        self.btnAuthor_homeInterface = tk.Button(self.mainFrame_HomeInterface, image = self.AuthorPotho_image_HomeInterface, text = '\t\tAuthor\t\t', compound = 'top', font = ('default',15), command = self.AuthorInterface)
+        self.btnAuthor_homeInterface.grid(row = 1, column = 0)
 
-        self.CategoriesPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Categories.png")
-        self.CategoriesPotho_image = self.CategoriesPhoto.subsample(10,10)
-        self.btnCategory_homeInterface = tk.Button(self.mainFrame_HomeInterface, image = self.CategoriesPotho_image, text = '\t\t\t\tCategoriest    ', compound = 'left', font = ('default',15), command = self.CategoryInterface)
-        self.btnCategory_homeInterface.pack()
+        self.CategoriesPhoto_HomeInterface = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Categories.png")
+        self.CategoriesPotho_image_HomeInterface = self.CategoriesPhoto_HomeInterface.subsample(1,1)
+        self.btnCategory_homeInterface = tk.Button(self.mainFrame_HomeInterface, image = self.CategoriesPotho_image_HomeInterface, text = '\t\tCategoriest\t\t', compound = 'top', font = ('default',15), command = self.CategoryInterface)
+        self.btnCategory_homeInterface.grid(row = 0, column = 1)
 
-        self.FavoritPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Favorit.png")
-        self.FavoritPhoto_image = self.FavoritPhoto.subsample(18,18)
-        self.btnFavorit_homeInterface = tk.Button(self.mainFrame_HomeInterface, image = self.FavoritPhoto_image, text = '\t\t\t\t\t  Favorite\t', compound = 'left', font = ('default',15), command = self.FavoritInterface)
-        self.btnFavorit_homeInterface.pack()
+        self.FavoritPhoto_HomeInterface = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Favorit.png")
+        self.FavoritPhoto_image_HomeInterface = self.FavoritPhoto_HomeInterface.subsample(1,1)
+        self.btnFavorit_homeInterface = tk.Button(self.mainFrame_HomeInterface, image = self.FavoritPhoto_image_HomeInterface, text = '\t\t\tFavorite\t\t', compound = 'top', font = ('default',15), command = self.FavoritInterface)
+        self.btnFavorit_homeInterface.grid(row = 1, column = 1)
 
-        self.AlbumPhoto = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Album.png")
-        self.AlbumPotho_image = self.AlbumPhoto.subsample(20,20)
-        self.btnAlbum_homeInterfac = tk.Button(self.mainFrame_HomeInterface, image = self.AlbumPotho_image, text = '\t\t\t\t\t\tAlbum\t', compound = 'left', font = ('default',15), command = self.AlbumInterface)
-        self.btnAlbum_homeInterfac.pack()
+        self.AlbumPhoto_HomeInterface = tk.PhotoImage(file = r"/Users/macbook/Documents/Project/Book_Manager/icon/Album.png")
+        self.AlbumPotho_image_HomeInterface = self.AlbumPhoto_HomeInterface.subsample(1,1)
+        self.btnAlbum_homeInterfac = tk.Button(self.mainFrame_HomeInterface, image = self.AlbumPotho_image_HomeInterface, text = '\t\tAlbum\t\t', compound = 'top', font = ('default',15), command = self.AlbumInterface)
+        self.btnAlbum_homeInterfac.grid(row = 0, column = 2)
 
 
 
@@ -162,22 +176,22 @@ class MainfileApplication():
         
         # Interface
                             # Tapbar
-        self.lblnameTap_libraryInterface = tk.Label(self.topFrame_LibraryInterface, text = 'Library', font = ('Times',20,'bold'), bg = '#c8c8c8')
-        self.lblnameTap_libraryInterface.pack(side = 'right')
+        #self.lblnameTap_libraryInterface = tk.Label(self.topFrame_LibraryInterface, text = 'Library', font = ('Times',12,'bold'), bg = '#c8c8c8')
+        #self.lblnameTap_libraryInterface.pack(side = 'right')
 
-        self.btnAddBook_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Add', width = '10',height = '2')
+        self.btnAddBook_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Add', width = '10',height = '1')
         self.btnAddBook_LibraryInterface.pack(side = 'left')
 
-        self.btnDeleteBook_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Delete', width = '10', height ='2')
+        self.btnDeleteBook_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Delete', width = '10', height ='1')
         self.btnDeleteBook_LibraryInterface.pack(side = 'left')      
 
-        self.btnDeleteBook_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Edit', width = '10', height ='2')
+        self.btnDeleteBook_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Edit', width = '10', height ='1')
         self.btnDeleteBook_LibraryInterface.pack(side = 'left')   
 
-        self.btnBookDetail_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Detail', width = '10', height = '2')
+        self.btnBookDetail_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Detail', width = '10', height = '1')
         self.btnBookDetail_LibraryInterface.pack(side = 'left')   
 
-        self.btnFavoritAdding_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Favorit Adding', width = '10', height = '2', command = self.FavoritAdding)
+        self.btnFavoritAdding_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Favorit Adding', width = '15', height = '1', command = self.FavoritAdding)
         self.btnFavoritAdding_LibraryInterface.pack(side = 'left')
 
                             # main Interface
@@ -194,17 +208,17 @@ class MainfileApplication():
         self.listBook_libraryInterface.column('Category', width = '150')
         self.listBook_libraryInterface.heading('Category', text = 'Category')
 
-        #self.listBook_libraryInterface.column('Last Readed', width = '100')
-        #self.listBook_libraryInterface.heading('Last Readed', text = 'Last Readed')
+        self.listBook_libraryInterface.column('Last Readed', width = '100')
+        self.listBook_libraryInterface.heading('Last Readed', text = 'Last Readed')
     
-        #self.listBook_libraryInterface.column('Date Added', width = '100')
-        #self.listBook_libraryInterface.heading('Date Added', text = 'Date Added')
+        self.listBook_libraryInterface.column('Date Added', width = '100')
+        self.listBook_libraryInterface.heading('Date Added', text = 'Date Added')
         
         self.listBook_libraryInterface.column('Lenght', width = '130')
         self.listBook_libraryInterface.heading('Lenght', text = 'Length')
         
-        #self.listBook_libraryInterface.column('Favorit', width = '80')
-        #self.listBook_libraryInterface.heading('Favorit', text = 'Favorite')
+        self.listBook_libraryInterface.column('Favorit', width = '80')
+        self.listBook_libraryInterface.heading('Favorit', text = 'Favorite')
 
         self.library_Data_Adding()
 
@@ -238,16 +252,16 @@ class MainfileApplication():
         self.lblnameTap_AuthorInterface = tk.Label(self.topFrame_AuthorInterface, text = 'Author', font = ('Times',20,'bold'), bg = '#dadada')
         self.lblnameTap_AuthorInterface.pack(side = 'right')
 
-        self.listBook_AuthorInterface = tk.ttk.Treeview(self.mainFrame_AuthorInterface, column = (1,2,3,4,5,6,7), show = 'headings', height = '30')
+        self.listBook_AuthorInterface = tk.ttk.Treeview(self.mainFrame_AuthorInterface, column = (1,2,3,4,5,6,7), show = 'headings', height = '80')
         self.listBook_AuthorInterface.pack(padx = '10', pady = '5')
 
-        self.listBook_AuthorInterface.column(1, width = '150')
+        self.listBook_AuthorInterface.column(1, width = '250')
         self.listBook_AuthorInterface.heading(1, text = 'Title')
 
-        self.listBook_AuthorInterface.column(2, width = '150')
+        self.listBook_AuthorInterface.column(2, width = '180')
         self.listBook_AuthorInterface.heading(2, text = 'Author')
 
-        self.listBook_AuthorInterface.column(3, width = '150')
+        self.listBook_AuthorInterface.column(3, width = '130')
         self.listBook_AuthorInterface.heading(3, text = 'Category')
 
         self.listBook_AuthorInterface.column(4, width = '100')
@@ -256,10 +270,10 @@ class MainfileApplication():
         self.listBook_AuthorInterface.column(5, width = '100')
         self.listBook_AuthorInterface.heading(5, text = 'Date Added')
         
-        self.listBook_AuthorInterface.column(6, width = '80')
+        self.listBook_AuthorInterface.column(6, width = '100')
         self.listBook_AuthorInterface.heading(6, text = 'Size')
         
-        self.listBook_AuthorInterface.column(7, width = '80')
+        self.listBook_AuthorInterface.column(7, width = '100')
         self.listBook_AuthorInterface.heading(7, text = 'Favorite')
 
         self.Backenf_of_AuthorInterface()
@@ -269,7 +283,7 @@ class MainfileApplication():
         self.tvListName = tk.ttk.Treeview(self.leftFrame_AuthorInterface, column = ('Author_Name'), show = 'headings', height = '80')
         self.tvListName.pack()
 
-        self.tvListName.column('Author_Name', width = '130')
+        self.tvListName.column('Author_Name', width = '250')
         self.tvListName.heading('Author_Name', text = 'All Authors')
 
         self.AddAuthorlist_into_AuthorInterface()
@@ -336,13 +350,13 @@ class MainfileApplication():
         self.listBook_CategoryInterface = tk.ttk.Treeview(self.mainFrame_CategoryInterface, column = (1,2,3,4,5,6,7), show = 'headings', height = '30')
         self.listBook_CategoryInterface.pack(padx = '10', pady = '5')
 
-        self.listBook_CategoryInterface.column(1, width = '150')
+        self.listBook_CategoryInterface.column(1, width = '250')
         self.listBook_CategoryInterface.heading(1, text = 'Title')
 
-        self.listBook_CategoryInterface.column(2, width = '150')
-        self.listBook_CategoryInterface.heading(2, text = 'Authot')
+        self.listBook_CategoryInterface.column(2, width = '180')
+        self.listBook_CategoryInterface.heading(2, text = 'Author')
 
-        self.listBook_CategoryInterface.column(3, width = '150')
+        self.listBook_CategoryInterface.column(3, width = '130')
         self.listBook_CategoryInterface.heading(3, text = 'Category')
 
         self.listBook_CategoryInterface.column(4, width = '100')
@@ -351,16 +365,16 @@ class MainfileApplication():
         self.listBook_CategoryInterface.column(5, width = '100')
         self.listBook_CategoryInterface.heading(5, text = 'Date Added')
         
-        self.listBook_CategoryInterface.column(6, width = '80')
+        self.listBook_CategoryInterface.column(6, width = '100')
         self.listBook_CategoryInterface.heading(6, text = 'Size')
         
-        self.listBook_CategoryInterface.column(7, width = '80')
+        self.listBook_CategoryInterface.column(7, width = '100')
         self.listBook_CategoryInterface.heading(7, text = 'Favorite')
 
         self.tvListCategory = tk.ttk.Treeview(self.leftFrame_CategoryInterface, column = ('Category_Name'), show = 'headings', height = '80')
         self.tvListCategory.pack()
 
-        self.tvListCategory.column('Category_Name', width = '130')
+        self.tvListCategory.column('Category_Name', width = '250')
         self.tvListCategory.heading('Category_Name', text = 'All Categories')
 
         for Data in self.btn_All_CategoryName:
@@ -437,7 +451,7 @@ class MainfileApplication():
         self.mainFrame_AlbumInterface.pack(fill = 'both')
 
         # Interface
-        self.btnAddBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Add Album', width = '10',height = '2')
+        self.btnAddBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Add Album', width = '10',height = '2', command = self.addAlbum_Action)
         self.btnAddBook_AlbumInterface.pack(side = 'left')
 
         self.btnDeleteBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Delete Album', width = '10', height ='2')
@@ -473,6 +487,29 @@ class MainfileApplication():
         self.listBook_AlbumInterface.column(7, width = '80')
         self.listBook_AlbumInterface.heading(7, text = 'Favorite')
 
+    def addAlbum_Action(self):
+        self.addAlbum_Interface = tk.Toplevel(self.Main_Window)
+        self.addAlbum_Interface.title("Album Adding")
+
+        self.mainFrame_AlbumAdding_topLevel = tk.Frame(self.addAlbum_Interface)
+        self.mainFrame_AlbumAdding_topLevel.pack()
+
+        self.buttonFrame_AlbumAdding_topLevel = tk.Frame(self.addAlbum_Interface)
+        self.buttonFrame_AlbumAdding_topLevel.pack()
+
+        self.lblNameAlbum = tk.Label(self.mainFrame_AlbumAdding_topLevel, text = 'Name')
+        self.lblNameAlbum.grid(row = 0, column = 0)
+
+        self.inputNameAlbum = tk.Entry(self.mainFrame_AlbumAdding_topLevel, width = '20')
+        self.inputNameAlbum.grid(row = 0, column = 1)
+
+        self.btnCancel = tk.Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Cancel', width = '10', command = self.addAlbum_Interface.quit)
+        self.btnCancel.grid(row = 0, column = 0)
+
+        self.btnDone = tk.Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Done', width = '10', command = print("Done!..."))
+        self.btnDone.grid(row = 0, column = 1)
+
+        self.addAlbum_Interface.mainloop()
 #_______________________________________________________________________BACK-END_____________________________________________________________________________________________#
 
     def Add_Data_Into_App(self):
