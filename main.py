@@ -19,7 +19,7 @@ class MainfileApplication():
 
         self.Main_Window = tk.Tk()
         self.Main_Window.title("My_BooK")
-        self.Main_Window.geometry("1500x700+300+200")
+        self.Main_Window.geometry("1500x700+100+100")
         #self.Main_Window.resizable(False, False)
 
         os.chdir('/Users/macbook/Documents/Project/Book_Manager')
@@ -120,14 +120,17 @@ class MainfileApplication():
 
         # Frame
         self.topFrame_HomeInterface = tk.Frame(self.rightFrame_mainWindow)
-        self.topFrame_HomeInterface.pack()
+        self.topFrame_HomeInterface.pack(pady = 10)
 
         self.mainFrame_HomeInterface = tk.Frame(self.rightFrame_mainWindow)
-        self.mainFrame_HomeInterface.pack(pady =  60)
+        self.mainFrame_HomeInterface.pack(pady =  10)
+    
+        self.recentFrame_HomeInterface = tk.Frame(self.rightFrame_mainWindow)
+        self.recentFrame_HomeInterface.pack(side = 'bottom', fill = 'both')
 
         # Interface
                         # Title
-        self.lblTitle_HomeIterface = tk.Label(self.topFrame_HomeInterface, text = 'Welcome\nto\nBook Manager', font = ('Times',20,'bold'))
+        self.lblTitle_HomeIterface = tk.Label(self.topFrame_HomeInterface, text = 'Welcome\nto\nLibrary Owner', font = ('Times',20,'bold'))
         self.lblTitle_HomeIterface.pack()
 
                         # Main
@@ -155,6 +158,33 @@ class MainfileApplication():
         self.AlbumPotho_image_HomeInterface = self.AlbumPhoto_HomeInterface.subsample(1,1)
         self.btnAlbum_homeInterfac = tk.Button(self.mainFrame_HomeInterface, image = self.AlbumPotho_image_HomeInterface, text = '\t\tAlbum\t\t', compound = 'top', font = ('default',15), command = self.AlbumInterface)
         self.btnAlbum_homeInterfac.grid(row = 0, column = 2)
+
+        self.lblFrame = tk.LabelFrame(self.rightFrame_mainWindow, text = 'Recent')
+        self.lblFrame.pack(fill = 'both', padx = '20', pady = '10')
+
+        self.listRecentBook_HomeInterface = tk.ttk.Treeview(self.lblFrame, column = ('Title', 'Author', 'Category', 'Lenght', 'Favorite' , 'Last Readed', 'Date Added'), show = 'headings', height = '14')
+        self.listRecentBook_HomeInterface.pack(pady = '10')
+
+        self.listRecentBook_HomeInterface.column('Title', width = '300')
+        self.listRecentBook_HomeInterface.heading('Title', text = 'Title')
+
+        self.listRecentBook_HomeInterface.column('Author', width = '250')
+        self.listRecentBook_HomeInterface.heading('Author', text = 'Author')
+
+        self.listRecentBook_HomeInterface.column('Category', width = '150')
+        self.listRecentBook_HomeInterface.heading('Category', text = 'Category')
+        
+        self.listRecentBook_HomeInterface.column('Lenght', width = '130')
+        self.listRecentBook_HomeInterface.heading('Lenght', text = 'Length')
+
+        self.listRecentBook_HomeInterface.column('Favorite', width = '130')
+        self.listRecentBook_HomeInterface.heading('Favorite', text = 'Favorite')
+
+        self.listRecentBook_HomeInterface.column('Last Readed', width = '100')
+        self.listRecentBook_HomeInterface.heading('Last Readed', text = 'Last Readed')
+
+        self.listRecentBook_HomeInterface.column('Date Added', width = '100')
+        self.listRecentBook_HomeInterface.heading('Date Added', text = 'Date Added')
 
 
 
@@ -208,17 +238,17 @@ class MainfileApplication():
         self.listBook_libraryInterface.column('Category', width = '150')
         self.listBook_libraryInterface.heading('Category', text = 'Category')
 
-        self.listBook_libraryInterface.column('Last Readed', width = '100')
-        self.listBook_libraryInterface.heading('Last Readed', text = 'Last Readed')
+        #self.listBook_libraryInterface.column('Last Readed', width = '100')
+        #self.listBook_libraryInterface.heading('Last Readed', text = 'Last Readed')
     
-        self.listBook_libraryInterface.column('Date Added', width = '100')
-        self.listBook_libraryInterface.heading('Date Added', text = 'Date Added')
+        #self.listBook_libraryInterface.column('Date Added', width = '100')
+        #self.listBook_libraryInterface.heading('Date Added', text = 'Date Added')
         
         self.listBook_libraryInterface.column('Lenght', width = '130')
         self.listBook_libraryInterface.heading('Lenght', text = 'Length')
         
-        self.listBook_libraryInterface.column('Favorit', width = '80')
-        self.listBook_libraryInterface.heading('Favorit', text = 'Favorite')
+        #self.listBook_libraryInterface.column('Favorit', width = '80')
+        #self.listBook_libraryInterface.heading('Favorit', text = 'Favorite')
 
         self.library_Data_Adding()
 
@@ -510,7 +540,7 @@ class MainfileApplication():
         self.btnDone.grid(row = 0, column = 1)
 
         self.addAlbum_Interface.mainloop()
-#_______________________________________________________________________BACK-END_____________________________________________________________________________________________#
+#___________________________________________________________________________________________BACK-END_____________________________________________________________________________________________#
 
     def Add_Data_Into_App(self):
     
@@ -541,12 +571,18 @@ class MainfileApplication():
         for a in range(len(self.disBookList["Title"])):
             self.listBook_libraryInterface.insert("", tk.END, values = (self.disBookList["Title"][a], self.disBookList["Author"][a], self.disBookList["Category"][a], (self.disBookList["Length"][a] + "\tpages")))
             self.listBook_libraryInterface.bind("<Double-Button-1>", self.openFeature)
-
+            self.listBook_libraryInterface.bind("<Double-Button-1>", self.Addto_RecentlyList)
+            
     def openFeature(self, event):
         item = self.listBook_libraryInterface.selection()
         print(self.listBook_libraryInterface.item(item, "values"), 'Open at', datetime.datetime.now().astimezone().strftime("%Y-%m-%d,  %H:%M:%S"))
-
     
+    def Addto_RecentlyList(self, event):
+        recent = []
+        item = self.listBook_libraryInterface.selection()
+        recent.append(self.listBook_libraryInterface.item(item, "values"))
+        self.listRecentBook_HomeInterface.insert("", tk.END, values = (recent))
+
     def AddAuthorlist_into_AuthorInterface(self):
         if self.disBookList["Author"] == self.Author_List:
             for a in range(len(self.disBookList["Author"])):
