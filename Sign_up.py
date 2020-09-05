@@ -25,7 +25,6 @@ class SignupFeature():
         self.inpName_signin = tk.Entry(self.mainFrame)
         self.inpName_signin.grid(row = 0, column = 1)
 
-        self.lbl
         
         self.sign_window.mainloop()
 
