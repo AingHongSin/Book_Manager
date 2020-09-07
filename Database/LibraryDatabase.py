@@ -14,10 +14,20 @@ c.execute("""CREATE TABLE Data_list
         Author text,
         Number_of_Pages integer,
         Category text,
-        Last_Read text
+        Last_Readed datetime,
+        Added_Date text
     )""")
 
-
+c.execute("""CREATE TABLE Favorite 
+        (
+            Title text,
+            Author text, 
+            Number_of_Pages integer,
+            Category text,
+            Last_Readed datetime,
+            Added_Date text
+        )
+    """)
 # NULL
 # INTERGER
 # REAL
