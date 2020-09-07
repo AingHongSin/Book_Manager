@@ -9,17 +9,20 @@ c = conn.cursor()
 
 # create a tabel
 c.execute("""CREATE TABLE Data_list 
-    (
-        Title text,
-        Author text,
-        Number_of_Pages integer,
-        Category text,
-        Last_Readed datetime,
-        Added_Date text
-    )""")
+        (
+            ID integer,
+            Title text,
+            Author text,
+            Number_of_Pages integer,
+            Category text,
+            Last_Readed datetime,
+            Added_Date text
+        )
+    """)
 
 c.execute("""CREATE TABLE Favorite 
         (
+            ID integer,
             Title text,
             Author text, 
             Number_of_Pages integer,
