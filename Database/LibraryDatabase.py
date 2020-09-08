@@ -31,6 +31,20 @@ c.execute("""CREATE TABLE Favorite
             Added_Date text
         )
     """)
+
+c.execute("""CREATE TABLE Recent
+        (
+            ID integer,
+            Title text,
+            Author text, 
+            Number_of_Pages integer,
+            Category text,
+            Last_Readed datetime,
+            Added_Date text
+        )
+
+    """)
+
 # NULL
 # INTERGER
 # REAL

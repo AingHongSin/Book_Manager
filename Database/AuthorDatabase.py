@@ -14,4 +14,4 @@ c = conn.cursor()
 
 c.execute("SELECT * FROM Data_list ")
 for Author in c.fetchall():
-    print(Author[1])
+    print(Author[0:2])
