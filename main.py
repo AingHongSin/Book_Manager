@@ -9,6 +9,8 @@ from collections import OrderedDict
 import datetime
 import sqlite3
 import shutil
+import Database
+import NewAlbum
 
 
 
@@ -20,13 +22,10 @@ class MainfileApplication():
         self.Main_Window.title("My_BooK")
         self.Main_Window.geometry("1500x700+100+100")
         #self.Main_Window.resizable(False, False)
-        
+
         self.Amount_Book = 0
         self.datalist_of_Database = []
         self.Add_Data_Into_Database()
-
-
-
 
         # Variable
                 # Author Tuple
@@ -124,6 +123,10 @@ class MainfileApplication():
         self.recentFrame_HomeInterface = tk.Frame(self.rightFrame_mainWindow)
         self.recentFrame_HomeInterface.pack(side = 'bottom', fill = 'both')
 
+        self.lblFrame = tk.LabelFrame(self.rightFrame_mainWindow, text = 'Recent')
+        self.lblFrame.pack(fill = 'both', padx = '20', pady = '10')
+
+
         # Interface
                         # Title
         self.lblTitle_HomeIterface = tk.Label(self.topFrame_HomeInterface, text = 'Welcome\nto\nLibrary Owner', font = ('Times',20,'bold'), bg = '#eaeaea')
@@ -155,15 +158,13 @@ class MainfileApplication():
         self.btnAlbum_homeInterfac = tk.Button(self.mainFrame_HomeInterface, image = self.AlbumPotho_image_HomeInterface, text = '\t\tAlbum\t\t', compound = 'top', font = ('default',15), command = self.AlbumInterface)
         self.btnAlbum_homeInterfac.grid(row = 0, column = 2)
 
+        self.btnClearListRecentBook_HomeInterface = tk.Button(self.lblFrame, text = 'Clear Menu', width = '10', command = self.ClearRecentListBook_in_Database)
+        self.btnClearListRecentBook_HomeInterface.pack(anchor = 'ne')
+
+
         self.RecentList_HomgInterface()
 
     def RecentList_HomgInterface(self):
-
-        self.lblFrame = tk.LabelFrame(self.rightFrame_mainWindow, text = 'Recent')
-        self.lblFrame.pack(fill = 'both', padx = '20', pady = '10')
-
-        self.btnClearListRecentBook_HomeInterface = tk.Button(self.lblFrame, text = 'Clear Menu', width = '10', command = self.ClearRecentListBook_in_Database)
-        self.btnClearListRecentBook_HomeInterface.pack(anchor = 'ne')
 
         self.listRecentBook_HomeInterface = tk.ttk.Treeview(self.lblFrame, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = '14')
         self.listRecentBook_HomeInterface.pack(pady = '10', padx = '10')
@@ -222,7 +223,7 @@ class MainfileApplication():
 
         self.btnFavoritAdding_LibraryInterface = tk.Button(self.topFrame_LibraryInterface, text = 'Favorit Adding', width = '15', height = '2', command = self.FavoritAddingBackend)
         self.btnFavoritAdding_LibraryInterface.pack(side = 'left')
-
+        
                             # main Interface
         self.listBook_libraryInterface = tk.ttk.Treeview(self.mainFrame_libraryInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
         self.listBook_libraryInterface.pack(padx = '10', pady = '10')
@@ -447,6 +448,9 @@ class MainfileApplication():
         self.listBook_FavoriteInterface.column('Date Added', width = '160')
         self.listBook_FavoriteInterface.heading('Date Added', text = 'Date Added')
 
+        for row in self.listBook_FavoriteInterface.get_children():
+            self.listBook_FavoriteInterface.delete(row)
+
         self.Favorite_Insrerting_Data_to_List()
 
     def AlbumInterface(self):
@@ -465,7 +469,7 @@ class MainfileApplication():
         self.mainFrame_AlbumInterface.pack(fill = 'both')
 
         # Interface
-        self.btnAddBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Add Album', width = '10',height = '2', command = self.addAlbum_Action)
+        self.btnAddBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Add Album', width = '10',height = '2', command = NewAlbum.NewAlbumAction)
         self.btnAddBook_AlbumInterface.pack(side = 'left')
 
         self.btnDeleteBook_AlbumInterface = tk.Button(self.topFrame_AlbumInterface, text = 'Delete Album', width = '10', height ='2')
@@ -510,30 +514,10 @@ class MainfileApplication():
 
         self.listAllAlbum_AuthorInterface.column('All_Album', width = '200')
         self.listAllAlbum_AuthorInterface.heading('All_Album', text = 'All Album')
+        self.ShwoDataIntoListAlbum()
+        self.listAllAlbum_AuthorInterface.bind("<Double-Button-1>", self.AlbumSelection_and_ShowData_in_DataList)
 
-    def addAlbum_Action(self):
-        self.addAlbum_Interface = tk.Toplevel(self.Main_Window)
-        self.addAlbum_Interface.title("Album Adding")
-
-        self.mainFrame_AlbumAdding_topLevel = tk.Frame(self.addAlbum_Interface)
-        self.mainFrame_AlbumAdding_topLevel.pack()
-
-        self.buttonFrame_AlbumAdding_topLevel = tk.Frame(self.addAlbum_Interface)
-        self.buttonFrame_AlbumAdding_topLevel.pack()
-
-        self.lblNameAlbum = tk.Label(self.mainFrame_AlbumAdding_topLevel, text = 'Name')
-        self.lblNameAlbum.grid(row = 0, column = 0)
-
-        self.inputNameAlbum = tk.Entry(self.mainFrame_AlbumAdding_topLevel, width = '20')
-        self.inputNameAlbum.grid(row = 0, column = 1)
-
-        self.btnCancel = tk.Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Cancel', width = '10', command = self.addAlbum_Interface.destroy)
-        self.btnCancel.grid(row = 0, column = 0)
-
-        self.btnDone = tk.Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Done', width = '10', command = print("Done!..."))
-        self.btnDone.grid(row = 0, column = 1)
-
-        self.addAlbum_Interface.mainloop()
+        
 #___________________________________________________________________________________________BACK-END__________________________________________________________________#
 
     def Add_Data_Into_Database(self):
@@ -543,13 +527,11 @@ class MainfileApplication():
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
-        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Data')
-
-        self.d = os.listdir()
-
         self.c.execute("SELECT * FROM Data_list ")
-
         self.items = self.c.fetchall()
+
+        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Data')
+        self.d = os.listdir()
 
         for item in self.items:
             self.datalist_of_Database.append(item[1])
@@ -597,18 +579,17 @@ class MainfileApplication():
             self.listBook_libraryInterface.bind("<Double-Button-1>", self.openFeature)
 
 
+
     def openFeature(self, event):
         self.time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d,  %H:%M:%S"))
         item = self.listBook_libraryInterface.selection()
         ID_Data = str(self.listBook_libraryInterface.item(item, "values")[0])
         print(ID_Data, 'Open at', self.time_Now)
 
-        #self.c.executemany(f"UPDATE TABLE Data_list SET () WHERE (ID_Data)  ", self.time_Now)
-        #self.conn.commit()
 
-        self.Recent_Adding_Backend()
+        self.Recent_Adding_Backend_fromLibrary()
 
-    def Recent_Adding_Backend(self):
+    def Recent_Adding_Backend_fromLibrary(self):
         self.Recent_Selection = self.listBook_libraryInterface.selection()
         self.Recent_Data_From_LibraryList = self.listBook_libraryInterface.item(self.Recent_Selection,'values')
 
@@ -616,7 +597,6 @@ class MainfileApplication():
             (
             self.Recent_Data_From_LibraryList[0], self.Recent_Data_From_LibraryList[1], self.Recent_Data_From_LibraryList[2], self.Recent_Data_From_LibraryList[3], self.Recent_Data_From_LibraryList[4], self.Recent_Data_From_LibraryList[5], self.Recent_Data_From_LibraryList[6]
             )
-
         ]
 
         self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?,?)", self.RecentItem)
@@ -670,15 +650,33 @@ class MainfileApplication():
         if self.orginalpath != '':
             shutil.move(self.orginalpath, self.destinationPath)
         self.Add_Data_Into_Database()
+        self.libraryInterface()
 
     def DeleteData_From_FavoriteList(self):
         self.favoriteSelection = self.listBook_FavoriteInterface.selection()
         self.c.execute(f"DELETE FROM Favorite WHERE ID = {self.listBook_FavoriteInterface.item(self.favoriteSelection, 'values')[0]}")
         self.conn.commit()
+        self.FavoritInterface()
     
     def ClearRecentListBook_in_Database(self):
         self.c.execute("DELETE FROM Recent")
         self.conn.commit()
+        self.RecentList_HomgInterface()
+
+    def ShwoDataIntoListAlbum(self):
+        self.c.execute("SELECT * FROM Album")
+        for AlbumNameList in self.c.fetchall():
+            self.listAllAlbum_AuthorInterface.insert("", tk.END, values = (AlbumNameList))
+    
+    def AlbumSelection_and_ShowData_in_DataList(self, event):
+        for row in self.listBook_AlbumInterface.get_children():
+            self.listBook_AlbumInterface.delete(row)
+        AlbumSelection = self.listAllAlbum_AuthorInterface.selection()
+        SelectionItem_Album = self.listAllAlbum_AuthorInterface.item(AlbumSelection, 'values')[0]
+
+        self.c.execute(f"SELECT  * from {SelectionItem_Album}")
+        for AlbumData in self.c.fetchall():
+            self.listBook_AlbumInterface.insert("", tk.END, values = (AlbumData[0], AlbumData[1], AlbumData[2], AlbumData[3], AlbumData[4], AlbumData[5], AlbumData[6]))
 
 if __name__ == "__main__":
     MainfileApplication() 
