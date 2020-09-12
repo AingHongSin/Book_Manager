@@ -3,7 +3,6 @@ import tkinter.messagebox
 import sqlite3
 import Database
 import os
-import main
 
 class NewAlbumAction():
     def __init__(self):
@@ -25,6 +24,7 @@ class NewAlbumAction():
 
         self.inputNameAlbum = tk.Entry(self.mainFrame_AlbumAdding_topLevel, width = '20', textvariable = self.VarName)
         self.inputNameAlbum.grid(row = 0, column = 1)
+        self.inputNameAlbum.focus()
 
         self.btnCancel = tk.Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Cancel', width = '10', command = self.addAlbum_Interface.destroy)
         self.btnCancel.grid(row = 0, column = 0)
@@ -48,7 +48,7 @@ class NewAlbumAction():
 
             self.AlbumName.append(AlbumName_in_AlbumTable)
 
-            self.c.execute("INSERT INTO Album VALUES (?)", self.AlbumName)
+            self.c.execute("INSERT INTO Album VALUES (?)", self.AlbumName[0:])
             self.conn.commit()
 
             self.AddData_into_List = tk.Toplevel()

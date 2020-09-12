@@ -48,7 +48,7 @@ def CreateDatabase():
             )
         """)
     conn.commit()
-
+    
     c.execute("""CREATE TABLE Album
             (
                 Album_NameList text
@@ -56,6 +56,15 @@ def CreateDatabase():
         """)
     # Commit our comand
     conn.commit()
+
+    c.execute("""CREATE TABLE Categories 
+            (
+                Categories_NameList text
+            )
+        """)
+    # Commit our comand
+    conn.commit()
+
 
     # Close our connection 
     conn.close()
