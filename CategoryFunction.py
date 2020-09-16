@@ -104,6 +104,8 @@ class NewCategoriesAction():
             self.AddData_into_List.mainloop()
 
         else: tk.messagebox.showwarning('Warmming', "Please Enter Data into the box")
+
+        
     def AddingFunction(self):
         
         os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
@@ -114,12 +116,16 @@ class NewCategoriesAction():
         Data = self.listBook_Interface.item(SelectData, "values")
         print(Data)
 
+
         Data_Adding_to_Database = [
                 (
                     Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], Data[6]
                 )
             ]
-        p = self.CategoriesName[0]
+        p = self.CategoriesName[0:]
+
+        self.c.execute(f"UPDATE Data_list SET Category = {p} WHERE ID = {Data[0]}")
+        self.conn.commit()
 
         self.c.executemany(f"INSERT INTO {p} VALUES (?,?,?,?,?,?,?) ", Data_Adding_to_Database)
         self.conn.commit()

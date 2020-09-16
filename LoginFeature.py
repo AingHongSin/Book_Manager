@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox
+import Sign_up
 
 class LoginInterface():
     def __init__(self):
@@ -48,7 +49,7 @@ class LoginInterface():
         self.btnLogin_LoginInterface = tk.Button(self.buttonFrame, text = 'Login', width = '10', command = self.Login_Function)
         self.btnLogin_LoginInterface.grid(row = 0, column = 0, pady = 20)
 
-        self.btnSignup_LoginInterface = tk.Button(self.buttonFrame ,text = 'Sign up', width = '10')
+        self.btnSignup_LoginInterface = tk.Button(self.buttonFrame ,text = 'Sign up', width = '10', command = Sign_up.SignupFeature)
         self.btnSignup_LoginInterface.grid(row = 0, column = 2, pady = 20)
  
         self.btnExit_LoginInterface = tk.Button(self.buttonFrame, text = 'Exit', width = '10', command = self.LoginWindow.destroy)

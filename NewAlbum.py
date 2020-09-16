@@ -4,6 +4,7 @@ import sqlite3
 import Database
 import os
 
+
 class NewAlbumAction():
     def __init__(self):
 
@@ -33,6 +34,9 @@ class NewAlbumAction():
         self.btnDone.grid(row = 0, column = 1)
 
         self.addAlbum_Interface.mainloop()
+    
+        self.addAlbum_Interface.destroy
+
 
     def AddAlbumName_to_Database(self):
         os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
@@ -56,7 +60,8 @@ class NewAlbumAction():
             self.topFrame = tk.Frame(self.AddData_into_List)
             self.topFrame.pack(side = 'top')
 
-            self.lblTitle = tk.Label(self.topFrame, text = 'Add')
+            self.lblTitle = tk.Label(self.topFrame, text = 'Add Book into your Album')
+            self.lblTitle.pack()
 
             self.mainFrame = tk.LabelFrame(self.AddData_into_List, text = 'Main List')
             self.mainFrame.pack()
@@ -64,7 +69,7 @@ class NewAlbumAction():
             self.btnAdd  = tk.Button(self.mainFrame, text = 'Add', width = 10, command = self.AddingFunction)
             self.btnAdd.pack(anchor = 'ne')
 
-            self.btnDone = tk.Button(self.mainFrame, text = 'Done', width = 10, command = self.AddData_into_List.destroy)
+            self.btnDone = tk.Button(self.mainFrame, text = 'Done', width = 10, command = self.ReviewFunction)
             self.btnDone.pack(side = 'bottom')
 
             self.listBook_Interface = tk.ttk.Treeview(self.mainFrame, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = '10')
@@ -91,6 +96,8 @@ class NewAlbumAction():
             self.listBook_Interface.column('Date Added', width = '160')
             self.listBook_Interface.heading('Date Added', text = 'Date Added')
 
+            self.listBook_Interface.bind(("<Double-Button-1>", self.AddingFunction_usingDounble_Click))
+
             self.c.execute("SELECT * FROM Data_list ")
     
             self.items = self.c.fetchall()
@@ -103,8 +110,33 @@ class NewAlbumAction():
     
             self.AddData_into_List.mainloop()
         else: tk.messagebox.showwarning('Warmming', "Please Enter Data into the box")
+
+    def ReviewFunction(self):
+        self.AddData_into_List.destroy()
+
     def AddingFunction(self):
         
+        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+        self.conn = sqlite3.connect('Libraries.db')
+        self.c = self.conn.cursor()
+
+        SelectData = self.listBook_Interface.focus()
+        Data = self.listBook_Interface.item(SelectData, "values")
+        print(Data)
+
+        Data_Adding_to_Database = [
+                (
+                    Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], Data[6]
+                )
+            ]
+        p = self.AlbumName[0]
+        print(p)
+
+        self.c.executemany(f"INSERT INTO {p} VALUES (?,?,?,?,?,?,?) ", Data_Adding_to_Database)
+        self.conn.commit()
+
+    def AddingFunction_usingDounble_Click(self, event):
+            
         os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()

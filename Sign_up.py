@@ -5,7 +5,7 @@ import tkinter.ttk
 class SignupFeature():
 
     def __init__(self):
-        self.sign_window = tk.Tk()
+        self.sign_window = tk.Toplevel()
         self.sign_window.title("Sign Up")
         
         # Frame 
@@ -28,4 +28,3 @@ class SignupFeature():
         
         self.sign_window.mainloop()
 
-SignupFeature()
