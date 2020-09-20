@@ -64,6 +64,13 @@ def CreateDatabase():
         """)
     # Commit our comand
     conn.commit()
+    
+    c.execute("""CREATE TABLE Authors
+            (
+                Authors_NameList text
+            )
+        """)
+    conn.commit()
 
 
     # Close our connection 
