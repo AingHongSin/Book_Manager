@@ -35,6 +35,8 @@ class MainfileApplication():
         self.Add_Data_Into_Database()
         self.AuthorFunction()
 
+        
+
         # Frame
         self.leftFrame_mainWindow = Frame(self.Main_Window)
         self.leftFrame_mainWindow.pack(side = 'left', fill = 'y')
@@ -180,7 +182,7 @@ class MainfileApplication():
         self.tvListName_HomeInterface.heading('Author_Name', text = 'All Authors')
 
         self.ShowData_into_Authors_HomeInterface()
-
+        
 
     def   AlbumList_HomeInterface(self):  
         self.lblFrameAlbumName = LabelFrame(self.AlbumNameFrame_HomeInterface, text = 'Album')
@@ -361,10 +363,6 @@ class MainfileApplication():
         self.tvListName_AuthorInterface.heading('Author_Name', text = 'All Authors')
 
         self.ShowData_into_Authors_AuthorInterface()
-
-    def OnDoubleClick_Author(self, event):
-        item = self.tvListName_AuthorInterface.selection()
-        print("This is ", str(self.tvListName_AuthorInterface.item(item ,"values")[0]))
         
     def CategoryInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
@@ -573,32 +571,42 @@ class MainfileApplication():
 
         self.Amount_Book = len(self.items) + 1
 
-        for row in self.d:
-            if row != '.DS_Store':
-                if row in self.datalist_of_Database:
+        for self.row in self.d:
+            if self.row != '.DS_Store':
+                if self.row in self.datalist_of_Database:
                     print("", end="")
                 else:
-                    pdf_path = str(row)
+                    pdf_path = str(self.row)
                     with open(pdf_path, 'rb') as f:
                         self.pdf = PdfFileReader(f)
                         self.information = self.pdf.getDocumentInfo()
                         self.number_of_pages = self.pdf.getNumPages()
 
                     ID = self.Amount_Book 
-                    Title = str(row)
+                    Title = str(self.row)
                     Author = (self.information.author)
                     Category = ('Unknown')
                     Number_of_Pages = (self.number_of_pages)
                     Last_Read = ('Unknown How')
                     Add_Date = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
 
-                    libraryData = [
-                                (ID, Title, Author, Number_of_Pages, Category, Last_Read, Add_Date)
-                                ]
+                    if Author == None:
+                        libraryData = [
+                                    (ID, Title, 'Unkonwn Author', Number_of_Pages, Category, Last_Read, Add_Date)
+                                    ]
 
-                    self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?,?)" , libraryData)
-                    self.conn.commit()
-                    self.Amount_Book += 1
+                        self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?,?)" , libraryData)
+                        self.conn.commit()
+                        self.Amount_Book += 1
+                    else: 
+                        libraryData = [
+                                    (ID, Title, Author, Number_of_Pages, Category, Last_Read, Add_Date)
+                                    ]
+
+                        self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?,?)" , libraryData)
+                        self.conn.commit()
+                        self.Amount_Book += 1
+   
                                
     def library_Data_Adding(self):
         self.c.execute("SELECT * FROM Data_list ")
@@ -744,6 +752,7 @@ class MainfileApplication():
         if self.orginalpath != '':
             shutil.move(self.orginalpath, self.destinationPath)
         self.Add_Data_Into_Database()
+        self.AuthorFunction()
         self.libraryInterface()
 
     def DeleteData_From_FavoriteList(self):
@@ -821,13 +830,36 @@ class MainfileApplication():
         for g in self.c.fetchall():
             self.Data_in_Author_Database.append(g[0])
     
-        for l in self.o:
-            if l in self.Data_in_Author_Database:
+        for self.l in self.o:
+            if self.l in self.Data_in_Author_Database:
                 print("", end='')
             else: 
-                k = [l]
+                k = [self.l]
+                print("k:", k)
                 self.c.execute("INSERT INTO Authors VALUES (?)", k)
                 self.conn.commit()
+
+        self.AuthorFinction_Second()
+        print("Add Authors Name Into Authors Table in Database Successfully....")
+
+    def AuthorFinction_Second(self):
+        if self.l in self.Data_in_Author_Database:
+            print("", end='')
+        else:
+            self.c.execute("SELECT * FROM Authors")
+            for p in self.c.fetchall():
+                print("p:", p[0])
+
+                Database.addAuthors_Name(p[0])
+                print('Database Done ...')
+
+                self.c.execute(f"SELECT * FROM Data_list WHERE Author LIKE (?)", p)
+                for o in self.c.fetchall():
+                    print("o:", o)
+
+                    self.c.execute(f"INSERT INTO [{p[0]}] VALUES (?,?,?,?,?,?,?)", o)
+                    self.conn.commit()
+
 
     def ShowData_into_Authors_AuthorInterface(self):
         self.c.execute("SELECT * FROM Authors")
@@ -841,6 +873,19 @@ class MainfileApplication():
         self.c.execute("SELECT * FROM Authors")
         for h in self.c.fetchall():
             self.tvListName_HomeInterface.insert("", END, values = (h))
+
+    def OnDoubleClick_Author(self, event):
+        for row in self.listBook_AuthorInterface.get_children():
+            self.listBook_AuthorInterface.delete(row)
+
+        item = self.tvListName_AuthorInterface.selection()
+        print("This is ", str(self.tvListName_AuthorInterface.item(item ,"values")[0]))
+        AuthorsNameItem = self.tvListName_AuthorInterface.item(item ,"values")[0]
+
+        self.c.execute(f"SELECT * FROM [{AuthorsNameItem}]")
+        for AuthorData_into_AuthorsNameList in self.c.fetchall():
+            self.listBook_AuthorInterface.insert("", END, values = (AuthorData_into_AuthorsNameList[0], AuthorData_into_AuthorsNameList[1], AuthorData_into_AuthorsNameList[2], AuthorData_into_AuthorsNameList[3], AuthorData_into_AuthorsNameList[4], AuthorData_into_AuthorsNameList[5], AuthorData_into_AuthorsNameList[6]))
+
 
 
 if __name__ == "__main__":
