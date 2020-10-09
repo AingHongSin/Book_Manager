@@ -3,7 +3,7 @@ import os
 
 def CreateDatabase():
     
-    os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+    os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
     #conn = sqlite3.connect(':memory:')
     conn = sqlite3.connect('Libraries.db')
     # Create a cursor
@@ -62,7 +62,7 @@ def CreateDatabase():
                 Categories_NameList text
             )
         """)
-    # Commit our comand
+
     conn.commit()
     
     c.execute("""CREATE TABLE Authors

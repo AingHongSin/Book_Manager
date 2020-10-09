@@ -2,13 +2,13 @@ import sqlite3
 import os
 
 def addAlbum(AlbumName):
-    os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+    os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
     #conn = sqlite3.connect(':memory:')
     conn = sqlite3.connect('Libraries.db')
     # Create a cursor
     c = conn.cursor()
     
-    c.execute(f"""CREATE TABLE {AlbumName}
+    c.execute(f"""CREATE TABLE [{AlbumName}]
             (
                 ID integer,
                 Title text,
@@ -30,7 +30,7 @@ def addCategories(CategoryName):
     # Create a cursor
     c = conn.cursor()
     
-    c.execute(f"""CREATE TABLE {CategoryName}
+    c.execute(f"""CREATE TABLE [{CategoryName}]
             (
                 ID integer,
                 Title text,
@@ -47,7 +47,7 @@ def addCategories(CategoryName):
     conn.close()
 
 def addAuthors_Name(AuthorName):
-    os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+    os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
     #conn = sqlite3.connect(':memory:')
     conn = sqlite3.connect('Libraries.db')
     # Create a cursor

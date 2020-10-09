@@ -6,7 +6,7 @@ import os
 class FavoriteAdding_from_Library():
     def __init__(self):
         
-        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
@@ -63,7 +63,7 @@ class FavoriteAdding_from_Library():
         self.AddData_into_List.mainloop()
     def DataAdding(self):
         
-        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 

@@ -35,7 +35,7 @@ class NewCategoriesAction():
         self.addCategories_Interface.mainloop()
 
     def AddCategoriesName_to_Database(self):
-        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
@@ -108,7 +108,7 @@ class NewCategoriesAction():
         
     def AddingFunction(self):
         
-        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 

@@ -39,7 +39,7 @@ class NewAlbumAction():
 
 
     def AddAlbumName_to_Database(self):
-        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
@@ -116,7 +116,7 @@ class NewAlbumAction():
 
     def AddingFunction(self):
         
-        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
@@ -132,12 +132,12 @@ class NewAlbumAction():
         p = self.AlbumName[0]
         print(p)
 
-        self.c.executemany(f"INSERT INTO {p} VALUES (?,?,?,?,?,?,?) ", Data_Adding_to_Database)
+        self.c.executemany(f"INSERT INTO [{p}] VALUES (?,?,?,?,?,?,?) ", Data_Adding_to_Database)
         self.conn.commit()
 
     def AddingFunction_usingDounble_Click(self, event):
             
-        os.chdir('/Users/macbook/Documents/Project/Book_Manager/Database')
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
