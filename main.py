@@ -75,7 +75,7 @@ class MainfileApplication():
         self.homephoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/home.png")
         self.homePhoto_image = self.homephoto.subsample(2,2)
 
-        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, width = 225, border = 10, borderless = 10, borderwidth = 0 ,command = self.homeInterfaceInterface)
+        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, text = 'Home', font = ('Comic Sans MS', 16,'bold'), width = 225, border = 10, borderless = 10, borderwidth = 0 ,command = self.homeInterfaceInterface)
         self.btnHome_leftFrame.pack()
         #self.btnHome_leftFrame.configure({"bg": "white", "activebackground": "white"})
 
@@ -95,7 +95,7 @@ class MainfileApplication():
 
         self.btnAlbum_leftFrame = Button(self.leftFrame_mainWindow, image = self.AlbumPotho_image, text = '\tAlbum\t', border = 10, borderless = 10, borderwidth = 0,  compound = 'left', command = self.AlbumInterface)
         self.btnAlbum_leftFrame.pack()
-
+        
         self.btnExit_leftFrame = Button(self.leftFrame_mainWindow, text = '❌\tExit', border = 10, borderless = 10, borderwidth = 0, height = 50, width = 230, command = self.Main_Window.destroy)
         self.btnExit_leftFrame.pack(side = 'bottom')
 
@@ -138,6 +138,13 @@ class MainfileApplication():
                         # Title
         self.lblTitle_HomeIterface = Label(self.topFrame_HomeInterface, text = 'Welcome to\nLibrary Owner', font = ('Apple Chancery',22,'bold'), bg = '#00EBFF')
         self.lblTitle_HomeIterface.pack( fill = 'x', )
+
+        self.btnLibrary_leftFrame.config(background = 'white')
+        self.btnAuthor_leftFrame.config(background = 'white')
+        self.btnCategory_leftFrame.config(background = 'white')
+        self.btnAlbum_leftFrame.config(background = 'white')
+        self.btnFavorit_leftFrame.config(background = 'white')
+
 
                         # Main
         self.LibraryPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Library@2x.png")
@@ -255,6 +262,12 @@ class MainfileApplication():
 
         self.btnFavoritAdding_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Favorit Adding', border = 0, borderless = 10, width = 130, height = 30, command = self.FavoritAddingBackend)
         self.btnFavoritAdding_LibraryInterface.pack(side = 'left')
+
+        self.btnLibrary_leftFrame.config(background = '#3d84a8')
+        self.btnAuthor_leftFrame.config(background = 'white')
+        self.btnCategory_leftFrame.config(background = 'white')
+        self.btnAlbum_leftFrame.config(background = 'white')
+        self.btnFavorit_leftFrame.config(background = 'white')
         
                             # main Interface
         self.listBook_libraryInterface = ttk.Treeview(self.mainFrame_libraryInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
@@ -309,14 +322,22 @@ class MainfileApplication():
 
                 # Interface
 
-        self.btnAddBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Add Author', border = 0, borderless = 10, width = 100, height = 30)
-        self.btnAddBook_AuthorInterface.pack(side = 'left')
+        #self.btnAddBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Add Author', border = 0, borderless = 10, width = 100, height = 30)
+        #self.btnAddBook_AuthorInterface.pack(side = 'left')
 
-        self.btnDeleteBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Delete Author', border = 0, borderless = 10, width = 100, height = 30)
-        self.btnDeleteBook_AuthorInterface.pack(side = 'left')      
+        #self.btnDeleteBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Delete Author', border = 0, borderless = 10, width = 100, height = 30)
+        #self.btnDeleteBook_AuthorInterface.pack(side = 'left')      
 
-        self.btnDeleteBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Edit Author', border = 0, borderless = 10, width = 100, height = 30)
-        self.btnDeleteBook_AuthorInterface.pack(side = 'left')      
+        #self.btnDeleteBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Edit Author', border = 0, borderless = 10, width = 100, height = 30)
+        #self.btnDeleteBook_AuthorInterface.pack(side = 'left')      
+
+        self.btnAuthor_leftFrame.config(background = '#3d84a8')
+        self.btnLibrary_leftFrame.config(background = 'white')
+        self.btnCategory_leftFrame.config(background = 'white')
+        self.btnAlbum_leftFrame.config(background = 'white')
+        self.btnFavorit_leftFrame.config(background = 'white')
+        
+
 
         self.lblnameTap_AuthorInterface = Label(self.topFrame_AuthorInterface, text = 'Author', font = ('Times',20,'bold'), bg = '#00EBFF')
         self.lblnameTap_AuthorInterface.pack(side = 'right')
@@ -394,6 +415,13 @@ class MainfileApplication():
         self.lblnameTap_CategoryInterface = Label(self.topFrame_CategoryInterface, text = 'Category', font = ('Times',20,'bold'), bg = '#00EBFF')
         self.lblnameTap_CategoryInterface.pack(side = 'right')
 
+        self.btnAuthor_leftFrame.config(background = 'white')
+        self.btnLibrary_leftFrame.config(background = 'white')
+        self.btnCategory_leftFrame.config(background = '#3d84a8')
+        self.btnAlbum_leftFrame.config(background = 'white')
+        self.btnFavorit_leftFrame.config(background = 'white')
+
+
         self.AllCategoryList_CategoryInterface()
 
         self.listBook_CategoryInterface = ttk.Treeview(self.mainFrame_CategoryInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = 40)
@@ -451,7 +479,13 @@ class MainfileApplication():
         self.btnAddBook_FavoriteInterface.pack(side = 'left')
 
         self.btnDeleteBook_FavoriteInterface = Button(self.topFrame_FavoriteInterface, text = 'Delete', border = 0, borderless = 10, width = 100, height = 30, command = self.DeleteData_From_FavoriteList)
-        self.btnDeleteBook_FavoriteInterface.pack(side = 'left')      
+        self.btnDeleteBook_FavoriteInterface.pack(side = 'left')     
+
+        self.btnAuthor_leftFrame.config(background = 'white')
+        self.btnLibrary_leftFrame.config(background = 'white')
+        self.btnCategory_leftFrame.config(background = 'white')
+        self.btnAlbum_leftFrame.config(background = 'white')
+        self.btnFavorit_leftFrame.config(background = '#3d84a8')
 
                             # main Interface
         self.listBook_FavoriteInterface = ttk.Treeview(self.mainFrame_FevoriteInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
@@ -514,6 +548,12 @@ class MainfileApplication():
 
         self.lblnameTap_AlbumInterface = Label(self.topFrame_AlbumInterface, text = 'Album', font = ('Times',20,'bold'), bg = '#00EBFF')
         self.lblnameTap_AlbumInterface.pack(side = 'right')
+
+        self.btnLibrary_leftFrame.config(background = 'white')
+        self.btnAuthor_leftFrame.config(background = 'white')
+        self.btnCategory_leftFrame.config(background = 'white')
+        self.btnAlbum_leftFrame.config(background = '#3d84a8')
+        self.btnFavorit_leftFrame.config(background = 'white')
 
         self.AlbumList_AlbumInterface()
 
@@ -745,24 +785,27 @@ class MainfileApplication():
         favoriteList = []
         Dataitem = self.listBook_libraryInterface.selection()
         FavoriteData = (self.listBook_libraryInterface.item(Dataitem, "values"))
-        print(FavoriteData[0])
+        print('Data in Library for check...', FavoriteData[0])
 
+        FD = int(FavoriteData[0])
         self.c.execute("SELECT * FROM Favorite")
         for f in self.c.fetchall():
             favoriteList.append(f[0])
-        print(favoriteList)
-        if FavoriteData[0] in favoriteList:
-            print("",end="")
+        print('Data in Favorite Datalist', favoriteList)
+        if FD in favoriteList:
+            print('Loading Please wait ...')
+            tkinter.messagebox.showerror('Error', 'This book already have in Favorite Library')
         else:
-            FavoriteManyData = [
-                    (
-                    FavoriteData[0], FavoriteData[1], FavoriteData[2], FavoriteData[3], FavoriteData[4], FavoriteData[5], FavoriteData[6]
-                    )
-                ]
+            if FavoriteData[0] != favoriteList:
+                FavoriteManyData = [
+                        (
+                        FavoriteData[0], FavoriteData[1], FavoriteData[2], FavoriteData[3], FavoriteData[4], FavoriteData[5], FavoriteData[6]
+                        )
+                    ]
 
-            self.c.executemany("INSERT INTO Favorite VALUES (?,?,?,?,?,?,?)", FavoriteManyData)
-            self.conn.commit()
-            self.conn.close()
+                self.c.executemany("INSERT INTO Favorite VALUES (?,?,?,?,?,?,?)", FavoriteManyData)
+                self.conn.commit()
+                self.conn.close()
 
     def Favorite_Insrerting_Data_to_List(self):
         os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
@@ -865,7 +908,7 @@ class MainfileApplication():
         self.conn.close()
 
     def AddCategory_Into_CategoryNameList(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')  
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 

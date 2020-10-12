@@ -1,4 +1,6 @@
+import main
 import tkinter as tk
+import tkinter.messagebox
 from tkinter import ttk
 import sqlite3
 import os
@@ -23,7 +25,7 @@ class FavoriteAdding_from_Library():
         self.btnAdd  = tk.Button(self.mainFrame, text = 'Add', width = 10, command = self.DataAdding)
         self.btnAdd.pack(anchor = 'ne')
 
-        self.btnDone = tk.Button(self.mainFrame, text = 'Done', width = 10, command = self.AddData_into_List.destroy)
+        self.btnDone = tk.Button(self.mainFrame, text = 'Done', width = 10, command = self.DoneFunction)
         self.btnDone.pack(side = 'bottom')
 
         self.listBook_Interface = tk.ttk.Treeview(self.mainFrame, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = '10')
@@ -63,21 +65,34 @@ class FavoriteAdding_from_Library():
         self.AddData_into_List.mainloop()
     def DataAdding(self):
         
+        FavoriteDatalist = []
         os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
+        self.c.execute("SELECT * FROM Favorite")
+        for t in self.c.fetchall():
+            FavoriteDatalist.append(t[0])
+
         SelectData = self.listBook_Interface.focus()
         Data = self.listBook_Interface.item(SelectData, "values")
-        print(Data)
+        FavoriteData = int(Data[0])
 
-        Data_Adding_to_Database = [
-                (
-                    Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], Data[6]
-                )
-            ]
+        if FavoriteData in FavoriteDatalist:
+            tk.messagebox.showerror('Error', 'This book already added.')
+        else:
+            if FavoriteData != FavoriteDatalist:
+                Data_Adding_to_Database = [
+                        (
+                            Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], Data[6]
+                        )
+                    ]
 
-        self.c.executemany(f"INSERT INTO Favorite VALUES (?,?,?,?,?,?,?) ", Data_Adding_to_Database)
-        self.conn.commit()
+                self.c.executemany(f"INSERT INTO Favorite VALUES (?,?,?,?,?,?,?) ", Data_Adding_to_Database)
+                self.conn.commit()
+        self.conn.close()
 
+    def DoneFunction(self):
+        self.AddData_into_List.destroy()
+        main.AuthorsFunction()
 

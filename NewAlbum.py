@@ -43,14 +43,14 @@ class NewAlbumAction():
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
-        AlbumName_in_AlbumTable = self.VarName.get()
+        self.AlbumName_in_AlbumTable = self.VarName.get()
 
-        if  AlbumName_in_AlbumTable != '':
-            Database.addAlbum(AlbumName_in_AlbumTable)
+        if  self.AlbumName_in_AlbumTable != '':
+            Database.addAlbum(self.AlbumName_in_AlbumTable)
             self.inputNameAlbum.delete(0, 'end')
             self.addAlbum_Interface.destroy()
 
-            self.AlbumName.append(AlbumName_in_AlbumTable)
+            self.AlbumName.append(self.AlbumName_in_AlbumTable)
 
             self.c.execute("INSERT INTO Album VALUES (?)", self.AlbumName[0:])
             self.conn.commit()
@@ -116,30 +116,43 @@ class NewAlbumAction():
 
     def AddingFunction(self):
         
+        DatainAlbumDatabase = []
+
         os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
+        self.c.execute(f"SELECT * FROM [{self.AlbumName_in_AlbumTable}]")
+        for item in self.c.fetchall():
+            DatainAlbumDatabase.append(item[0])
+
         SelectData = self.listBook_Interface.focus()
         Data = self.listBook_Interface.item(SelectData, "values")
-        print(Data)
+        DatafromList = int(Data[0])
 
-        Data_Adding_to_Database = [
-                (
-                    Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], Data[6]
-                )
-            ]
-        p = self.AlbumName[0]
-        print(p)
+        if DatafromList in DatainAlbumDatabase:
+            tk.messagebox.showerror('Error', 'This book was added already.')
+        else:
+            if DatafromList != DatainAlbumDatabase:
+                Data_Adding_to_Database = [
+                        (
+                            Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], Data[6]
+                        )
+                    ]
+                p = self.AlbumName[0]
+                print(p)
 
-        self.c.executemany(f"INSERT INTO [{p}] VALUES (?,?,?,?,?,?,?) ", Data_Adding_to_Database)
-        self.conn.commit()
+                self.c.executemany(f"INSERT INTO [{p}] VALUES (?,?,?,?,?,?,?) ", Data_Adding_to_Database)
+                self.conn.commit()
 
     def AddingFunction_usingDounble_Click(self, event):
             
         os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
+
+        #self.c.execute("SELECT * FROM {p}")
+        #for item in self.
 
         SelectData = self.listBook_Interface.focus()
         Data = self.listBook_Interface.item(SelectData, "values")
