@@ -14,7 +14,6 @@ def addAlbum(AlbumName):
                 Title text,
                 Author text, 
                 Number_of_Pages integer,
-                Category text,
                 Last_Readed datetime,
                 Added_Date text
             )
@@ -36,7 +35,6 @@ def addCategories(CategoryName):
                 Title text,
                 Author text, 
                 sNumber_of_Pages integer,
-                Category text,
                 Last_Readed datetime,
                 Added_Date text
             )
@@ -59,7 +57,6 @@ def addAuthors_Name(AuthorName):
                 Title text,
                 Author text, 
                 Number_of_Pages integer,
-                Category text,
                 Last_Readed datetime,
                 Added_Date text
             )

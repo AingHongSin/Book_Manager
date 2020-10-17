@@ -16,7 +16,6 @@ def CreateDatabase():
                 Title text,
                 Author text,
                 Number_of_Pages integer,
-                Category text,
                 Last_Readed datetime,
                 Added_Date text
             )
@@ -29,7 +28,6 @@ def CreateDatabase():
                 Title text,
                 Author text, 
                 Number_of_Pages integer,
-                Category text,
                 Last_Readed datetime,
                 Added_Date text
             )
@@ -42,7 +40,6 @@ def CreateDatabase():
                 Title text,
                 Author text, 
                 Number_of_Pages integer,
-                Category text,
                 Last_Readed datetime,
                 Added_Date text
             )
@@ -55,14 +52,6 @@ def CreateDatabase():
             )
         """)
     # Commit our comand
-    conn.commit()
-
-    c.execute("""CREATE TABLE Categories 
-            (
-                Categories_NameList text
-            )
-        """)
-
     conn.commit()
     
     c.execute("""CREATE TABLE Authors

@@ -11,8 +11,7 @@ import shutil
 import Database
 import NewAlbum
 import FavoriteAdding
-import CategoryFunction
-from tkmacosx import Button
+from tkmacosx import Button, CircleButton
 import subprocess
 import AuthorsFunction
 
@@ -23,7 +22,7 @@ class MainfileApplication():
                 
         self.Main_Window = Tk()
         self.Main_Window.title("My_BooK")
-        self.Main_Window.geometry("1360x650+100+100")
+        self.Main_Window.geometry("1210x650+100+100")
         #self.Main_Window.resizable(False, False)
         self.Main_Window.config(background = '#00EBFF')
 
@@ -38,7 +37,7 @@ class MainfileApplication():
         # Frame
         self.leftFrame_mainWindow = Frame(self.Main_Window)
         self.leftFrame_mainWindow.pack(side = 'left', fill = 'y')
-        self.leftFrame_mainWindow.config(background = '#00EBFF')
+        self.leftFrame_mainWindow.config(background = ('#98F5FF'))
 
         #self.topFrame_mainWindow = Frame(self.Main_Window )
         #self.topFrame_mainWindow.pack(side = 'top', fill = 'x')
@@ -63,6 +62,9 @@ class MainfileApplication():
         self.AlbumPhoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Album.png")
         self.AlbumPotho_image = self.AlbumPhoto.subsample(1,1)
 
+        self.AboutPhoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/About.png")
+        self.AboutPhoto_image = self.AboutPhoto.subsample(1,1)
+
 
         # InterFace 
                             # TopFrame
@@ -72,30 +74,41 @@ class MainfileApplication():
 
                             # LeftFrame
 
+        self.spt_LeftFrame_ridghtSide = ttk.Separator(self.leftFrame_mainWindow, orient = 'vertical')
+        self.spt_LeftFrame_ridghtSide.pack(side = 'right' , fill = 'y')
+
         self.homephoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/home.png")
         self.homePhoto_image = self.homephoto.subsample(2,2)
 
-        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, text = 'Home', font = ('Comic Sans MS', 16,'bold'), width = 225, border = 10, borderless = 10, borderwidth = 0 ,command = self.homeInterfaceInterface)
+        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, text = '􀎞', font = ('Comic Sans MS', 16,'bold'), width = 225, border = 10, borderless = 10, borderwidth = 0 ,command = self.homeInterfaceInterface)
         self.btnHome_leftFrame.pack()
         #self.btnHome_leftFrame.configure({"bg": "white", "activebackground": "white"})
 
+        self.spt_leftFrame_topButton = ttk.Separator(self.leftFrame_mainWindow, orient = 'horizontal')
+        self.spt_leftFrame_topButton.pack(fill = 'x', pady = 5, padx = 15)
 
-        self.btnLibrary_leftFrame = Button(self.leftFrame_mainWindow, image = self.LibraryPotho_image, text = '\tLibrary\t', overrelief='flat', relief='flat', border = 10, borderless = 10, borderwidth = 0, compound = 'left',  command = self.libraryInterface)
+        self.btnLibrary_leftFrame = Button(self.leftFrame_mainWindow, image = self.LibraryPotho_image, text = '\tLibrary\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', command = self.libraryInterface)
         self.btnLibrary_leftFrame.pack()
-    
 
         self.btnAuthor_leftFrame = Button(self.leftFrame_mainWindow, image = self.AuthorPotho_image, text = '\tAuthor\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', command = self.AuthorInterface)
         self.btnAuthor_leftFrame.pack()
         
-        self.btnCategory_leftFrame = Button(self.leftFrame_mainWindow, image = self.CategoriesPotho_image, text = '\tCategory\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', command = self.CategoryInterface)
-        self.btnCategory_leftFrame.pack()
+        ##self.btnCategory_leftFrame = Button(self.leftFrame_mainWindow, image = self.CategoriesPotho_image, text = '\tCategory\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', command = self.CategoryInterface)
+        ##self.btnCategory_leftFrame.pack()
 
         self.btnFavorit_leftFrame = Button(self.leftFrame_mainWindow, image = self.FavoritPhoto_image, text = '\tFavorite\t', border = 10, borderless = 10, borderwidth = 0,  compound = 'left', command = self.FavoritInterface)
         self.btnFavorit_leftFrame.pack()
 
         self.btnAlbum_leftFrame = Button(self.leftFrame_mainWindow, image = self.AlbumPotho_image, text = '\tAlbum\t', border = 10, borderless = 10, borderwidth = 0,  compound = 'left', command = self.AlbumInterface)
         self.btnAlbum_leftFrame.pack()
-        
+
+        #eself.btnReport_leftFrame = Button(self.leftFrame_mainWindow , image = self.AboutPhoto_image, text = '\tAbout\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left')
+        #eself.btnReport_leftFrame.pack()
+
+        self.spt_leftFrame_UnbderButton = ttk.Separator(self.leftFrame_mainWindow, orient = 'horizontal')
+        self.spt_leftFrame_UnbderButton.pack(fill = 'x', pady = 5, padx = 15)
+
+
         self.btnExit_leftFrame = Button(self.leftFrame_mainWindow, text = '❌\tExit', border = 10, borderless = 10, borderwidth = 0, height = 50, width = 230, command = self.Main_Window.destroy)
         self.btnExit_leftFrame.pack(side = 'bottom')
 
@@ -133,43 +146,46 @@ class MainfileApplication():
         self.lblFrame = LabelFrame(self.rightFrame_mainWindow, text = ' Open Recent')
         self.lblFrame.pack( side = 'bottom')
 
+        self.btnLibrary_leftFrame.config(background = 'white')
+        self.btnAuthor_leftFrame.config(background = 'white')
+        #self.btnCategory_leftFrame.config(background = 'white')
+        self.btnAlbum_leftFrame.config(background = 'white')
+        self.btnFavorit_leftFrame.config(background = 'white')
 
         # Interface
                         # Title
         self.lblTitle_HomeIterface = Label(self.topFrame_HomeInterface, text = 'Welcome to\nLibrary Owner', font = ('Apple Chancery',22,'bold'), bg = '#00EBFF')
         self.lblTitle_HomeIterface.pack( fill = 'x', )
 
-        self.btnLibrary_leftFrame.config(background = 'white')
-        self.btnAuthor_leftFrame.config(background = 'white')
-        self.btnCategory_leftFrame.config(background = 'white')
-        self.btnAlbum_leftFrame.config(background = 'white')
-        self.btnFavorit_leftFrame.config(background = 'white')
-
+        #self.EntSearch_HomeInterface = Entry(self.topFrame_HomeInterface, width = 40)
+        #self.EntSearch_HomeInterface.pack()
+        #self.EntSearch_HomeInterface.insert("", text = 'Search')
 
                         # Main
+
         self.LibraryPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Library@2x.png")
         self.LibraryPotho_image_HomeInterface = self.LibraryPhoto_HomeInterface.subsample(1,1)
-        self.btnLibrary_HomeInterface = Button(self.mainFrame_HomeInterface, image = self.LibraryPotho_image_HomeInterface, text = 'Library',activebackground = ('cyan', 'aliceblue'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.libraryInterface)
+        self.btnLibrary_HomeInterface = Button(self.mainFrame_HomeInterface, image = self.LibraryPotho_image_HomeInterface, text = 'Library',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.libraryInterface)
         self.btnLibrary_HomeInterface.grid(row = 0, column = 0)
 
         self.AuthorPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Author@2x.png")
         self.AuthorPotho_image_HomeInterface = self.AuthorPhoto_HomeInterface.subsample(1,1)
-        self.btnAuthor_homeInterface = Button(self.mainFrame_HomeInterface, image = self.AuthorPotho_image_HomeInterface, text = 'Authors',activebackground = ('cyan', 'aliceblue'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.AuthorInterface)
+        self.btnAuthor_homeInterface = Button(self.mainFrame_HomeInterface, image = self.AuthorPotho_image_HomeInterface, text = 'Authors',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 0, border = 4, command = self.AuthorInterface)
         self.btnAuthor_homeInterface.grid(row = 1, column = 0, columnspan = 2)
 
-        self.CategoriesPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Category@2x.png")
-        self.CategoriesPotho_image_HomeInterface = self.CategoriesPhoto_HomeInterface.subsample(1,1)
-        self.btnCategory_homeInterface = Button(self.mainFrame_HomeInterface, image = self.CategoriesPotho_image_HomeInterface, text = 'Cateory',activebackground = ('cyan', 'aliceblue'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.CategoryInterface)
-        self.btnCategory_homeInterface.grid(row = 0, column = 1)
+        #self.CategoriesPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Category@2x.png")
+        #self.CategoriesPotho_image_HomeInterface = self.CategoriesPhoto_HomeInterface.subsample(1,1)
+        #self.btnCategory_homeInterface = Button(self.mainFrame_HomeInterface, image = self.CategoriesPotho_image_HomeInterface, text = 'Cateory',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.CategoryInterface)
+        #self.btnCategory_homeInterface.grid(row = 0, column = 1)
 
         self.FavoritPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Favorite@2x.png")
         self.FavoritPhoto_image_HomeInterface = self.FavoritPhoto_HomeInterface.subsample(1,1)
-        self.btnFavorit_homeInterface = Button(self.mainFrame_HomeInterface, image = self.FavoritPhoto_image_HomeInterface, text = 'Favorite',activebackground = ('cyan', 'aliceblue'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.FavoritInterface)
+        self.btnFavorit_homeInterface = Button(self.mainFrame_HomeInterface, image = self.FavoritPhoto_image_HomeInterface, text = 'Favorite',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.FavoritInterface)
         self.btnFavorit_homeInterface.grid(row = 1, column = 1, columnspan = 2)
 
         self.AlbumPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Album@2x.png")
         self.AlbumPotho_image_HomeInterface = self.AlbumPhoto_HomeInterface.subsample(1,1)
-        self.btnAlbum_homeInterfac = Button(self.mainFrame_HomeInterface, image = self.AlbumPotho_image_HomeInterface, text = 'Album',activebackground = ('cyan', 'aliceblue'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4 , command = self.AlbumInterface)
+        self.btnAlbum_homeInterfac = Button(self.mainFrame_HomeInterface, image = self.AlbumPotho_image_HomeInterface, text = 'Album',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4 , command = self.AlbumInterface)
         self.btnAlbum_homeInterfac.grid(row = 0, column = 2)
 
         self.btnClearListRecentBook_HomeInterface = Button(self.lblFrame, text = 'Clear Recent', borderless = 10, width = 100, command = self.ClearRecentListBook_in_Database)
@@ -202,7 +218,7 @@ class MainfileApplication():
 
     def RecentList_HomgInterface(self):
 
-        self.listRecentBook_HomeInterface = ttk.Treeview(self.lblFrame, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = 10)
+        self.listRecentBook_HomeInterface = ttk.Treeview(self.lblFrame, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = 10)
         self.listRecentBook_HomeInterface.pack(pady = 10, padx = 10)
 
         self.listRecentBook_HomeInterface.column('ID', width = 30)
@@ -219,9 +235,6 @@ class MainfileApplication():
 
         self.listRecentBook_HomeInterface.column('Lenght', width = 120)
         self.listRecentBook_HomeInterface.heading('Lenght', text = 'Length')
-
-        self.listRecentBook_HomeInterface.column('Category', width = 160)
-        self.listRecentBook_HomeInterface.heading('Category', text = 'Category')
     
         self.listRecentBook_HomeInterface.column('Last Readed', width = 160)
         self.listRecentBook_HomeInterface.heading('Last Readed', text = 'Last Readed')
@@ -245,7 +258,7 @@ class MainfileApplication():
         
         # Interface
                             # Tapbar
-        self.lblnameTap_libraryInterface = Label(self.topFrame_LibraryInterface, text = 'Library', font = ('Times',20,'bold'), bg = '#00EBFF')
+        self.lblnameTap_libraryInterface = Label(self.topFrame_LibraryInterface, text = 'Library\t\t\t\t', font = ('Times',20,'bold'), bg = '#00EBFF')
         self.lblnameTap_libraryInterface.pack(side = 'right')
 
         self.btnAddBook_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Add', border = 0, borderless = 10, width = 100, height = 30, command = self.openFileDailog_for_AddFile)
@@ -253,9 +266,6 @@ class MainfileApplication():
 
         self.btnDeleteBook_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Delete', border = 0, borderless = 10, width = 100, height = 30)
         self.btnDeleteBook_LibraryInterface.pack(side = 'left')      
-
-        self.btnDeleteBook_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Edit', border = 0, borderless = 10, width =100, height = 30)
-        self.btnDeleteBook_LibraryInterface.pack(side = 'left')   
 
         self.btnBookDetail_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Detail', border = 0, borderless = 10, width = 100, height = 30)
         self.btnBookDetail_LibraryInterface.pack(side = 'left')   
@@ -265,13 +275,14 @@ class MainfileApplication():
 
         self.btnLibrary_leftFrame.config(background = '#3d84a8')
         self.btnAuthor_leftFrame.config(background = 'white')
-        self.btnCategory_leftFrame.config(background = 'white')
+        #self.btnCategory_leftFrame.config(background = 'white')
         self.btnAlbum_leftFrame.config(background = 'white')
         self.btnFavorit_leftFrame.config(background = 'white')
         
                             # main Interface
-        self.listBook_libraryInterface = ttk.Treeview(self.mainFrame_libraryInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
+        self.listBook_libraryInterface = ttk.Treeview(self.mainFrame_libraryInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
         self.listBook_libraryInterface.pack(padx = '10', pady = '10')
+        self.listBook_libraryInterface.bind("<Double-Button-1>", self.openFeature)
 
         self.listBook_libraryInterface.column('ID', width = '40')
         self.listBook_libraryInterface.heading('ID', text = 'ID')
@@ -284,9 +295,6 @@ class MainfileApplication():
 
         self.listBook_libraryInterface.column('Lenght', width = '120')
         self.listBook_libraryInterface.heading('Lenght', text = 'Length')
-
-        self.listBook_libraryInterface.column('Category', width = '150')
-        self.listBook_libraryInterface.heading('Category', text = 'Category')
     
         self.listBook_libraryInterface.column('Last Readed', width = '170')
         self.listBook_libraryInterface.heading('Last Readed', text = 'Last Readed')
@@ -320,6 +328,12 @@ class MainfileApplication():
         self.mainFrame_AuthorInterface = Frame(self.listFrame_AuthorInterface)
         self.mainFrame_AuthorInterface.pack(fill = 'both', padx = 5)
 
+        self.btnAuthor_leftFrame.config(background = '#3d84a8')
+        self.btnLibrary_leftFrame.config(background = 'white')
+        #self.btnCategory_leftFrame.config(background = 'white')
+        self.btnAlbum_leftFrame.config(background = 'white')
+        self.btnFavorit_leftFrame.config(background = 'white')
+
                 # Interface
 
         #self.btnAddBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Add Author', border = 0, borderless = 10, width = 100, height = 30)
@@ -330,21 +344,14 @@ class MainfileApplication():
 
         #self.btnDeleteBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Edit Author', border = 0, borderless = 10, width = 100, height = 30)
         #self.btnDeleteBook_AuthorInterface.pack(side = 'left')      
-
-        self.btnAuthor_leftFrame.config(background = '#3d84a8')
-        self.btnLibrary_leftFrame.config(background = 'white')
-        self.btnCategory_leftFrame.config(background = 'white')
-        self.btnAlbum_leftFrame.config(background = 'white')
-        self.btnFavorit_leftFrame.config(background = 'white')
-        
-
+      
 
         self.lblnameTap_AuthorInterface = Label(self.topFrame_AuthorInterface, text = 'Author', font = ('Times',20,'bold'), bg = '#00EBFF')
-        self.lblnameTap_AuthorInterface.pack(side = 'right')
+        self.lblnameTap_AuthorInterface.pack()
 
         self.AuthorNameList_AutorInterface()
 
-        self.listBook_AuthorInterface = ttk.Treeview(self.mainFrame_AuthorInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
+        self.listBook_AuthorInterface = ttk.Treeview(self.mainFrame_AuthorInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
         self.listBook_AuthorInterface.pack()
         self.listBook_AuthorInterface.bind("<Double-Button-1>", self.openFeature_inAuthorInterface)
 
@@ -359,9 +366,6 @@ class MainfileApplication():
 
         self.listBook_AuthorInterface.column('Lenght', width = '75')
         self.listBook_AuthorInterface.heading('Lenght', text = 'Length')
-
-        self.listBook_AuthorInterface.column('Category', width = '120')
-        self.listBook_AuthorInterface.heading('Category', text = 'Category')
     
         self.listBook_AuthorInterface.column('Last Readed', width = '160')
         self.listBook_AuthorInterface.heading('Last Readed', text = 'Last Readed')
@@ -384,81 +388,6 @@ class MainfileApplication():
 
         self.ShowData_into_Authors_AuthorInterface()
         
-    def CategoryInterface(self):
-        for widget in self.rightFrame_mainWindow.winfo_children():
-            widget.destroy()
-        # Frame
-        self.topFrame_CategoryInterface = Frame(self.rightFrame_mainWindow)
-        self.topFrame_CategoryInterface.pack(side = 'top', fill = 'x')
-        self.topFrame_CategoryInterface.config(background = '#00EBFF')
-
-        self.listFrame_CategoryInterface = Frame(self.rightFrame_mainWindow)
-        self.listFrame_CategoryInterface.pack(pady = 10, padx = 5)
-
-        self.leftFrame_CategoryInterface = Frame(self.listFrame_CategoryInterface)
-        self.leftFrame_CategoryInterface.pack(side = 'left', fill = 'y', padx = 5)
-
-        self.mainFrame_CategoryInterface = Frame(self.listFrame_CategoryInterface)
-        self.mainFrame_CategoryInterface.pack( padx = 5)
-
-
-        # Interface
-        self.btnAddBook_CategoryInterface = Button(self.topFrame_CategoryInterface, text = 'Add Category', border = 0, borderless = 10, width = 150, height = 30, command = CategoryFunction.NewCategoriesAction)
-        self.btnAddBook_CategoryInterface.pack(side = 'left')
-
-        self.btnDeleteBook_CategoryInterface = Button(self.topFrame_CategoryInterface, text = 'Delete Category', border = 0, borderless = 10, width = 150, height = 30)
-        self.btnDeleteBook_CategoryInterface.pack(side = 'left')      
-
-        self.btnDeleteBook_CategoryInterface = Button(self.topFrame_CategoryInterface, text = 'Edit Category', border = 0, borderless = 10, width = 150, height = 30)
-        self.btnDeleteBook_CategoryInterface.pack(side = 'left')      
-
-        self.lblnameTap_CategoryInterface = Label(self.topFrame_CategoryInterface, text = 'Category', font = ('Times',20,'bold'), bg = '#00EBFF')
-        self.lblnameTap_CategoryInterface.pack(side = 'right')
-
-        self.btnAuthor_leftFrame.config(background = 'white')
-        self.btnLibrary_leftFrame.config(background = 'white')
-        self.btnCategory_leftFrame.config(background = '#3d84a8')
-        self.btnAlbum_leftFrame.config(background = 'white')
-        self.btnFavorit_leftFrame.config(background = 'white')
-
-
-        self.AllCategoryList_CategoryInterface()
-
-        self.listBook_CategoryInterface = ttk.Treeview(self.mainFrame_CategoryInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = 40)
-        self.listBook_CategoryInterface.pack()
-
-        self.listBook_CategoryInterface.column('ID', width = '30')
-        self.listBook_CategoryInterface.heading('ID', text = 'ID')
-
-        self.listBook_CategoryInterface.column('Title', width = '200')
-        self.listBook_CategoryInterface.heading('Title', text = 'Title')
-
-        self.listBook_CategoryInterface.column('Author', width = '140')
-        self.listBook_CategoryInterface.heading('Author', text = 'Author')
-
-        self.listBook_CategoryInterface.column('Lenght', width = '75')
-        self.listBook_CategoryInterface.heading('Lenght', text = 'Length')
-
-        self.listBook_CategoryInterface.column('Category', width = '120')
-        self.listBook_CategoryInterface.heading('Category', text = 'Category')
-    
-        self.listBook_CategoryInterface.column('Last Readed', width = '160')
-        self.listBook_CategoryInterface.heading('Last Readed', text = 'Last Readed')
-
-        self.listBook_CategoryInterface.column('Date Added', width = '160')
-        self.listBook_CategoryInterface.heading('Date Added', text = 'Date Added')
-
-    def AllCategoryList_CategoryInterface(self):
-
-        self.tvListCategory_CategorInterface = ttk.Treeview(self.leftFrame_CategoryInterface, column = ('Category_Name'), show = 'headings', height = 40)
-        self.tvListCategory_CategorInterface.pack()
-
-        self.tvListCategory_CategorInterface.column('Category_Name', width = '200')
-        self.tvListCategory_CategorInterface.heading('Category_Name', text = 'All Categories')
-        self.tvListCategory_CategorInterface.bind("<Double-Button-1>", self.ShowCategories_in_DataList)
-
-        self.AddCategory_Into_CategoryNameList()
-
     def FavoritInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
@@ -472,7 +401,7 @@ class MainfileApplication():
         
         # Interface
                             # Tapbar
-        self.lblnameTap_FavoriteInterface = Label(self.topFrame_FavoriteInterface, text = 'Favorite', border = 0, font = ('Times',20,'bold'), bg = '#00EBFF')
+        self.lblnameTap_FavoriteInterface = Label(self.topFrame_FavoriteInterface, text = 'Favorite\t\t\t\t\t\t', border = 0, font = ('Times',20,'bold'), bg = '#00EBFF')
         self.lblnameTap_FavoriteInterface.pack(side = 'right')
 
         self.btnAddBook_FavoriteInterface = Button(self.topFrame_FavoriteInterface, text = 'Add', border = 0, borderless = 10, width = 100, height = 30, command = self.FavoriteAdding_Function)
@@ -483,14 +412,16 @@ class MainfileApplication():
 
         self.btnAuthor_leftFrame.config(background = 'white')
         self.btnLibrary_leftFrame.config(background = 'white')
-        self.btnCategory_leftFrame.config(background = 'white')
+        #self.btnCategory_leftFrame.config(background = 'white')
         self.btnAlbum_leftFrame.config(background = 'white')
         self.btnFavorit_leftFrame.config(background = '#3d84a8')
 
                             # main Interface
-        self.listBook_FavoriteInterface = ttk.Treeview(self.mainFrame_FevoriteInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
+        self.listBook_FavoriteInterface = ttk.Treeview(self.mainFrame_FevoriteInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
         self.listBook_FavoriteInterface.pack(padx = '10', pady = '10')
         self.listBook_FavoriteInterface.bind("<Double-Button-1>" , self.FileOpening_in_FavoriteInterface)
+        self.listBook_FavoriteInterface.tag_configure('odd', background='#E8E8E8')
+        self.listBook_FavoriteInterface.tag_configure('even', background='#DFDFDF')
 
         self.listBook_FavoriteInterface.column('ID', width = '40')
         self.listBook_FavoriteInterface.heading('ID', text = 'ID')
@@ -503,9 +434,6 @@ class MainfileApplication():
 
         self.listBook_FavoriteInterface.column('Lenght', width = '120')
         self.listBook_FavoriteInterface.heading('Lenght', text = 'Length')
-
-        self.listBook_FavoriteInterface.column('Category', width = '150')
-        self.listBook_FavoriteInterface.heading('Category', text = 'Category')
     
         self.listBook_FavoriteInterface.column('Last Readed', width = '170')
         self.listBook_FavoriteInterface.heading('Last Readed', text = 'Last Readed')
@@ -546,18 +474,18 @@ class MainfileApplication():
         self.btnDeleteBook_AlbumInterface = Button(self.topFrame_AlbumInterface, text = 'Edit Album', border = 0, borderless = 10, width = 100, height = 30)
         self.btnDeleteBook_AlbumInterface.pack(side = 'left')      
 
-        self.lblnameTap_AlbumInterface = Label(self.topFrame_AlbumInterface, text = 'Album', font = ('Times',20,'bold'), bg = '#00EBFF')
+        self.lblnameTap_AlbumInterface = Label(self.topFrame_AlbumInterface, text = 'Album\t\t\t\t\t', font = ('Times',20,'bold'), bg = '#00EBFF')
         self.lblnameTap_AlbumInterface.pack(side = 'right')
 
         self.btnLibrary_leftFrame.config(background = 'white')
         self.btnAuthor_leftFrame.config(background = 'white')
-        self.btnCategory_leftFrame.config(background = 'white')
+        #self.btnCategory_leftFrame.config(background = 'white')
         self.btnAlbum_leftFrame.config(background = '#3d84a8')
         self.btnFavorit_leftFrame.config(background = 'white')
 
         self.AlbumList_AlbumInterface()
 
-        self.listBook_AlbumInterface = ttk.Treeview(self.mainFrame_AlbumInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Category', 'Last Readed', 'Date Added'), show = 'headings', height = 40)
+        self.listBook_AlbumInterface = ttk.Treeview(self.mainFrame_AlbumInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = 40)
         self.listBook_AlbumInterface.pack()
         self.listBook_AlbumInterface.bind("<Double-Button-1>", self.OpenFunction_fromAlbumInterface)
 
@@ -572,9 +500,6 @@ class MainfileApplication():
 
         self.listBook_AlbumInterface.column('Lenght', width = '75')
         self.listBook_AlbumInterface.heading('Lenght', text = 'Length')
-
-        self.listBook_AlbumInterface.column('Category', width = '120')
-        self.listBook_AlbumInterface.heading('Category', text = 'Category')
     
         self.listBook_AlbumInterface.column('Last Readed', width = '160')
         self.listBook_AlbumInterface.heading('Last Readed', text = 'Last Readed')
@@ -623,31 +548,30 @@ class MainfileApplication():
                     ID = self.Amount_Book 
                     Title = str(self.row)
                     Author = (self.information.author)
-                    Category = ('Unknown')
                     Number_of_Pages = (self.number_of_pages)
                     Last_Read = ('Unknown How')
                     Add_Date = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
 
                     if Author == None:
                         libraryData = [
-                                    (ID, Title, 'Unkonwn Author', Number_of_Pages, Category, Last_Read, Add_Date)
+                                    (ID, Title, 'Unkonwn Author', Number_of_Pages, Last_Read, Add_Date)
                                     ]
 
-                        self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?,?)" , libraryData)
+                        self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?)" , libraryData)
                         self.conn.commit()
                         self.Amount_Book += 1
                     else: 
                         libraryData = [
-                                    (ID, Title, Author, Number_of_Pages, Category, Last_Read, Add_Date)
+                                    (ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
                                     ]
 
-                        self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?,?)" , libraryData)
+                        self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?)" , libraryData)
                         self.conn.commit()
                         self.Amount_Book += 1
                     
                     self.conn.commit()
                     self.conn.close()
-                    AuthorsFunction.Function(ID, Title, Author, Category, Number_of_Pages, Last_Read, Add_Date)
+                    AuthorsFunction.Function(ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
 
     def library_Data_Adding(self):
         os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
@@ -659,13 +583,20 @@ class MainfileApplication():
 
         for item in self.items:
             if item[2] == None:
-                self.listBook_libraryInterface.insert("", END, values = (item[0], item[1], 'Unknown Author', item[3],  item[4], item[5], item[6] ))
+                self.listBook_libraryInterface.insert("", END, values = (int(item[0]), item[1], 'Unknown Author', item[3],  item[4], item[5] ))
             else: 
-                self.listBook_libraryInterface.insert("", END, values = (item[0], item[1], item[2], item[3],  item[4], item[5], item[6] ))
-            self.listBook_libraryInterface.bind("<Double-Button-1>", self.openFeature)
+                self.listBook_libraryInterface.insert("", END, values = (int(item[0]), item[1], item[2], item[3],  item[4], item[5] ))
+            
+            #if int(item[0]) % 2 == 0:
+            #    self.listBook_libraryInterface.configure(even, background = 'blue')
+
 
         self.conn.close()
-    
+
+    #def select(self, event=None):
+        self.listBook_libraryInterface.selection_toggle(self.listBook_libraryInterface.focus())
+        print(self.listBook_libraryInterface.selection())
+
     def FileOpening_in_FavoriteInterface(self, event):
         item = self.listBook_FavoriteInterface.selection()
         Name_Data = str(self.listBook_FavoriteInterface.item(item, "values")[1])
@@ -684,11 +615,11 @@ class MainfileApplication():
 
         self.RecentItem = [
             (
-            self.Recent_Data_From_FavoriteList[0], self.Recent_Data_From_FavoriteList[1], self.Recent_Data_From_FavoriteList[2], self.Recent_Data_From_FavoriteList[3], self.Recent_Data_From_FavoriteList[4], self.Recent_Data_From_FavoriteList[5], self.Recent_Data_From_FavoriteList[6]
+            self.Recent_Data_From_FavoriteList[0], self.Recent_Data_From_FavoriteList[1], self.Recent_Data_From_FavoriteList[2], self.Recent_Data_From_FavoriteList[3], self.Recent_Data_From_FavoriteList[4], self.Recent_Data_From_FavoriteList[5]
             )
         ]
 
-        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?,?)", self.RecentItem)
+        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
         self.conn.commit()
         self.conn.close()
 
@@ -713,11 +644,11 @@ class MainfileApplication():
 
         self.RecentItem = [
             (
-            self.Recent_Data_From_AlbumList[0], self.Recent_Data_From_AlbumList[1], self.Recent_Data_From_AlbumList[2], self.Recent_Data_From_AlbumList[3], self.Recent_Data_From_AlbumList[4], self.Recent_Data_From_AlbumList[5], self.Recent_Data_From_AlbumList[6]
+            self.Recent_Data_From_AlbumList[0], self.Recent_Data_From_AlbumList[1], self.Recent_Data_From_AlbumList[2], self.Recent_Data_From_AlbumList[3], self.Recent_Data_From_AlbumList[4], self.Recent_Data_From_AlbumList[5]
             )
         ]
 
-        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?,?)", self.RecentItem)
+        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
         self.conn.commit()
         self.conn.close()
 
@@ -751,11 +682,11 @@ class MainfileApplication():
 
         self.RecentItem = [
             (
-            self.Recent_Data_From_LibraryList[0], self.Recent_Data_From_LibraryList[1], self.Recent_Data_From_LibraryList[2], self.Recent_Data_From_LibraryList[3], self.Recent_Data_From_LibraryList[4], self.Recent_Data_From_LibraryList[5], self.Recent_Data_From_LibraryList[6]
+            self.Recent_Data_From_LibraryList[0], self.Recent_Data_From_LibraryList[1], self.Recent_Data_From_LibraryList[2], self.Recent_Data_From_LibraryList[3], self.Recent_Data_From_LibraryList[4], self.Recent_Data_From_LibraryList[5]
             )
         ]
 
-        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?,?)", self.RecentItem)
+        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
         self.conn.commit()
         self.conn.close()
 
@@ -769,7 +700,7 @@ class MainfileApplication():
 
         self.c.execute("SELECT * FROM Recent")
         for RecentData in self.c.fetchall():
-            self.listRecentBook_HomeInterface.insert("", 0, values = (RecentData[0], RecentData[1], RecentData[2], RecentData[3], RecentData[4], RecentData[5], RecentData[6]))
+            self.listRecentBook_HomeInterface.insert("", 0, values = (RecentData[0], RecentData[1], RecentData[2], RecentData[3], RecentData[4], RecentData[5]))
 
         self.conn.close()
 
@@ -799,11 +730,11 @@ class MainfileApplication():
             if FavoriteData[0] != favoriteList:
                 FavoriteManyData = [
                         (
-                        FavoriteData[0], FavoriteData[1], FavoriteData[2], FavoriteData[3], FavoriteData[4], FavoriteData[5], FavoriteData[6]
+                        FavoriteData[0], FavoriteData[1], FavoriteData[2], FavoriteData[3], FavoriteData[4], FavoriteData[5]
                         )
                     ]
 
-                self.c.executemany("INSERT INTO Favorite VALUES (?,?,?,?,?,?,?)", FavoriteManyData)
+                self.c.executemany("INSERT INTO Favorite VALUES (?,?,?,?,?,?)", FavoriteManyData)
                 self.conn.commit()
                 self.conn.close()
 
@@ -817,7 +748,7 @@ class MainfileApplication():
         self.FavoriteItems = self.c.fetchall()
 
         for FavoriteItem in self.FavoriteItems:
-            self.listBook_FavoriteInterface.insert("", END, values = (FavoriteItem[0], FavoriteItem[1], FavoriteItem[2], FavoriteItem[3], FavoriteItem[4], FavoriteItem[5], FavoriteItem[6]))
+            self.listBook_FavoriteInterface.insert("", END, values = (FavoriteItem[0], FavoriteItem[1], FavoriteItem[2], FavoriteItem[3], FavoriteItem[4], FavoriteItem[5]))
         self.conn.close()
 
     def resetApplication(self):
@@ -881,7 +812,7 @@ class MainfileApplication():
 
         self.c.execute(f"SELECT  * from [{SelectionItem_Album}]")
         for AlbumData in self.c.fetchall():
-            self.listBook_AlbumInterface.insert("", END, values = (AlbumData[0], AlbumData[1], AlbumData[2], AlbumData[3], AlbumData[4], AlbumData[5], AlbumData[6]))
+            self.listBook_AlbumInterface.insert("", END, values = (AlbumData[0], AlbumData[1], AlbumData[2], AlbumData[3], AlbumData[4], AlbumData[5]))
 
         self.conn.close()
 
@@ -929,7 +860,7 @@ class MainfileApplication():
 
         self.c.execute(f"SELECT * FROM {Selection_Category}")
         for CategoriesData in self.c.fetchall():
-            self.listBook_CategoryInterface.insert("", END, values = (CategoriesData[0], CategoriesData[1], CategoriesData[2], CategoriesData[3], CategoriesData[4], CategoriesData[5], CategoriesData[6]))
+            self.listBook_CategoryInterface.insert("", END, values = (CategoriesData[0], CategoriesData[1], CategoriesData[2], CategoriesData[3], CategoriesData[4], CategoriesData[5]))
         
         self.conn.close()
 
@@ -973,7 +904,7 @@ class MainfileApplication():
 
         self.c.execute(f"SELECT * FROM [{AuthorsNameItem}]")
         for AuthorData_into_AuthorsNameList in self.c.fetchall():
-            self.listBook_AuthorInterface.insert("", END, values = (AuthorData_into_AuthorsNameList[0], AuthorData_into_AuthorsNameList[1], AuthorData_into_AuthorsNameList[2], AuthorData_into_AuthorsNameList[3], AuthorData_into_AuthorsNameList[4], AuthorData_into_AuthorsNameList[5], AuthorData_into_AuthorsNameList[6]))
+            self.listBook_AuthorInterface.insert("", END, values = (AuthorData_into_AuthorsNameList[0], AuthorData_into_AuthorsNameList[1], AuthorData_into_AuthorsNameList[2], AuthorData_into_AuthorsNameList[3], AuthorData_into_AuthorsNameList[4], AuthorData_into_AuthorsNameList[5]))
         self.conn.close()
     
     def openFeature_inAuthorInterface(self, event):
@@ -1003,15 +934,13 @@ class MainfileApplication():
 
         self.RecentItem = [
             (
-            self.Recent_Data_From_AuthorList[0], self.Recent_Data_From_AuthorList[1], self.Recent_Data_From_AuthorList[2], self.Recent_Data_From_AuthorList[3], self.Recent_Data_From_AuthorList[4], self.Recent_Data_From_AuthorList[5], self.Recent_Data_From_AuthorList[6]
+            self.Recent_Data_From_AuthorList[0], self.Recent_Data_From_AuthorList[1], self.Recent_Data_From_AuthorList[2], self.Recent_Data_From_AuthorList[3], self.Recent_Data_From_AuthorList[4], self.Recent_Data_From_AuthorList[5],
             )
         ]
 
-        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?,?)", self.RecentItem)
+        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
         self.conn.commit()
-        self.conn.close()
-
-
+        self.conn.close()        
 
 if __name__ == "__main__":
     MainfileApplication() 

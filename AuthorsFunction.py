@@ -3,7 +3,7 @@ import sqlite3
 import Database
 
 class Function():
-    def __init__(self, ID, Title, Author, Category, Number_of_Pages, Last_Read, Add_Date):
+    def __init__(self, ID, Title, Author, Number_of_Pages, Last_Read, Add_Date):
 
         self.AuthorNameList_Databas = []
         if Author == None:
@@ -24,16 +24,16 @@ class Function():
             AuthorName = [Author]
             if AuthorName[0] == None:
                 AuthorsData = [
-                            (ID, Title, 'Unkonwn Author', Number_of_Pages, Category, Last_Read, Add_Date)
+                            (ID, Title, 'Unkonwn Author', Number_of_Pages, Last_Read, Add_Date)
                             ]
-                self.c.executemany(f"INSERT INTO [{Author}] VALUES (?,?,?,?,?,?,?)" , AuthorsData)
+                self.c.executemany(f"INSERT INTO [{Author}] VALUES (?,?,?,?,?,?)" , AuthorsData)
                 self.conn.commit()
 
             else: 
                 AuthorsData = [
-                            (ID, Title, AuthorName[0], Number_of_Pages, Category, Last_Read, Add_Date)
+                            (ID, Title, AuthorName[0], Number_of_Pages, Last_Read, Add_Date)
                             ]
-                self.c.executemany(f"INSERT INTO [{Author}] VALUES (?,?,?,?,?,?,?)" , AuthorsData)
+                self.c.executemany(f"INSERT INTO [{Author}] VALUES (?,?,?,?,?,?)" , AuthorsData)
                 self.conn.commit()
 
         else: 
@@ -49,16 +49,16 @@ class Function():
 
                 if AuthorName[0] == None:
                     AuthorsData = [
-                                (ID, Title, 'Unkonwn Author', Number_of_Pages, Category, Last_Read, Add_Date)
+                                (ID, Title, 'Unkonwn Author', Number_of_Pages, Last_Read, Add_Date)
                                 ]
-                    self.c.executemany(f"INSERT INTO [{Author}] VALUES (?,?,?,?,?,?,?)" , AuthorsData)
+                    self.c.executemany(f"INSERT INTO [{Author}] VALUES (?,?,?,?,?,?)" , AuthorsData)
                     self.conn.commit()
 
                 else: 
                     AuthorsData = [
-                                (ID, Title, AuthorName[0], Number_of_Pages, Category, Last_Read, Add_Date)
+                                (ID, Title, AuthorName[0], Number_of_Pages, Last_Read, Add_Date)
                                 ]
-                    self.c.executemany(f"INSERT INTO [{AuthorName[0]}] VALUES (?,?,?,?,?,?,?)" , AuthorsData)
+                    self.c.executemany(f"INSERT INTO [{AuthorName[0]}] VALUES (?,?,?,?,?,?)" , AuthorsData)
                     self.conn.commit()
 
         self.conn.close()
