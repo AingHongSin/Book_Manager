@@ -14,6 +14,7 @@ import FavoriteAdding
 from tkmacosx import Button, CircleButton
 import subprocess
 import AuthorsFunction
+import DetailFunction
 
 
 class MainfileApplication():
@@ -80,7 +81,7 @@ class MainfileApplication():
         self.homephoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/home.png")
         self.homePhoto_image = self.homephoto.subsample(2,2)
 
-        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, text = '􀎞', font = ('Comic Sans MS', 16,'bold'), bg = '#98F5FF', activebackground = '#98F5FF', width = 225, border = 10, borderless = 5, borderwidth = 10 ,command = self.homeInterfaceInterface)
+        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, text = '􀎞', font = ('Comic Sans MS', 16,'bold'), bg = '#98F5FF', activebackground = '#98F5FF', width = 200, border = 10, borderless = 5, borderwidth = 5 ,command = self.homeInterfaceInterface)
         self.btnHome_leftFrame.pack()
         #self.btnHome_leftFrame.configure({"bg": "white", "activebackground": "white"})
 
@@ -108,9 +109,11 @@ class MainfileApplication():
         self.spt_leftFrame_UnbderButton = ttk.Separator(self.leftFrame_mainWindow, orient = 'horizontal')
         self.spt_leftFrame_UnbderButton.pack(fill = 'x', pady = 5, padx = 15)
 
+        self.btnExit_leftFrame = Button(self.leftFrame_mainWindow, text = '❌\tExit', border = 10, borderless = 10, borderwidth = 0, height = 50, width = 220, command = self.Main_Window.destroy)
+        self.btnExit_leftFrame.pack(side = 'bottom', pady = 1)
 
-        self.btnExit_leftFrame = Button(self.leftFrame_mainWindow, text = '❌\tExit', border = 10, borderless = 10, borderwidth = 0, height = 50, width = 230, command = self.Main_Window.destroy)
-        self.btnExit_leftFrame.pack(side = 'bottom', pady = 7)
+        self.spt_leftFrame_TopExitButton = ttk.Separator(self.leftFrame_mainWindow, orient = 'horizontal')
+        self.spt_leftFrame_TopExitButton.pack(side = 'bottom', fill = 'x', padx = 15)
 
         self.homeInterfaceInterface()
 
@@ -267,7 +270,7 @@ class MainfileApplication():
         self.btnDeleteBook_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Delete', border = 0, borderless = 10, width = 100, height = 30, command = self.DeleteFile_FromData)
         self.btnDeleteBook_LibraryInterface.pack(side = 'left')      
 
-        self.btnBookDetail_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Detail', border = 0, borderless = 10, width = 100, height = 30)
+        self.btnBookDetail_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Detail', border = 0, borderless = 10, width = 100, height = 30, command = self.DetailFunction_LibraryInterface)
         self.btnBookDetail_LibraryInterface.pack(side = 'left')   
 
         self.btnFavoritAdding_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Favorit Adding', border = 0, borderless = 10, width = 130, height = 30, command = self.FavoritAddingBackend)
@@ -947,7 +950,6 @@ class MainfileApplication():
 
         os.remove(f"{self.NameSelectionItem}")
 
-
         self.deleteDatafromDatabase(self.NameSelectionItem)
 
     def deleteDatafromDatabase(self, IDSelection):
@@ -1004,8 +1006,53 @@ class MainfileApplication():
         
         self.conn.commit()
         self.conn.close() 
-
         self.libraryInterface()
+
+    def DetailFunction_LibraryInterface(self):
+        selectItem = self.listBook_libraryInterface.selection()
+        Name = self.listBook_libraryInterface.item(selectItem, 'values')[1]
+        
+        print(Name)
+        
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Data')
+
+        pdf_path = str(Name)
+
+        with open(pdf_path, 'rb') as f:
+            pdf = PdfFileReader(f)
+            information = pdf.getDocumentInfo()
+            number_of_pages = pdf.getNumPages()
+        
+        Title =  (information.title)
+        Author =  (information.author)
+        Creator =  (information.creator)
+        Producer =  (information.producer)
+        Subject =  (information.subject)
+        Number_of_pages =  (number_of_pages)
+
+        if Title == '':
+            Title = 'Unknown Title'
+        elif Author == '':
+            Author = 'Unknown Author'
+        elif Creator == '':
+            Creator = 'Unknown Creator'
+        elif Producer == '':
+            Producer = 'Unknown Producer'
+        elif Subject == '':
+            Subject = 'Unknown Subject'
+
+
+        print('Name :', Name)
+        print('Title :', Title)
+        print('Author :', Author)
+        print('Creator :', Creator)
+        print('Producer :', Producer)
+        print('Subject :', Subject)
+        print('Page :', Number_of_pages)
+
+
+        DetailFunction.DetailFunction(Name, Title, Author, Creator, Producer, Subject, Number_of_pages)
+
 
 if __name__ == "__main__":
     MainfileApplication() 
