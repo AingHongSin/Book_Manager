@@ -56,7 +56,7 @@ class NewAlbumAction():
 
             self.AlbumName.append(self.AlbumName_in_AlbumTable)
 
-            self.c.execute("INSERT INTO Album VALUES (?)", self.AlbumName[0:])
+            self.c.execute("INSERT INTO Album (Album_NameList) VALUES (?)", self.AlbumName[0:])
             self.conn.commit()
 
             self.AddData_into_List = tk.Toplevel()

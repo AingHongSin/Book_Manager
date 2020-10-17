@@ -23,7 +23,7 @@ class MainfileApplication():
         self.Main_Window = Tk()
         self.Main_Window.title("My_BooK")
         self.Main_Window.geometry("1210x650+100+100")
-        #self.Main_Window.resizable(False, False)
+        self.Main_Window.resizable(False, False)
         self.Main_Window.config(background = '#00EBFF')
 
         self.Amount_Book = 0
@@ -80,26 +80,26 @@ class MainfileApplication():
         self.homephoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/home.png")
         self.homePhoto_image = self.homephoto.subsample(2,2)
 
-        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, text = '􀎞', font = ('Comic Sans MS', 16,'bold'), width = 225, border = 10, borderless = 10, borderwidth = 0 ,command = self.homeInterfaceInterface)
+        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, text = '􀎞', font = ('Comic Sans MS', 16,'bold'), bg = '#98F5FF', activebackground = '#98F5FF', width = 225, border = 10, borderless = 5, borderwidth = 10 ,command = self.homeInterfaceInterface)
         self.btnHome_leftFrame.pack()
         #self.btnHome_leftFrame.configure({"bg": "white", "activebackground": "white"})
 
         self.spt_leftFrame_topButton = ttk.Separator(self.leftFrame_mainWindow, orient = 'horizontal')
         self.spt_leftFrame_topButton.pack(fill = 'x', pady = 5, padx = 15)
 
-        self.btnLibrary_leftFrame = Button(self.leftFrame_mainWindow, image = self.LibraryPotho_image, text = '\tLibrary\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', command = self.libraryInterface)
+        self.btnLibrary_leftFrame = Button(self.leftFrame_mainWindow, image = self.LibraryPotho_image, text = '\tLibrary\t', border = 0, borderless = 10, borderwidth = 0, compound = 'left', command = self.libraryInterface)
         self.btnLibrary_leftFrame.pack()
 
-        self.btnAuthor_leftFrame = Button(self.leftFrame_mainWindow, image = self.AuthorPotho_image, text = '\tAuthor\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', command = self.AuthorInterface)
+        self.btnAuthor_leftFrame = Button(self.leftFrame_mainWindow, image = self.AuthorPotho_image, text = '\tAuthor\t', border = 0, borderless = 10, borderwidth = 0, compound = 'left', command = self.AuthorInterface)
         self.btnAuthor_leftFrame.pack()
         
         ##self.btnCategory_leftFrame = Button(self.leftFrame_mainWindow, image = self.CategoriesPotho_image, text = '\tCategory\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', command = self.CategoryInterface)
         ##self.btnCategory_leftFrame.pack()
 
-        self.btnFavorit_leftFrame = Button(self.leftFrame_mainWindow, image = self.FavoritPhoto_image, text = '\tFavorite\t', border = 10, borderless = 10, borderwidth = 0,  compound = 'left', command = self.FavoritInterface)
+        self.btnFavorit_leftFrame = Button(self.leftFrame_mainWindow, image = self.FavoritPhoto_image, text = '\tFavorite\t', border = 0, borderless = 10, borderwidth = 0,  compound = 'left', command = self.FavoritInterface)
         self.btnFavorit_leftFrame.pack()
 
-        self.btnAlbum_leftFrame = Button(self.leftFrame_mainWindow, image = self.AlbumPotho_image, text = '\tAlbum\t', border = 10, borderless = 10, borderwidth = 0,  compound = 'left', command = self.AlbumInterface)
+        self.btnAlbum_leftFrame = Button(self.leftFrame_mainWindow, image = self.AlbumPotho_image, text = '\tAlbum\t', border = 0, borderless = 10, borderwidth = 0,  compound = 'left', command = self.AlbumInterface)
         self.btnAlbum_leftFrame.pack()
 
         #eself.btnReport_leftFrame = Button(self.leftFrame_mainWindow , image = self.AboutPhoto_image, text = '\tAbout\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left')
@@ -110,7 +110,7 @@ class MainfileApplication():
 
 
         self.btnExit_leftFrame = Button(self.leftFrame_mainWindow, text = '❌\tExit', border = 10, borderless = 10, borderwidth = 0, height = 50, width = 230, command = self.Main_Window.destroy)
-        self.btnExit_leftFrame.pack(side = 'bottom')
+        self.btnExit_leftFrame.pack(side = 'bottom', pady = 7)
 
         self.homeInterfaceInterface()
 
@@ -264,7 +264,7 @@ class MainfileApplication():
         self.btnAddBook_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Add', border = 0, borderless = 10, width = 100, height = 30, command = self.openFileDailog_for_AddFile)
         self.btnAddBook_LibraryInterface.pack(side = 'left')
 
-        self.btnDeleteBook_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Delete', border = 0, borderless = 10, width = 100, height = 30)
+        self.btnDeleteBook_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Delete', border = 0, borderless = 10, width = 100, height = 30, command = self.DeleteFile_FromData)
         self.btnDeleteBook_LibraryInterface.pack(side = 'left')      
 
         self.btnBookDetail_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Detail', border = 0, borderless = 10, width = 100, height = 30)
@@ -549,7 +549,7 @@ class MainfileApplication():
                     Title = str(self.row)
                     Author = (self.information.author)
                     Number_of_Pages = (self.number_of_pages)
-                    Last_Read = ('Unknown How')
+                    Last_Read = ('Unknown ')
                     Add_Date = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
 
                     if Author == None:
@@ -751,10 +751,6 @@ class MainfileApplication():
             self.listBook_FavoriteInterface.insert("", END, values = (FavoriteItem[0], FavoriteItem[1], FavoriteItem[2], FavoriteItem[3], FavoriteItem[4], FavoriteItem[5]))
         self.conn.close()
 
-    def resetApplication(self):
-        self.Main_Window.destroy()
-        self.__init__()
-
     def openFileDailog_for_AddFile(self):
         self.Main_Window.filename = filedialog.askopenfilename(initialdir = "/Users/privateman/Documents", title = "Select a pdf file", filetypes = (("pdf files", "*.pdf"),("all files", "*.*")) )
 
@@ -762,7 +758,7 @@ class MainfileApplication():
         self.destinationPath = "/Users/privateman/Documents/Project/Book_Manager/Data"
 
         if self.orginalpath != '':
-            shutil.move(self.orginalpath, self.destinationPath)
+            shutil.copy(self.orginalpath, self.destinationPath)
         print("Adding...")
         self.Add_Data_Into_Database()
         #self.AuthorFunction()
@@ -941,6 +937,75 @@ class MainfileApplication():
         self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
         self.conn.commit()
         self.conn.close()        
+
+    def DeleteFile_FromData(self):
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Data')
+
+        self.SelectionItemfromList = self.listBook_libraryInterface.selection()
+        self.NameSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[1]
+        self.IDSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[0]
+
+        os.remove(f"{self.NameSelectionItem}")
+
+
+        self.deleteDatafromDatabase(self.NameSelectionItem)
+
+    def deleteDatafromDatabase(self, IDSelection):
+        IDSelectionItem = str(IDSelection)
+        tabelinDatabase = []
+
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
+        self.conn = sqlite3.connect('Libraries.db')
+        self.c = self.conn.cursor()
+
+        self.c.execute('SELECT name from sqlite_master where type = "table"')
+        for items in self.c.fetchall():
+            print(items[0])
+            tabelinDatabase.append(items[0])
+        
+        for t in range(len(tabelinDatabase)):
+            o = str(tabelinDatabase[t])
+
+            print("= O => ",o)
+            tabelinDatabase[t] = []
+            self.c.execute(f"SELECT * FROM [{o}]")
+            for k in self.c.fetchall():
+                tabelinDatabase[t].append(k[1])
+                
+            print("t=>",tabelinDatabase[t])
+        
+            print("IDSelectionItem-->",IDSelectionItem[0:])
+            print("->", o)
+            if IDSelectionItem in tabelinDatabase[t]:
+                print("-------")
+                dt = []
+                ID  = [IDSelectionItem]
+                self.c.execute(f"DELETE FROM [{o}] WHERE Title = (?)", ID[0:] )
+                self.conn.commit()
+                print("-----------------------Deleted Sucessfully!-----------------------")
+                
+                self.c.execute(f"SELECT * FROM [{o}]")
+                for y in self.c.fetchall():
+                    dt.append(y[0])
+                if dt == []:
+                    if o != 'Album' and o != 'Favorite' and  o != 'Recent' and o != 'Data_list' and o != 'Authors':
+                        self.c.execute(f"DROP TABLE [{o}]")
+                        self.conn.commit()
+
+                        rt = [o]
+                        self.c.execute("DELETE FROM Authors WHERE Authors_NameList = (?)", rt[0:])
+                        self.conn.commit()
+
+                        at = [o]
+                        self.c.execute("DELETE FROM Album WHERE Album_NameList = (?)", at[0:])
+                        self.conn.commit()
+                        
+            print()
+        
+        self.conn.commit()
+        self.conn.close() 
+
+        self.libraryInterface()
 
 if __name__ == "__main__":
     MainfileApplication() 

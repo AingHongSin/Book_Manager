@@ -48,7 +48,8 @@ def CreateDatabase():
     
     c.execute("""CREATE TABLE Album
             (
-                Album_NameList text
+                Album_NameList text,
+                None
             )
         """)
     # Commit our comand
@@ -56,7 +57,8 @@ def CreateDatabase():
     
     c.execute("""CREATE TABLE Authors
             (
-                Authors_NameList text
+                Authors_NameList text,
+                None
             )
         """)
     conn.commit()
