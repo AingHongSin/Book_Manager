@@ -29,6 +29,7 @@ class NewAlbumAction():
 
         self.inputNameAlbum = tk.Entry(self.mainFrame_AlbumAdding_topLevel, width = '20', textvariable = self.VarName)
         self.inputNameAlbum.grid(row = 1, column = 1)
+        self.inputNameAlbum.bind('<Return>', self.AddAlbumName_to_Database)
         self.inputNameAlbum.focus()
 
         self.btnCancel = tk.Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Cancel', width = '10', command = self.addAlbum_Interface.destroy)
@@ -42,7 +43,7 @@ class NewAlbumAction():
         self.addAlbum_Interface.destroy
 
 
-    def AddAlbumName_to_Database(self):
+    def AddAlbumName_to_Database(self, event):
         os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
@@ -136,7 +137,6 @@ class NewAlbumAction():
         self.AddData_into_List.destroy()
 
 
-
     def AddingFunction(self):
         
         DatainAlbumDatabase = []
@@ -147,11 +147,11 @@ class NewAlbumAction():
 
         self.c.execute(f"SELECT * FROM [{self.AlbumName_in_AlbumTable}]")
         for item in self.c.fetchall():
-            DatainAlbumDatabase.append(item[0])
+            DatainAlbumDatabase.append(item[1])
 
         SelectData = self.listBook_Interface.focus()
         Data = self.listBook_Interface.item(SelectData, "values")
-        DatafromList = int(Data[0])
+        DatafromList = str(Data[1])
 
         if DatafromList in DatainAlbumDatabase:
             tk.messagebox.showerror('Error', 'This book was added already.')

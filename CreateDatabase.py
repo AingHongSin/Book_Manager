@@ -16,7 +16,7 @@ def CreateDatabase():
                 Title text,
                 Author text,
                 Number_of_Pages integer,
-                Last_Readed datetime,
+                Last_Readed text,
                 Added_Date text
             )
         """)
@@ -28,7 +28,7 @@ def CreateDatabase():
                 Title text,
                 Author text, 
                 Number_of_Pages integer,
-                Last_Readed datetime,
+                Last_Readed text,
                 Added_Date text
             )
         """)
@@ -40,7 +40,7 @@ def CreateDatabase():
                 Title text,
                 Author text, 
                 Number_of_Pages integer,
-                Last_Readed datetime,
+                Last_Readed text,
                 Added_Date text
             )
         """)

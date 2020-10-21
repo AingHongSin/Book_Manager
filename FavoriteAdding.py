@@ -68,11 +68,11 @@ class FavoriteAdding_from_Library():
 
         self.c.execute("SELECT * FROM Favorite")
         for t in self.c.fetchall():
-            FavoriteDatalist.append(t[0])
+            FavoriteDatalist.append(t[1])
 
         SelectData = self.listBook_Interface.focus()
         Data = self.listBook_Interface.item(SelectData, "values")
-        FavoriteData = int(Data[0])
+        FavoriteData = str(Data[1])
 
         if FavoriteData in FavoriteDatalist:
             tk.messagebox.showerror('Error', 'This book already added.')

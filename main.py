@@ -15,6 +15,7 @@ from tkmacosx import Button, CircleButton
 import subprocess
 import AuthorsFunction
 import DetailFunction
+#import ImageExtraction
 
 
 class MainfileApplication():
@@ -23,9 +24,14 @@ class MainfileApplication():
                 
         self.Main_Window = Tk()
         self.Main_Window.title("My_BooK")
-        self.Main_Window.geometry("1210x650+100+100")
+        self.Main_Window.geometry("1220x650+100+100")
         self.Main_Window.resizable(False, False)
         self.Main_Window.config(background = '#00EBFF')
+        self.Main_Window.attributes('-alpha', 1)
+        #self.Main_Window.attributes('-transparent', True)
+        #self.Main_windown.config(background = 'systemTransparent')
+        #self.Main_Window.attributes('-transparentcolor','blue')
+        #self.Main_Window.overrideredirect(True)
 
         self.Amount_Book = 0
         self.datalist_of_Database = []
@@ -78,29 +84,26 @@ class MainfileApplication():
         self.spt_LeftFrame_ridghtSide = ttk.Separator(self.leftFrame_mainWindow, orient = 'vertical')
         self.spt_LeftFrame_ridghtSide.pack(side = 'right' , fill = 'y')
 
-        self.homephoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/home.png")
-        self.homePhoto_image = self.homephoto.subsample(2,2)
+        self.homephoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/mybook.png")
+        self.homePhoto_image = self.homephoto.subsample(1,1)
 
-        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, text = '􀎞', font = ('Comic Sans MS', 16,'bold'), bg = '#98F5FF', activebackground = '#98F5FF', width = 200, border = 10, borderless = 5, borderwidth = 5 ,command = self.homeInterfaceInterface)
+        self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, bg = '#98F5FF', activebackground = '#98F5FF', width = 220, border = 10, borderless = 5, borderwidth = 5, command = self.homeInterfaceInterface)
         self.btnHome_leftFrame.pack()
         #self.btnHome_leftFrame.configure({"bg": "white", "activebackground": "white"})
 
         self.spt_leftFrame_topButton = ttk.Separator(self.leftFrame_mainWindow, orient = 'horizontal')
         self.spt_leftFrame_topButton.pack(fill = 'x', pady = 5, padx = 15)
 
-        self.btnLibrary_leftFrame = Button(self.leftFrame_mainWindow, image = self.LibraryPotho_image, text = '\tLibrary\t', border = 0, borderless = 10, borderwidth = 0, compound = 'left', command = self.libraryInterface)
+        self.btnLibrary_leftFrame = Button(self.leftFrame_mainWindow, image = self.LibraryPotho_image, text = '\tLibrary\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', height = 45, command = self.libraryInterface)
         self.btnLibrary_leftFrame.pack()
 
-        self.btnAuthor_leftFrame = Button(self.leftFrame_mainWindow, image = self.AuthorPotho_image, text = '\tAuthor\t', border = 0, borderless = 10, borderwidth = 0, compound = 'left', command = self.AuthorInterface)
+        self.btnAuthor_leftFrame = Button(self.leftFrame_mainWindow, image = self.AuthorPotho_image, text = '\tAuthor\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', height = 45, command = self.AuthorInterface)
         self.btnAuthor_leftFrame.pack()
-        
-        ##self.btnCategory_leftFrame = Button(self.leftFrame_mainWindow, image = self.CategoriesPotho_image, text = '\tCategory\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left', command = self.CategoryInterface)
-        ##self.btnCategory_leftFrame.pack()
 
-        self.btnFavorit_leftFrame = Button(self.leftFrame_mainWindow, image = self.FavoritPhoto_image, text = '\tFavorite\t', border = 0, borderless = 10, borderwidth = 0,  compound = 'left', command = self.FavoritInterface)
+        self.btnFavorit_leftFrame = Button(self.leftFrame_mainWindow, image = self.FavoritPhoto_image, text = '\tFavorite\t', border = 10, borderless = 10, borderwidth = 0,  compound = 'left', height = 45, command = self.FavoritInterface)
         self.btnFavorit_leftFrame.pack()
 
-        self.btnAlbum_leftFrame = Button(self.leftFrame_mainWindow, image = self.AlbumPotho_image, text = '\tAlbum\t', border = 0, borderless = 10, borderwidth = 0,  compound = 'left', command = self.AlbumInterface)
+        self.btnAlbum_leftFrame = Button(self.leftFrame_mainWindow, image = self.AlbumPotho_image, text = '\tAlbum\t', border = 10, borderless = 10, borderwidth = 0,  compound = 'left', height = 45, command = self.AlbumInterface)
         self.btnAlbum_leftFrame.pack()
 
         #eself.btnReport_leftFrame = Button(self.leftFrame_mainWindow , image = self.AboutPhoto_image, text = '\tAbout\t', border = 10, borderless = 10, borderwidth = 0, compound = 'left')
@@ -110,7 +113,7 @@ class MainfileApplication():
         self.spt_leftFrame_UnbderButton.pack(fill = 'x', pady = 5, padx = 15)
 
         self.btnExit_leftFrame = Button(self.leftFrame_mainWindow, text = '❌\tExit', border = 10, borderless = 10, borderwidth = 0, height = 50, width = 220, command = self.Main_Window.destroy)
-        self.btnExit_leftFrame.pack(side = 'bottom', pady = 1)
+        self.btnExit_leftFrame.pack(side = 'bottom', pady = 5)
 
         self.spt_leftFrame_TopExitButton = ttk.Separator(self.leftFrame_mainWindow, orient = 'horizontal')
         self.spt_leftFrame_TopExitButton.pack(side = 'bottom', fill = 'x', padx = 15)
@@ -157,7 +160,7 @@ class MainfileApplication():
 
         # Interface
                         # Title
-        self.lblTitle_HomeIterface = Label(self.topFrame_HomeInterface, text = 'Welcome to\nLibrary Owner', font = ('Apple Chancery',22,'bold'), bg = '#00EBFF')
+        self.lblTitle_HomeIterface = Label(self.topFrame_HomeInterface, text = 'myBook\nYour own Library in Your hands', font = ('Apple Chancery',22,'bold'), bg = '#00EBFF')
         self.lblTitle_HomeIterface.pack( fill = 'x', )
 
         #self.EntSearch_HomeInterface = Entry(self.topFrame_HomeInterface, width = 40)
@@ -170,10 +173,11 @@ class MainfileApplication():
         self.LibraryPotho_image_HomeInterface = self.LibraryPhoto_HomeInterface.subsample(1,1)
         self.btnLibrary_HomeInterface = Button(self.mainFrame_HomeInterface, image = self.LibraryPotho_image_HomeInterface, text = 'Library',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.libraryInterface)
         self.btnLibrary_HomeInterface.grid(row = 0, column = 0)
+        
 
         self.AuthorPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Author@2x.png")
         self.AuthorPotho_image_HomeInterface = self.AuthorPhoto_HomeInterface.subsample(1,1)
-        self.btnAuthor_homeInterface = Button(self.mainFrame_HomeInterface, image = self.AuthorPotho_image_HomeInterface, text = 'Authors',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 0, border = 4, command = self.AuthorInterface)
+        self.btnAuthor_homeInterface = Button(self.mainFrame_HomeInterface, image = self.AuthorPotho_image_HomeInterface, text = 'Authors',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.AuthorInterface)
         self.btnAuthor_homeInterface.grid(row = 1, column = 0, columnspan = 2)
 
         #self.CategoriesPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Category@2x.png")
@@ -258,6 +262,7 @@ class MainfileApplication():
 
         self.mainFrame_libraryInterface = Frame(self.rightFrame_mainWindow)
         self.mainFrame_libraryInterface.pack()
+
         
         # Interface
                             # Tapbar
@@ -281,6 +286,7 @@ class MainfileApplication():
         #self.btnCategory_leftFrame.config(background = 'white')
         self.btnAlbum_leftFrame.config(background = 'white')
         self.btnFavorit_leftFrame.config(background = 'white')
+
         
                             # main Interface
         self.listBook_libraryInterface = ttk.Treeview(self.mainFrame_libraryInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
@@ -293,7 +299,7 @@ class MainfileApplication():
         self.listBook_libraryInterface.column('Title', width = '250')
         self.listBook_libraryInterface.heading('Title', text = 'Title')
 
-        self.listBook_libraryInterface.column('Author', width = '200')
+        self.listBook_libraryInterface.column('Author', width = '210')
         self.listBook_libraryInterface.heading('Author', text = 'Author')
 
         self.listBook_libraryInterface.column('Lenght', width = '120')
@@ -326,7 +332,6 @@ class MainfileApplication():
 
         self.leftFrame_AuthorInterface = Frame(self.listFrame_AuthorInterface)
         self.leftFrame_AuthorInterface.pack(side = 'left', padx = 5)
-        #self.leftFrame_AuthorInterface.configure(background = '#c8c8c8')
 
         self.mainFrame_AuthorInterface = Frame(self.listFrame_AuthorInterface)
         self.mainFrame_AuthorInterface.pack(fill = 'both', padx = 5)
@@ -361,13 +366,13 @@ class MainfileApplication():
         self.listBook_AuthorInterface.column('ID', width = '30')
         self.listBook_AuthorInterface.heading('ID', text = 'ID')
 
-        self.listBook_AuthorInterface.column('Title', width = '200')
+        self.listBook_AuthorInterface.column('Title', width = '190')
         self.listBook_AuthorInterface.heading('Title', text = 'Title')
 
         self.listBook_AuthorInterface.column('Author', width = '140')
         self.listBook_AuthorInterface.heading('Author', text = 'Author')
 
-        self.listBook_AuthorInterface.column('Lenght', width = '75')
+        self.listBook_AuthorInterface.column('Lenght', width = '65')
         self.listBook_AuthorInterface.heading('Lenght', text = 'Length')
     
         self.listBook_AuthorInterface.column('Last Readed', width = '160')
@@ -432,7 +437,7 @@ class MainfileApplication():
         self.listBook_FavoriteInterface.column('Title', width = '250')
         self.listBook_FavoriteInterface.heading('Title', text = 'Title')
 
-        self.listBook_FavoriteInterface.column('Author', width = '200')
+        self.listBook_FavoriteInterface.column('Author', width = '210')
         self.listBook_FavoriteInterface.heading('Author', text = 'Author')
 
         self.listBook_FavoriteInterface.column('Lenght', width = '120')
@@ -495,7 +500,7 @@ class MainfileApplication():
         self.listBook_AlbumInterface.column('ID', width = '30')
         self.listBook_AlbumInterface.heading('ID', text = 'ID')
 
-        self.listBook_AlbumInterface.column('Title', width = '200')
+        self.listBook_AlbumInterface.column('Title', width = '190')
         self.listBook_AlbumInterface.heading('Title', text = 'Title')
 
         self.listBook_AlbumInterface.column('Author', width = '140')
@@ -537,14 +542,28 @@ class MainfileApplication():
 
         self.Amount_Book = len(self.items) + 1
 
+        PASSWORD = None
+
         for self.row in self.dataFromDataFolder:
             if self.row != '.DS_Store':
                 if self.row in self.datalist_of_Database:
                     print("", end="")
                 else:
+                
                     pdf_path = str(self.row)
                     with open(pdf_path, 'rb') as f:
                         self.pdf = PdfFileReader(f)
+                        if self.pdf.isEncrypted:
+                            try:
+                                self.pdf.decrypt(PASSWORD)
+                            except NotImplementedError:
+                                command = (f"qpdf --password='{PASSWORD}' --decrypt {self.row} {self.row};")
+                                os.system(command)            
+                                with open(pdf_path, mode='rb') as fp:
+                                    self.pdf = PdfFileReader(fp)
+                                    self.information = self.pdf.getDocumentInfo()
+                                    self.number_of_pages = self.pdf.getNumPages()
+
                         self.information = self.pdf.getDocumentInfo()
                         self.number_of_pages = self.pdf.getNumPages()
 
@@ -552,7 +571,7 @@ class MainfileApplication():
                     Title = str(self.row)
                     Author = (self.information.author)
                     Number_of_Pages = (self.number_of_pages)
-                    Last_Read = ('Unknown ')
+                    Last_Read = (None)
                     Add_Date = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
 
                     if Author == None:
@@ -598,7 +617,6 @@ class MainfileApplication():
 
     #def select(self, event=None):
         self.listBook_libraryInterface.selection_toggle(self.listBook_libraryInterface.focus())
-        print(self.listBook_libraryInterface.selection())
 
     def FileOpening_in_FavoriteInterface(self, event):
         item = self.listBook_FavoriteInterface.selection()
@@ -656,22 +674,32 @@ class MainfileApplication():
         self.conn.close()
 
     def openFeature(self, event):
-        ot = []
-        ND = []
 
-        time_Now = (datetime.datetime.now().astimezone().strftime("%Y/%m/%d  %H:%M:%S"))
-        ot.append(time_Now)
+        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
+        self.conn = sqlite3.connect('Libraries.db')
+        self.c = self.conn.cursor()
+
+        time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
+        ot = [time_Now]
         item = self.listBook_libraryInterface.selection()
         Name_Data = str(self.listBook_libraryInterface.item(item, "values")[1])
         print(Name_Data, 'Open at', time_Now)
-        ND.append(Name_Data)
-        print(ND[0:])
+        ND = [Name_Data]
+
+        D = ND[0][0:]
+        t = ot[0][0:]
+
+        print(D)
+        print(t)
+
+        self.c.execute(f"UPDATE Data_list SET Last_readded  = {(t)} WHERE Title = {(D)}")
+        self.conn.commit()
+        self.conn.close()
+
+        print("Done...")
 
         FileName = ("/Users/privateman/Documents/Project/Book_Manager/Data/" + Name_Data)
         subprocess.call(['open', FileName])
-        print(ot)
-        #self.c.execute(f"UPDATE Data_list SET Last_Readded = {ot} WHERE Title = {ND[0:]}" )
-        #self.conn.commit()
 
         self.Recent_Adding_Backend_fromLibrary()
 
@@ -721,16 +749,16 @@ class MainfileApplication():
         FavoriteData = (self.listBook_libraryInterface.item(Dataitem, "values"))
         print('Data in Library for check...', FavoriteData[0])
 
-        FD = int(FavoriteData[0])
+        FD = str(FavoriteData[1])
         self.c.execute("SELECT * FROM Favorite")
         for f in self.c.fetchall():
-            favoriteList.append(f[0])
+            favoriteList.append(f[1])
         print('Data in Favorite Datalist', favoriteList)
         if FD in favoriteList:
             print('Loading Please wait ...')
             tkinter.messagebox.showerror('Error', 'This book already have in Favorite Library')
         else:
-            if FavoriteData[0] != favoriteList:
+            if FD != favoriteList:
                 FavoriteManyData = [
                         (
                         FavoriteData[0], FavoriteData[1], FavoriteData[2], FavoriteData[3], FavoriteData[4], FavoriteData[5]
@@ -773,7 +801,9 @@ class MainfileApplication():
         self.c = self.conn.cursor()
 
         self.favoriteSelection = self.listBook_FavoriteInterface.selection()
-        self.c.execute(f"DELETE FROM Favorite WHERE ID = {self.listBook_FavoriteInterface.item(self.favoriteSelection, 'values')[0]}")
+        Name = [str(self.listBook_FavoriteInterface.item(self.favoriteSelection, 'values')[1])]
+
+        self.c.execute("DELETE FROM Favorite WHERE Title = (?) " , Name[0:])
         self.conn.commit()
         self.conn.close()
         self.FavoritInterface()
@@ -1022,6 +1052,8 @@ class MainfileApplication():
             pdf = PdfFileReader(f)
             information = pdf.getDocumentInfo()
             number_of_pages = pdf.getNumPages()
+            p = pdf.getPage(0)
+            
         
         Title =  (information.title)
         Author =  (information.author)
@@ -1029,6 +1061,17 @@ class MainfileApplication():
         Producer =  (information.producer)
         Subject =  (information.subject)
         Number_of_pages =  (number_of_pages)
+
+        w_in_user_space_units = p.mediaBox.getWidth()
+        h_in_user_space_units = p.mediaBox.getHeight()      
+
+        # 1 user space unit is 1/72 inch
+        # 1/72 inch ~ 0.352 millimeters     
+
+        w = int(float(p.mediaBox.getWidth()) * 0.352)
+        h = int(float(p.mediaBox.getHeight()) * 0.352)
+
+        page_size = (w,'mm' ,'x',h,'mm')
 
         if Title == '':
             Title = 'Unknown Title'
@@ -1042,16 +1085,16 @@ class MainfileApplication():
             Subject = 'Unknown Subject'
 
 
-        print('Name :', Name)
-        print('Title :', Title)
-        print('Author :', Author)
-        print('Creator :', Creator)
-        print('Producer :', Producer)
-        print('Subject :', Subject)
-        print('Page :', Number_of_pages)
+        #print('Name :', Name)
+        #print('Title :', Title)
+        #print('Author :', Author)
+        #print('Creator :', Creator)
+        #print('Producer :', Producer)
+        #print('Subject :', Subject)
+        #print('Page :', Number_of_pages)
+        #print('page_size :', page_size)
 
-
-        DetailFunction.DetailFunction(Name, Title, Author, Creator, Producer, Subject, Number_of_pages)
+        DetailFunction.DetailFunction(Name, Title, Author, Creator, Producer, Subject, Number_of_pages, page_size)
 
 
 if __name__ == "__main__":
