@@ -174,7 +174,6 @@ class MainfileApplication():
         self.btnLibrary_HomeInterface = Button(self.mainFrame_HomeInterface, image = self.LibraryPotho_image_HomeInterface, text = 'Library',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.libraryInterface)
         self.btnLibrary_HomeInterface.grid(row = 0, column = 0)
         
-
         self.AuthorPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Author@2x.png")
         self.AuthorPotho_image_HomeInterface = self.AuthorPhoto_HomeInterface.subsample(1,1)
         self.btnAuthor_homeInterface = Button(self.mainFrame_HomeInterface, image = self.AuthorPotho_image_HomeInterface, text = 'Authors',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.AuthorInterface)
@@ -549,7 +548,6 @@ class MainfileApplication():
                 if self.row in self.datalist_of_Database:
                     print("", end="")
                 else:
-                
                     pdf_path = str(self.row)
                     with open(pdf_path, 'rb') as f:
                         self.pdf = PdfFileReader(f)
@@ -788,9 +786,19 @@ class MainfileApplication():
         self.orginalpath = self.Main_Window.filename
         self.destinationPath = "/Users/privateman/Documents/Project/Book_Manager/Data"
 
-        if self.orginalpath != '':
-            shutil.copy(self.orginalpath, self.destinationPath)
-        print("Adding...")
+        pdf_path = self.orginalpath
+        #print(self.orginalpath)
+        with open(pdf_path, 'rb') as f:
+            self.pdf = PdfFileReader(f)
+            if self.pdf.isEncrypted:
+                tkinter.messagebox.showerror('Error', "This file has not support")
+            else:
+                if self.orginalpath != '':
+                    shutil.copy(self.orginalpath, self.destinationPath)
+                print("Adding...")
+
+
+
         self.Add_Data_Into_Database()
         #self.AuthorFunction()
         self.libraryInterface()
@@ -992,29 +1000,22 @@ class MainfileApplication():
 
         self.c.execute('SELECT name from sqlite_master where type = "table"')
         for items in self.c.fetchall():
-            print(items[0])
             tabelinDatabase.append(items[0])
         
         for t in range(len(tabelinDatabase)):
             o = str(tabelinDatabase[t])
 
-            print("= O => ",o)
             tabelinDatabase[t] = []
             self.c.execute(f"SELECT * FROM [{o}]")
             for k in self.c.fetchall():
                 tabelinDatabase[t].append(k[1])
                 
-            print("t=>",tabelinDatabase[t])
         
-            print("IDSelectionItem-->",IDSelectionItem[0:])
-            print("->", o)
             if IDSelectionItem in tabelinDatabase[t]:
-                print("-------")
                 dt = []
                 ID  = [IDSelectionItem]
                 self.c.execute(f"DELETE FROM [{o}] WHERE Title = (?)", ID[0:] )
                 self.conn.commit()
-                print("-----------------------Deleted Sucessfully!-----------------------")
                 
                 self.c.execute(f"SELECT * FROM [{o}]")
                 for y in self.c.fetchall():
@@ -1031,11 +1032,10 @@ class MainfileApplication():
                         at = [o]
                         self.c.execute("DELETE FROM Album WHERE Album_NameList = (?)", at[0:])
                         self.conn.commit()
-                        
-            print()
-        
+                                
         self.conn.commit()
         self.conn.close() 
+        print(IDSelection," Succcessfully!")
         self.libraryInterface()
 
     def DetailFunction_LibraryInterface(self):
