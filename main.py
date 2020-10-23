@@ -15,6 +15,8 @@ from tkmacosx import Button, CircleButton
 import subprocess
 import AuthorsFunction
 import DetailFunction
+from contextlib import contextmanager
+import fitz
 #import ImageExtraction
 
 
@@ -54,23 +56,30 @@ class MainfileApplication():
         self.rightFrame_mainWindow.pack(fill = 'both', pady = 2, padx = 2, )
 
             #
-        self.LibraryPhoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Library.png")
-        self.LibraryPotho_image = self.LibraryPhoto.subsample(1,1)
+        with self.change_dir('icon'):
+            self.homePhoto_Patch = (os.getcwd() + "/" + "mybook.png")
+            self.homephoto = PhotoImage(file = self.homePhoto_Patch)
+            self.homePhoto_image = self.homephoto.subsample(1,1)
 
-        self.AuthorPhoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Authors.png")
-        self.AuthorPotho_image = self.AuthorPhoto.subsample(1,1)
+            self.LibraryPhoto_Patch = (os.getcwd() + "/" + "Library.png")
+            self.LibraryPhoto = PhotoImage(file = self.LibraryPhoto_Patch)
+            self.LibraryPotho_image = self.LibraryPhoto.subsample(1,1)
 
-        self.CategoriesPhoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Category.png")
-        self.CategoriesPotho_image = self.CategoriesPhoto.subsample(1,1)
+            self.AuthorPhoto_Patch = (os.getcwd() + "/" + "Authors.png")
+            self.AuthorPhoto = PhotoImage(file = self.AuthorPhoto_Patch)
+            self.AuthorPotho_image = self.AuthorPhoto.subsample(1,1)
 
-        self.FavoritPhoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Favorite.png")
-        self.FavoritPhoto_image = self.FavoritPhoto.subsample(1,1)
+            self.FavoritePhoto_Patch = (os.getcwd() + "/" + "Favorite.png")
+            self.FavoritPhoto = PhotoImage(file = self.FavoritePhoto_Patch)
+            self.FavoritPhoto_image = self.FavoritPhoto.subsample(1,1)
 
-        self.AlbumPhoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Album.png")
-        self.AlbumPotho_image = self.AlbumPhoto.subsample(1,1)
+            self.AlbumPhoto_Patch = (os.getcwd() + "/" + "Album.png")
+            self.AlbumPhoto = PhotoImage(file = self.AlbumPhoto_Patch)
+            self.AlbumPotho_image = self.AlbumPhoto.subsample(1,1)
 
-        self.AboutPhoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/About.png")
-        self.AboutPhoto_image = self.AboutPhoto.subsample(1,1)
+            self.AboutPhoto_Patch = (os.getcwd() + "/" + "About.png")
+            self.AboutPhoto = PhotoImage(file = self.AboutPhoto_Patch)
+            self.AboutPhoto_image = self.AboutPhoto.subsample(1,1)
 
 
         # InterFace 
@@ -83,9 +92,6 @@ class MainfileApplication():
 
         self.spt_LeftFrame_ridghtSide = ttk.Separator(self.leftFrame_mainWindow, orient = 'vertical')
         self.spt_LeftFrame_ridghtSide.pack(side = 'right' , fill = 'y')
-
-        self.homephoto = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/mybook.png")
-        self.homePhoto_image = self.homephoto.subsample(1,1)
 
         self.btnHome_leftFrame = Button(self.leftFrame_mainWindow, image = self.homePhoto_image, bg = '#98F5FF', activebackground = '#98F5FF', width = 220, border = 10, borderless = 5, borderwidth = 5, command = self.homeInterfaceInterface)
         self.btnHome_leftFrame.pack()
@@ -168,32 +174,28 @@ class MainfileApplication():
         #self.EntSearch_HomeInterface.insert("", text = 'Search')
 
                         # Main
+        with self.change_dir('icon/Home_Icon'):
+            self.LibraryPhoto_HomeInterface = PhotoImage(file = (os.getcwd() + "/" + "Library@2x.png"))
+            self.LibraryPotho_image_HomeInterface = self.LibraryPhoto_HomeInterface.subsample(1,1)
+            self.btnLibrary_HomeInterface = Button(self.mainFrame_HomeInterface, image = self.LibraryPotho_image_HomeInterface, text = 'Library',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.libraryInterface)
+            self.btnLibrary_HomeInterface.grid(row = 0, column = 0)
 
-        self.LibraryPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Library@2x.png")
-        self.LibraryPotho_image_HomeInterface = self.LibraryPhoto_HomeInterface.subsample(1,1)
-        self.btnLibrary_HomeInterface = Button(self.mainFrame_HomeInterface, image = self.LibraryPotho_image_HomeInterface, text = 'Library',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.libraryInterface)
-        self.btnLibrary_HomeInterface.grid(row = 0, column = 0)
-        
-        self.AuthorPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Author@2x.png")
-        self.AuthorPotho_image_HomeInterface = self.AuthorPhoto_HomeInterface.subsample(1,1)
-        self.btnAuthor_homeInterface = Button(self.mainFrame_HomeInterface, image = self.AuthorPotho_image_HomeInterface, text = 'Authors',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.AuthorInterface)
-        self.btnAuthor_homeInterface.grid(row = 1, column = 0, columnspan = 2)
+            self.AuthorPhoto_HomeInterface = PhotoImage(file = (os.getcwd() + "/" + "Author@2x.png"))
+            self.AuthorPotho_image_HomeInterface = self.AuthorPhoto_HomeInterface.subsample(1,1)
+            self.btnAuthor_homeInterface = Button(self.mainFrame_HomeInterface, image = self.AuthorPotho_image_HomeInterface, text = 'Authors',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.AuthorInterface)
+            self.btnAuthor_homeInterface.grid(row = 1, column = 0, columnspan = 2)
 
-        #self.CategoriesPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Category@2x.png")
-        #self.CategoriesPotho_image_HomeInterface = self.CategoriesPhoto_HomeInterface.subsample(1,1)
-        #self.btnCategory_homeInterface = Button(self.mainFrame_HomeInterface, image = self.CategoriesPotho_image_HomeInterface, text = 'Cateory',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.CategoryInterface)
-        #self.btnCategory_homeInterface.grid(row = 0, column = 1)
+            self.FavoritPhoto_HomeInterface = PhotoImage(file = (os.getcwd() + "/" + "Favorite@2x.png"))
+            self.FavoritPhoto_image_HomeInterface = self.FavoritPhoto_HomeInterface.subsample(1,1)
+            self.btnFavorit_homeInterface = Button(self.mainFrame_HomeInterface, image = self.FavoritPhoto_image_HomeInterface, text = 'Favorite',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.FavoritInterface)
+            self.btnFavorit_homeInterface.grid(row = 1, column = 1, columnspan = 2)
 
-        self.FavoritPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Favorite@2x.png")
-        self.FavoritPhoto_image_HomeInterface = self.FavoritPhoto_HomeInterface.subsample(1,1)
-        self.btnFavorit_homeInterface = Button(self.mainFrame_HomeInterface, image = self.FavoritPhoto_image_HomeInterface, text = 'Favorite',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4, command = self.FavoritInterface)
-        self.btnFavorit_homeInterface.grid(row = 1, column = 1, columnspan = 2)
+            self.AlbumPhoto_HomeInterface = PhotoImage(file = (os.getcwd() + "/" + "Album@2x.png"))
+            self.AlbumPotho_image_HomeInterface = self.AlbumPhoto_HomeInterface.subsample(1,1)
+            self.btnAlbum_homeInterfac = Button(self.mainFrame_HomeInterface, image = self.AlbumPotho_image_HomeInterface, text = 'Album',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4 , command = self.AlbumInterface)
+            self.btnAlbum_homeInterfac.grid(row = 0, column = 2)
 
-        self.AlbumPhoto_HomeInterface = PhotoImage(file = r"/Users/privateman/Documents/Project/Book_Manager/icon/Home_Icon/Album@2x.png")
-        self.AlbumPotho_image_HomeInterface = self.AlbumPhoto_HomeInterface.subsample(1,1)
-        self.btnAlbum_homeInterfac = Button(self.mainFrame_HomeInterface, image = self.AlbumPotho_image_HomeInterface, text = 'Album',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4 , command = self.AlbumInterface)
-        self.btnAlbum_homeInterfac.grid(row = 0, column = 2)
-
+        print(os.getcwd())
         self.btnClearListRecentBook_HomeInterface = Button(self.lblFrame, text = 'Clear Recent', borderless = 10, width = 100, command = self.ClearRecentListBook_in_Database)
         self.btnClearListRecentBook_HomeInterface.pack(anchor = 'ne')
 
@@ -209,9 +211,8 @@ class MainfileApplication():
         self.tvListName_HomeInterface.heading('Author_Name', text = 'All Authors')
 
         self.ShowData_into_Authors_HomeInterface()
-        
 
-    def   AlbumList_HomeInterface(self):  
+    def AlbumList_HomeInterface(self):  
         self.lblFrameAlbumName = LabelFrame(self.AlbumNameFrame_HomeInterface, text = 'Album')
         self.lblFrameAlbumName.pack()
         self.listAllAlbum_AuthorInterface = ttk.Treeview(self.lblFrameAlbumName, show = 'headings', column = ('All_Album'), height = 14)
@@ -220,7 +221,6 @@ class MainfileApplication():
         self.listAllAlbum_AuthorInterface.column('All_Album', width = '170')
         self.listAllAlbum_AuthorInterface.heading('All_Album', text = 'All Album')
         self.ShwoDataIntoListAlbum()
-
 
     def RecentList_HomgInterface(self):
 
@@ -315,7 +315,6 @@ class MainfileApplication():
 
         self.library_Data_Adding()
 
-
     def AuthorInterface(self):
 
         for widget in self.rightFrame_mainWindow.winfo_children():
@@ -382,7 +381,6 @@ class MainfileApplication():
         
         #self.listBook_AuthorInterface.column(7, width = '100')
         #self.listBook_AuthorInterface.heading(7, text = 'Favorite')
-
 
     def AuthorNameList_AutorInterface(self):
 
@@ -490,8 +488,6 @@ class MainfileApplication():
         self.btnAlbum_leftFrame.config(background = '#3d84a8')
         self.btnFavorit_leftFrame.config(background = 'white')
 
-        self.AlbumList_AlbumInterface()
-
         self.listBook_AlbumInterface = ttk.Treeview(self.mainFrame_AlbumInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = 40)
         self.listBook_AlbumInterface.pack()
         self.listBook_AlbumInterface.bind("<Double-Button-1>", self.OpenFunction_fromAlbumInterface)
@@ -514,588 +510,648 @@ class MainfileApplication():
         self.listBook_AlbumInterface.column('Date Added', width = '160')
         self.listBook_AlbumInterface.heading('Date Added', text = 'Date Added')
         
-    def AlbumList_AlbumInterface(self):
         self.listAllAlbum_AuthorInterface = ttk.Treeview(self.leftFrame_AlbumInterface, show = 'headings', column = ('All_Album'), height = 40)
         self.listAllAlbum_AuthorInterface.pack()
 
         self.listAllAlbum_AuthorInterface.column('All_Album', width = '200')
         self.listAllAlbum_AuthorInterface.heading('All_Album', text = 'All Album')
         self.listAllAlbum_AuthorInterface.bind("<Double-Button-1>", self.AlbumSelection_and_ShowData_in_DataList)
+
         self.ShwoDataIntoListAlbum()
 #___________________________________________________________________________________________BACK-END__________________________________________________________________#
 
+    @contextmanager
+    def change_dir(self, destination):
+        try:
+            cwd = os.getcwd()
+            os.chdir(destination)
+            yield
+        finally:
+            os.chdir(cwd)
+
+
     def Add_Data_Into_Database(self):
         # Database
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.c.execute("SELECT * FROM Data_list ")
-        self.items = self.c.fetchall()
+            self.c.execute("SELECT * FROM Data_list ")
+            self.items = self.c.fetchall()
 
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Data')
-        self.dataFromDataFolder = os.listdir()
+        with self.change_dir('Data'):
+            self.dataFromDataFolder = os.listdir()
 
-        for item in self.items:
-            self.datalist_of_Database.append(item[1])
+            for item in self.items:
+                self.datalist_of_Database.append(item[1])
 
-        self.Amount_Book = len(self.items) + 1
+            self.Amount_Book = len(self.items) + 1
 
-        PASSWORD = None
+            PASSWORD = None
 
-        for self.row in self.dataFromDataFolder:
-            if self.row != '.DS_Store':
-                if self.row in self.datalist_of_Database:
-                    print("", end="")
-                else:
-                    pdf_path = str(self.row)
-                    with open(pdf_path, 'rb') as f:
-                        self.pdf = PdfFileReader(f)
-                        if self.pdf.isEncrypted:
-                            try:
-                                self.pdf.decrypt(PASSWORD)
-                            except NotImplementedError:
-                                command = (f"qpdf --password='{PASSWORD}' --decrypt {self.row} {self.row};")
-                                os.system(command)            
-                                with open(pdf_path, mode='rb') as fp:
-                                    self.pdf = PdfFileReader(fp)
-                                    self.information = self.pdf.getDocumentInfo()
-                                    self.number_of_pages = self.pdf.getNumPages()
+            for self.row in self.dataFromDataFolder:
+                if self.row != '.DS_Store':
+                    if self.row in self.datalist_of_Database:
+                        print("", end="")
+                    else:
+                        pdf_path = str(self.row)
+                        with open(pdf_path, 'rb') as f:
+                            self.pdf = PdfFileReader(f)
+                            if self.pdf.isEncrypted:
+                                try:
+                                    self.pdf.decrypt(PASSWORD)
+                                except NotImplementedError:
+                                    command = (f"qpdf --password='{PASSWORD}' --decrypt {self.row} {self.row};")
+                                    os.system(command)            
+                                    with open(pdf_path, mode='rb') as fp:
+                                        self.pdf = PdfFileReader(fp)
+                                        self.information = self.pdf.getDocumentInfo()
+                                        self.number_of_pages = self.pdf.getNumPages()
+                                            
+                            self.information = self.pdf.getDocumentInfo()
+                            self.number_of_pages = self.pdf.getNumPages()
 
-                        self.information = self.pdf.getDocumentInfo()
-                        self.number_of_pages = self.pdf.getNumPages()
+                        ID = self.Amount_Book 
+                        Title = str(self.row)
+                        Author = (self.information.author)
+                        Number_of_Pages = (self.number_of_pages)
+                        Last_Read = (None)
+                        Add_Date = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
 
-                    ID = self.Amount_Book 
-                    Title = str(self.row)
-                    Author = (self.information.author)
-                    Number_of_Pages = (self.number_of_pages)
-                    Last_Read = (None)
-                    Add_Date = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
+                        if Author == None:
+                            libraryData = [
+                                        (ID, Title, 'Unkonwn Author', Number_of_Pages, Last_Read, Add_Date)
+                                        ]
 
-                    if Author == None:
-                        libraryData = [
-                                    (ID, Title, 'Unkonwn Author', Number_of_Pages, Last_Read, Add_Date)
-                                    ]
+                            self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?)" , libraryData)
+                            self.conn.commit()
+                            self.Amount_Book += 1
+                        else: 
+                            libraryData = [
+                                        (ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
+                                        ]
 
-                        self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?)" , libraryData)
+                            self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?)" , libraryData)
+                            self.conn.commit()
+                            self.Amount_Book += 1
+
                         self.conn.commit()
-                        self.Amount_Book += 1
-                    else: 
-                        libraryData = [
-                                    (ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
-                                    ]
+                        self.conn.close()
 
-                        self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?)" , libraryData)
-                        self.conn.commit()
-                        self.Amount_Book += 1
-                    
-                    self.conn.commit()
-                    self.conn.close()
-                    AuthorsFunction.Function(ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
+                        os.chdir(os.path.dirname(os.getcwd()))
+                        self.extractImageformPDF(pdf_path)
+                        print(os.getcwd())
+                        with self.change_dir('Database'): 
+                            AuthorsFunction.Function(ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
+
+
+    def extractImageformPDF(self, Name):
+        
+        with self.change_dir('Data'):
+
+            pdffile = Name
+            doc = fitz.open(pdffile)
+            page = doc.loadPage(0)  # number of page
+            pix = page.getPixmap()
+
+        with self.change_dir('Img'):
+            output = (f"{Name}.png")
+            pix.writePNG(output)
+            
+
 
     def library_Data_Adding(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        for widget in self.listBook_libraryInterface.winfo_children():
+            widget.destroy()
 
-        self.c.execute("SELECT * FROM Data_list ")
-        self.items = self.c.fetchall()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        for item in self.items:
-            if item[2] == None:
-                self.listBook_libraryInterface.insert("", END, values = (int(item[0]), item[1], 'Unknown Author', item[3],  item[4], item[5] ))
-            else: 
-                self.listBook_libraryInterface.insert("", END, values = (int(item[0]), item[1], item[2], item[3],  item[4], item[5] ))
-            
-            #if int(item[0]) % 2 == 0:
-            #    self.listBook_libraryInterface.configure(even, background = 'blue')
+            self.c.execute("SELECT * FROM Data_list ")
+            self.items = self.c.fetchall()
 
+            for item in self.items:
+                if item[2] == None:
+                    self.listBook_libraryInterface.insert("", END, values = (int(item[0]), item[1], 'Unknown Author', item[3],  item[4], item[5] ))
+                else: 
+                    self.listBook_libraryInterface.insert("", END, values = (int(item[0]), item[1], item[2], item[3],  item[4], item[5] ))
 
-        self.conn.close()
+                #if int(item[0]) % 2 == 0:
+                #    self.listBook_libraryInterface.configure(even, background = 'blue')
 
-    #def select(self, event=None):
+            self.conn.close()
+
         self.listBook_libraryInterface.selection_toggle(self.listBook_libraryInterface.focus())
 
     def FileOpening_in_FavoriteInterface(self, event):
-        item = self.listBook_FavoriteInterface.selection()
-        Name_Data = str(self.listBook_FavoriteInterface.item(item, "values")[1])
+        with self.change_dir('Data'):
+                item = self.listBook_FavoriteInterface.selection()
+                Name_Data = str(self.listBook_FavoriteInterface.item(item, "values")[1])
 
-        FileName = ("/Users/privateman/Documents/Project/Book_Manager/Data/" + Name_Data)
-        subprocess.call(['open', FileName])
+                FileName = (os.getcwd() + "/" + Name_Data)
+                subprocess.call(['open', FileName])
+
         self.Recent_Adding_Backend_fromFavorite()
 
     def Recent_Adding_Backend_fromFavorite(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.Recent_Selection = self.listBook_FavoriteInterface.selection()
-        self.Recent_Data_From_FavoriteList = self.listBook_FavoriteInterface.item(self.Recent_Selection,'values')
+            self.Recent_Selection = self.listBook_FavoriteInterface.selection()
+            self.Recent_Data_From_FavoriteList = self.listBook_FavoriteInterface.item(self.Recent_Selection,'values')
 
-        self.RecentItem = [
-            (
-            self.Recent_Data_From_FavoriteList[0], self.Recent_Data_From_FavoriteList[1], self.Recent_Data_From_FavoriteList[2], self.Recent_Data_From_FavoriteList[3], self.Recent_Data_From_FavoriteList[4], self.Recent_Data_From_FavoriteList[5]
-            )
-        ]
+            self.RecentItem = [
+                (
+                self.Recent_Data_From_FavoriteList[0], self.Recent_Data_From_FavoriteList[1], self.Recent_Data_From_FavoriteList[2], self.Recent_Data_From_FavoriteList[3], self.Recent_Data_From_FavoriteList[4], self.Recent_Data_From_FavoriteList[5]
+                )
+            ]
 
-        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
-        self.conn.commit()
-        self.conn.close()
+            self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
+            self.conn.commit()
+            self.conn.close()
 
-    def OpenFunction_fromAlbumInterface(self, event):
+    def OpenFunction_fromAlbumInterface(self, event):  
+        with self.change_dir('Data'):
+            item = self.listBook_AlbumInterface.selection()
+            Name_Data = str(self.listBook_AlbumInterface.item(item, "values")[1])
 
-        item = self.listBook_AlbumInterface.selection()
-        Name_Data = str(self.listBook_AlbumInterface.item(item, "values")[1])
-
-        FileName = ("/Users/privateman/Documents/Project/Book_Manager/Data/" + Name_Data)
-        subprocess.call(['open', FileName])
+            FileName = (os.getcwd() + "/" + Name_Data)
+            subprocess.call(['open', FileName])
 
         self.Recent_Adding_Backend_fromAlbum()
 
     def Recent_Adding_Backend_fromAlbum(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
 
-        self.Recent_Selection = self.listBook_AlbumInterface.selection()
-        self.Recent_Data_From_AlbumList = self.listBook_AlbumInterface.item(self.Recent_Selection,'values')
+            self.Recent_Selection = self.listBook_AlbumInterface.selection()
+            self.Recent_Data_From_AlbumList = self.listBook_AlbumInterface.item(self.Recent_Selection,'values')
 
-        self.RecentItem = [
-            (
-            self.Recent_Data_From_AlbumList[0], self.Recent_Data_From_AlbumList[1], self.Recent_Data_From_AlbumList[2], self.Recent_Data_From_AlbumList[3], self.Recent_Data_From_AlbumList[4], self.Recent_Data_From_AlbumList[5]
-            )
-        ]
+            self.RecentItem = [
+                (
+                self.Recent_Data_From_AlbumList[0], self.Recent_Data_From_AlbumList[1], self.Recent_Data_From_AlbumList[2], self.Recent_Data_From_AlbumList[3], self.Recent_Data_From_AlbumList[4], self.Recent_Data_From_AlbumList[5]
+                )
+            ]
 
-        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
-        self.conn.commit()
-        self.conn.close()
+            self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
+            self.conn.commit()
+            self.conn.close()
 
     def openFeature(self, event):
 
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
-        ot = [time_Now]
-        item = self.listBook_libraryInterface.selection()
-        Name_Data = str(self.listBook_libraryInterface.item(item, "values")[1])
-        print(Name_Data, 'Open at', time_Now)
-        ND = [Name_Data]
+            time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
+            ot = [time_Now]
+            item = self.listBook_libraryInterface.selection()
+            Name_Data = str(self.listBook_libraryInterface.item(item, "values")[1])
+            print(Name_Data, 'Open at', time_Now)
+            ND = [Name_Data]
 
-        D = ND[0][0:]
-        t = ot[0][0:]
+            D = ND[0][0:]
+            t = ot[0][0:]
 
-        print(D)
-        print(t)
+            print(D)
+            print(t)
 
-        self.c.execute(f"UPDATE Data_list SET Last_readded  = {(t)} WHERE Title = {(D)}")
-        self.conn.commit()
-        self.conn.close()
+        #    self.c.execute(f"UPDATE Data_list SET Last_readded  = {(t)} WHERE Title = {(D)}")
+        #    self.conn.commit()
+        #    self.conn.close()
 
         print("Done...")
-
-        FileName = ("/Users/privateman/Documents/Project/Book_Manager/Data/" + Name_Data)
-        subprocess.call(['open', FileName])
+        with self.change_dir('Data'):
+            FileName = (os.getcwd() + "/" + Name_Data)
+            subprocess.call(['open', FileName])
 
         self.Recent_Adding_Backend_fromLibrary()
 
     def Recent_Adding_Backend_fromLibrary(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.Recent_Selection = self.listBook_libraryInterface.selection()
-        self.Recent_Data_From_LibraryList = self.listBook_libraryInterface.item(self.Recent_Selection,'values')
+            self.Recent_Selection = self.listBook_libraryInterface.selection()
+            self.Recent_Data_From_LibraryList = self.listBook_libraryInterface.item(self.Recent_Selection,'values')
 
-        self.RecentItem = [
-            (
-            self.Recent_Data_From_LibraryList[0], self.Recent_Data_From_LibraryList[1], self.Recent_Data_From_LibraryList[2], self.Recent_Data_From_LibraryList[3], self.Recent_Data_From_LibraryList[4], self.Recent_Data_From_LibraryList[5]
-            )
-        ]
+            self.RecentItem = [
+                (
+                self.Recent_Data_From_LibraryList[0], self.Recent_Data_From_LibraryList[1], self.Recent_Data_From_LibraryList[2], self.Recent_Data_From_LibraryList[3], self.Recent_Data_From_LibraryList[4], self.Recent_Data_From_LibraryList[5]
+                )
+            ]
 
-        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
-        self.conn.commit()
-        self.conn.close()
+            self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
+            self.conn.commit()
+            self.conn.close()
 
     def Recent_Adding_to_list(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        for row in self.listRecentBook_HomeInterface.get_children():
-            self.listRecentBook_HomeInterface.delete(row)
+            for row in self.listRecentBook_HomeInterface.get_children():
+                self.listRecentBook_HomeInterface.delete(row)
 
-        self.c.execute("SELECT * FROM Recent")
-        for RecentData in self.c.fetchall():
-            self.listRecentBook_HomeInterface.insert("", 0, values = (RecentData[0], RecentData[1], RecentData[2], RecentData[3], RecentData[4], RecentData[5]))
+            self.c.execute("SELECT * FROM Recent")
+            for RecentData in self.c.fetchall():
+                self.listRecentBook_HomeInterface.insert("", 0, values = (RecentData[0], RecentData[1], RecentData[2], RecentData[3], RecentData[4], RecentData[5]))
 
-        self.conn.close()
+            self.conn.close()
 
     def FavoriteAdding_Function(self):
         FavoriteAdding.FavoriteAdding_from_Library()
         self.FavoritInterface()
 
     def FavoritAddingBackend(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        try:
+            with self.change_dir('Database'):
+                self.conn = sqlite3.connect('Libraries.db')
+                self.c = self.conn.cursor()
 
-        favoriteList = []
-        Dataitem = self.listBook_libraryInterface.selection()
-        FavoriteData = (self.listBook_libraryInterface.item(Dataitem, "values"))
-        print('Data in Library for check...', FavoriteData[0])
+                favoriteList = []
+                Dataitem = self.listBook_libraryInterface.selection()
+                FavoriteData = (self.listBook_libraryInterface.item(Dataitem, "values"))
+                print('Data in Library for check...', FavoriteData[0])
 
-        FD = str(FavoriteData[1])
-        self.c.execute("SELECT * FROM Favorite")
-        for f in self.c.fetchall():
-            favoriteList.append(f[1])
-        print('Data in Favorite Datalist', favoriteList)
-        if FD in favoriteList:
-            print('Loading Please wait ...')
-            tkinter.messagebox.showerror('Error', 'This book already have in Favorite Library')
-        else:
-            if FD != favoriteList:
-                FavoriteManyData = [
-                        (
-                        FavoriteData[0], FavoriteData[1], FavoriteData[2], FavoriteData[3], FavoriteData[4], FavoriteData[5]
-                        )
-                    ]
+                FD = str(FavoriteData[1])
+                self.c.execute("SELECT * FROM Favorite")
+                for f in self.c.fetchall():
+                    favoriteList.append(f[1])
+                print('Data in Favorite Datalist', favoriteList)
+                if FD in favoriteList:
+                    print('Loading Please wait ...')
+                    tkinter.messagebox.showerror('Error', 'This book already have in Favorite Library')
+                else:
+                    if FD != favoriteList:
+                        FavoriteManyData = [
+                                (
+                                FavoriteData[0], FavoriteData[1], FavoriteData[2], FavoriteData[3], FavoriteData[4], FavoriteData[5]
+                                )
+                            ]
 
-                self.c.executemany("INSERT INTO Favorite VALUES (?,?,?,?,?,?)", FavoriteManyData)
-                self.conn.commit()
-                self.conn.close()
+                        self.c.executemany("INSERT INTO Favorite VALUES (?,?,?,?,?,?)", FavoriteManyData)
+                        self.conn.commit()
+                        self.conn.close()
+
+        except IndexError as e :
+            tkinter.messagebox.showwarning('Warning', 'Please choose one book for add into Favorite')
 
     def Favorite_Insrerting_Data_to_List(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
-
-        self.c.execute("SELECT * FROM Favorite")
-        
-        self.FavoriteItems = self.c.fetchall()
-
-        for FavoriteItem in self.FavoriteItems:
-            self.listBook_FavoriteInterface.insert("", END, values = (FavoriteItem[0], FavoriteItem[1], FavoriteItem[2], FavoriteItem[3], FavoriteItem[4], FavoriteItem[5]))
-        self.conn.close()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
+    
+            self.c.execute("SELECT * FROM Favorite")
+            
+            self.FavoriteItems = self.c.fetchall()
+    
+            for FavoriteItem in self.FavoriteItems:
+                self.listBook_FavoriteInterface.insert("", END, values = (FavoriteItem[0], FavoriteItem[1], FavoriteItem[2], FavoriteItem[3], FavoriteItem[4], FavoriteItem[5]))
+            self.conn.close()
 
     def openFileDailog_for_AddFile(self):
-        self.Main_Window.filename = filedialog.askopenfilename(initialdir = "/Users/privateman/Documents", title = "Select a pdf file", filetypes = (("pdf files", "*.pdf"),("all files", "*.*")) )
+        with self.change_dir('Data'):
+            self.Main_Window.filename = filedialog.askopenfilename(initialdir = "/Users/privateman/Documents", title = "Select a pdf file", filetypes = (("pdf files", "*.pdf"),("all files", "*.*")) )
 
-        self.orginalpath = self.Main_Window.filename
-        self.destinationPath = "/Users/privateman/Documents/Project/Book_Manager/Data"
+            self.orginalpath = self.Main_Window.filename
+            self.destinationPath = os.getcwd()
 
-        pdf_path = self.orginalpath
-        #print(self.orginalpath)
-        with open(pdf_path, 'rb') as f:
-            self.pdf = PdfFileReader(f)
-            if self.pdf.isEncrypted:
-                tkinter.messagebox.showerror('Error', "This file has not support")
-            else:
-                if self.orginalpath != '':
-                    shutil.copy(self.orginalpath, self.destinationPath)
-                print("Adding...")
-
-
+            pdf_path = self.orginalpath
+            #print(self.orginalpath)
+            with open(pdf_path, 'rb') as f:
+                self.pdf = PdfFileReader(f)
+                if self.pdf.isEncrypted:
+                    tkinter.messagebox.showerror('Error', "This file has not support")
+                else:
+                    if self.orginalpath != '':
+                        shutil.copy(self.orginalpath, self.destinationPath)
+                    print("Adding...")
 
         self.Add_Data_Into_Database()
         #self.AuthorFunction()
         self.libraryInterface()
 
     def DeleteData_From_FavoriteList(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.favoriteSelection = self.listBook_FavoriteInterface.selection()
-        Name = [str(self.listBook_FavoriteInterface.item(self.favoriteSelection, 'values')[1])]
+            self.favoriteSelection = self.listBook_FavoriteInterface.selection()
+            Name = [str(self.listBook_FavoriteInterface.item(self.favoriteSelection, 'values')[1])]
 
-        self.c.execute("DELETE FROM Favorite WHERE Title = (?) " , Name[0:])
-        self.conn.commit()
-        self.conn.close()
+            self.c.execute("DELETE FROM Favorite WHERE Title = (?) " , Name[0:])
+            self.conn.commit()
+            self.conn.close()
+
         self.FavoritInterface()
     
     def ClearRecentListBook_in_Database(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.c.execute("DELETE FROM Recent")
-        self.conn.commit()
-        self.conn.close()
+            self.c.execute("DELETE FROM Recent")
+            self.conn.commit()
+            self.conn.close()
+        
         self.Recent_Adding_to_list()
 
     def ShwoDataIntoListAlbum(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.c.execute("SELECT * FROM Album")
+            self.c.execute("SELECT * FROM Album")
+            
         for AlbumNameList in self.c.fetchall():
             self.listAllAlbum_AuthorInterface.insert("", END, values = (AlbumNameList))
-        
         self.conn.close()
 
     def AlbumSelection_and_ShowData_in_DataList(self, event):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        for row in self.listBook_AlbumInterface.get_children():
-            self.listBook_AlbumInterface.delete(row)
-        AlbumSelection = self.listAllAlbum_AuthorInterface.selection()
-        SelectionItem_Album = self.listAllAlbum_AuthorInterface.item(AlbumSelection, 'values')[0]
+            for row in self.listBook_AlbumInterface.get_children():
+                self.listBook_AlbumInterface.delete(row)
+            AlbumSelection = self.listAllAlbum_AuthorInterface.selection()
+            SelectionItem_Album = self.listAllAlbum_AuthorInterface.item(AlbumSelection, 'values')[0]
 
-        self.c.execute(f"SELECT  * from [{SelectionItem_Album}]")
-        for AlbumData in self.c.fetchall():
-            self.listBook_AlbumInterface.insert("", END, values = (AlbumData[0], AlbumData[1], AlbumData[2], AlbumData[3], AlbumData[4], AlbumData[5]))
+            self.c.execute(f"SELECT  * from [{SelectionItem_Album}]")
+            for AlbumData in self.c.fetchall():
+                self.listBook_AlbumInterface.insert("", END, values = (AlbumData[0], AlbumData[1], AlbumData[2], AlbumData[3], AlbumData[4], AlbumData[5]))
 
-        self.conn.close()
+            self.conn.close()
 
     def DeleteData_from_list_and_Database(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.AlbumDeleting = []
-        self.AlbumSelection = self.listAllAlbum_AuthorInterface.focus()
-        SelectionItem_Album = str(self.listAllAlbum_AuthorInterface.item(self.AlbumSelection, 'values')[0])
-        self.AlbumDeleting.append(SelectionItem_Album)
-        self.ALbumDataList = []
-        self.c.execute("SELECT * FROM Album")
-        for g in self.c.fetchall():
-            self.ALbumDataList.append(g[0])
+            self.AlbumDeleting = []
+            self.AlbumSelection = self.listAllAlbum_AuthorInterface.focus()
+            SelectionItem_Album = str(self.listAllAlbum_AuthorInterface.item(self.AlbumSelection, 'values')[0])
+            self.AlbumDeleting.append(SelectionItem_Album)
+            self.ALbumDataList = []
+            self.c.execute("SELECT * FROM Album")
+            for g in self.c.fetchall():
+                self.ALbumDataList.append(g[0])
 
-        if SelectionItem_Album in self.ALbumDataList:
-            self.c.execute(f"DELETE FROM Album WHERE Album_NameList = (?)", self.AlbumDeleting)
-            self.conn.commit()
-            self.c.execute(f"DROP TABLE [{SelectionItem_Album}]")
-            self.conn.commit()
-            self.AlbumInterface()
-        self.conn.close()
+            if SelectionItem_Album in self.ALbumDataList:
+                self.c.execute(f"DELETE FROM Album WHERE Album_NameList = (?)", self.AlbumDeleting)
+                self.conn.commit()
+                self.c.execute(f"DROP TABLE [{SelectionItem_Album}]")
+                self.conn.commit()
+            self.conn.close()
+        
+        self.AlbumInterface()
 
     def AddCategory_Into_CategoryNameList(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')  
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.c.execute("SELECT * FROM Categories")
-        for self.h in self.c.fetchall():
-            self.tvListCategory_CategorInterface.insert("", END, values = (self.h))
-        self.conn.close()
+            self.c.execute("SELECT * FROM Categories")
+            for self.h in self.c.fetchall():
+                self.tvListCategory_CategorInterface.insert("", END, values = (self.h))
+            self.conn.close()
 
     def ShowCategories_in_DataList(self, event):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        for row in self.listBook_CategoryInterface.get_children():
-            self.listBook_CategoryInterface.delete(row)
-        d = self.tvListCategory_CategorInterface.selection()
-        Selection_Category = self.tvListCategory_CategorInterface.item(d, 'values')[0]
+            for row in self.listBook_CategoryInterface.get_children():
+                self.listBook_CategoryInterface.delete(row)
+            d = self.tvListCategory_CategorInterface.selection()
+            Selection_Category = self.tvListCategory_CategorInterface.item(d, 'values')[0]
 
-        self.c.execute(f"SELECT * FROM {Selection_Category}")
-        for CategoriesData in self.c.fetchall():
-            self.listBook_CategoryInterface.insert("", END, values = (CategoriesData[0], CategoriesData[1], CategoriesData[2], CategoriesData[3], CategoriesData[4], CategoriesData[5]))
-        
-        self.conn.close()
+            self.c.execute(f"SELECT * FROM {Selection_Category}")
+            for CategoriesData in self.c.fetchall():
+                self.listBook_CategoryInterface.insert("", END, values = (CategoriesData[0], CategoriesData[1], CategoriesData[2], CategoriesData[3], CategoriesData[4], CategoriesData[5]))
 
+            self.conn.close()
 
     def ShowData_into_Authors_AuthorInterface(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.c.execute("SELECT * FROM Authors")
-        for h in self.c.fetchall():
-            if h == None:
-                self.tvListName_AuthorInterface.insert("", END, values = ('Unknown Author'))
-            else:
-                self.tvListName_AuthorInterface.insert("", END, values = (h))
-        self.conn.close()
+            self.c.execute("SELECT * FROM Authors")
+            for h in self.c.fetchall():
+                if h == None:
+                    self.tvListName_AuthorInterface.insert("", END, values = ('Unknown Author'))
+                else:
+                    self.tvListName_AuthorInterface.insert("", END, values = (h))
+            self.conn.close()
 
     def ShowData_into_Authors_HomeInterface(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.c.execute("SELECT * FROM Authors")
-        for h in self.c.fetchall():
-            self.tvListName_HomeInterface.insert("", END, values = (h))
+            self.c.execute("SELECT * FROM Authors")
+            for h in self.c.fetchall():
+                self.tvListName_HomeInterface.insert("", END, values = (h))
 
-        self.conn.close()
+            self.conn.close()
 
     def OnDoubleClick_Author(self, event):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        for row in self.listBook_AuthorInterface.get_children():
-            self.listBook_AuthorInterface.delete(row)
+            for row in self.listBook_AuthorInterface.get_children():
+                self.listBook_AuthorInterface.delete(row)
 
-        item = self.tvListName_AuthorInterface.selection()
-        print("This is ", str(self.tvListName_AuthorInterface.item(item ,"values")[0]))
+            item = self.tvListName_AuthorInterface.selection()
+            print("This is ", str(self.tvListName_AuthorInterface.item(item ,"values")[0]))
 
-        AuthorsNameItem = self.tvListName_AuthorInterface.item(item ,"values")[0]
+            AuthorsNameItem = self.tvListName_AuthorInterface.item(item ,"values")[0]
 
-        self.c.execute(f"SELECT * FROM [{AuthorsNameItem}]")
-        for AuthorData_into_AuthorsNameList in self.c.fetchall():
-            self.listBook_AuthorInterface.insert("", END, values = (AuthorData_into_AuthorsNameList[0], AuthorData_into_AuthorsNameList[1], AuthorData_into_AuthorsNameList[2], AuthorData_into_AuthorsNameList[3], AuthorData_into_AuthorsNameList[4], AuthorData_into_AuthorsNameList[5]))
-        self.conn.close()
+            self.c.execute(f"SELECT * FROM [{AuthorsNameItem}]")
+            for AuthorData_into_AuthorsNameList in self.c.fetchall():
+                self.listBook_AuthorInterface.insert("", END, values = (AuthorData_into_AuthorsNameList[0], AuthorData_into_AuthorsNameList[1], AuthorData_into_AuthorsNameList[2], AuthorData_into_AuthorsNameList[3], AuthorData_into_AuthorsNameList[4], AuthorData_into_AuthorsNameList[5]))
+            self.conn.close()
     
     def openFeature_inAuthorInterface(self, event):
-        ot = []
-        ND = []
+        with self.change_dir('Data'):
+            ot = []
+            ND = []
 
-        time_Now = (datetime.datetime.now().astimezone().strftime("%Y/%m/%d  %H:%M:%S"))
-        ot.append(time_Now)
-        item = self.listBook_AuthorInterface.selection()
-        Name_Data = str(self.listBook_AuthorInterface.item(item, "values")[1])
-        print(Name_Data, 'Open at', time_Now)
-        ND.append(Name_Data)
-        print(ND[0:])
+            time_Now = (datetime.datetime.now().astimezone().strftime("%Y/%m/%d  %H:%M:%S"))
+            ot.append(time_Now)
+            item = self.listBook_AuthorInterface.selection()
+            Name_Data = str(self.listBook_AuthorInterface.item(item, "values")[1])
+            print(Name_Data, 'Open at', time_Now)
+            ND.append(Name_Data)
+            print(ND[0:])
 
-        FileName = ("/Users/privateman/Documents/Project/Book_Manager/Data/" + Name_Data)
-        subprocess.call(['open', FileName])
-        print(ot)
+            FileName = (os.getcwd() + "/" + Name_Data)
+            subprocess.call(['open', FileName])
+            print(ot)
         self.Recent_Adding_Backend_fromAuthors_Inyterface()
 
     def Recent_Adding_Backend_fromAuthors_Inyterface(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
-
-        self.Recent_Selection = self.listBook_AuthorInterface.selection()
-        self.Recent_Data_From_AuthorList = self.listBook_AuthorInterface.item(self.Recent_Selection,'values')
-
-        self.RecentItem = [
-            (
-            self.Recent_Data_From_AuthorList[0], self.Recent_Data_From_AuthorList[1], self.Recent_Data_From_AuthorList[2], self.Recent_Data_From_AuthorList[3], self.Recent_Data_From_AuthorList[4], self.Recent_Data_From_AuthorList[5],
-            )
-        ]
-
-        self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
-        self.conn.commit()
-        self.conn.close()        
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
+    
+            self.Recent_Selection = self.listBook_AuthorInterface.selection()
+            self.Recent_Data_From_AuthorList = self.listBook_AuthorInterface.item(self.Recent_Selection,'values')
+    
+            self.RecentItem = [
+                (
+                self.Recent_Data_From_AuthorList[0], self.Recent_Data_From_AuthorList[1], self.Recent_Data_From_AuthorList[2], self.Recent_Data_From_AuthorList[3], self.Recent_Data_From_AuthorList[4], self.Recent_Data_From_AuthorList[5],
+                )
+            ]
+    
+            self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
+            self.conn.commit()
+            self.conn.close()        
 
     def DeleteFile_FromData(self):
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Data')
+        with self.change_dir('Img'):
+            try:
+                self.SelectionItemfromList = self.listBook_libraryInterface.selection()
+                self.NameSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[1]
+                self.IDSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[0]
 
-        self.SelectionItemfromList = self.listBook_libraryInterface.selection()
-        self.NameSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[1]
-        self.IDSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[0]
+                os.remove(os.getcwd() + "/" + self.NameSelectionItem + ".png" )
+                print(os.getcwd() + "/" + self.NameSelectionItem + ".png" )
+                
 
-        os.remove(f"{self.NameSelectionItem}")
+            except IndexError as e:
+                tkinter.messagebox.showwarning('Warning', 'Please Choose one file.')
 
-        self.deleteDatafromDatabase(self.NameSelectionItem)
+        with self.change_dir('Data'):
+            try:
+                self.SelectionItemfromList = self.listBook_libraryInterface.selection()
+                self.NameSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[1]
+                self.IDSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[0]
+
+                os.remove(f"{self.NameSelectionItem}")
+                os.chdir(os.path.dirname(os.getcwd()))
+                self.deleteDatafromDatabase(self.NameSelectionItem)     
+
+            except IndexError as e:
+                tkinter.messagebox.showwarning('Warning', 'Please Choose one file.')
 
     def deleteDatafromDatabase(self, IDSelection):
         IDSelectionItem = str(IDSelection)
         tabelinDatabase = []
 
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
-        self.conn = sqlite3.connect('Libraries.db')
-        self.c = self.conn.cursor()
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
 
-        self.c.execute('SELECT name from sqlite_master where type = "table"')
-        for items in self.c.fetchall():
-            tabelinDatabase.append(items[0])
-        
-        for t in range(len(tabelinDatabase)):
-            o = str(tabelinDatabase[t])
+            self.c.execute('SELECT name from sqlite_master where type = "table"')
+            for items in self.c.fetchall():
+                tabelinDatabase.append(items[0])
 
-            tabelinDatabase[t] = []
-            self.c.execute(f"SELECT * FROM [{o}]")
-            for k in self.c.fetchall():
-                tabelinDatabase[t].append(k[1])
-                
-        
-            if IDSelectionItem in tabelinDatabase[t]:
-                dt = []
-                ID  = [IDSelectionItem]
-                self.c.execute(f"DELETE FROM [{o}] WHERE Title = (?)", ID[0:] )
-                self.conn.commit()
-                
+            for t in range(len(tabelinDatabase)):
+                o = str(tabelinDatabase[t])
+
+                tabelinDatabase[t] = []
                 self.c.execute(f"SELECT * FROM [{o}]")
-                for y in self.c.fetchall():
-                    dt.append(y[0])
-                if dt == []:
-                    if o != 'Album' and o != 'Favorite' and  o != 'Recent' and o != 'Data_list' and o != 'Authors':
-                        self.c.execute(f"DROP TABLE [{o}]")
-                        self.conn.commit()
+                for k in self.c.fetchall():
+                    tabelinDatabase[t].append(k[1])
 
-                        rt = [o]
-                        self.c.execute("DELETE FROM Authors WHERE Authors_NameList = (?)", rt[0:])
-                        self.conn.commit()
 
-                        at = [o]
-                        self.c.execute("DELETE FROM Album WHERE Album_NameList = (?)", at[0:])
-                        self.conn.commit()
-                                
-        self.conn.commit()
-        self.conn.close() 
-        print(IDSelection," Succcessfully!")
+                if IDSelectionItem in tabelinDatabase[t]:
+                    dt = []
+                    ID  = [IDSelectionItem]
+                    self.c.execute(f"DELETE FROM [{o}] WHERE Title = (?)", ID[0:] )
+                    self.conn.commit()
+
+                    self.c.execute(f"SELECT * FROM [{o}]")
+                    for y in self.c.fetchall():
+                        dt.append(y[0])
+                    if dt == []:
+                        if o != 'Album' and o != 'Favorite' and  o != 'Recent' and o != 'Data_list' and o != 'Authors':
+                            self.c.execute(f"DROP TABLE [{o}]")
+                            self.conn.commit()
+
+                            rt = [o]
+                            self.c.execute("DELETE FROM Authors WHERE Authors_NameList = (?)", rt[0:])
+                            self.conn.commit()
+
+                            at = [o]
+                            self.c.execute("DELETE FROM Album WHERE Album_NameList = (?)", at[0:])
+                            self.conn.commit()
+
+            self.conn.commit()
+            self.conn.close() 
+            print(IDSelection," Succcessfully!")
+
         self.libraryInterface()
 
     def DetailFunction_LibraryInterface(self):
-        selectItem = self.listBook_libraryInterface.selection()
-        Name = self.listBook_libraryInterface.item(selectItem, 'values')[1]
-        
-        print(Name)
-        
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Data')
+        try:
+            selectItem = self.listBook_libraryInterface.selection()
+            Name = self.listBook_libraryInterface.item(selectItem, 'values')[1]
 
-        pdf_path = str(Name)
+            print(Name)
 
-        with open(pdf_path, 'rb') as f:
-            pdf = PdfFileReader(f)
-            information = pdf.getDocumentInfo()
-            number_of_pages = pdf.getNumPages()
-            p = pdf.getPage(0)
-            
-        
-        Title =  (information.title)
-        Author =  (information.author)
-        Creator =  (information.creator)
-        Producer =  (information.producer)
-        Subject =  (information.subject)
-        Number_of_pages =  (number_of_pages)
+            with self.change_dir('Data'):
 
-        w_in_user_space_units = p.mediaBox.getWidth()
-        h_in_user_space_units = p.mediaBox.getHeight()      
+                pdf_path = str(Name)
 
-        # 1 user space unit is 1/72 inch
-        # 1/72 inch ~ 0.352 millimeters     
-
-        w = int(float(p.mediaBox.getWidth()) * 0.352)
-        h = int(float(p.mediaBox.getHeight()) * 0.352)
-
-        page_size = (w,'mm' ,'x',h,'mm')
-
-        if Title == '':
-            Title = 'Unknown Title'
-        elif Author == '':
-            Author = 'Unknown Author'
-        elif Creator == '':
-            Creator = 'Unknown Creator'
-        elif Producer == '':
-            Producer = 'Unknown Producer'
-        elif Subject == '':
-            Subject = 'Unknown Subject'
+                with open(pdf_path, 'rb') as f:
+                    pdf = PdfFileReader(f)
+                    information = pdf.getDocumentInfo()
+                    number_of_pages = pdf.getNumPages()
+                    p = pdf.getPage(0)
 
 
-        #print('Name :', Name)
-        #print('Title :', Title)
-        #print('Author :', Author)
-        #print('Creator :', Creator)
-        #print('Producer :', Producer)
-        #print('Subject :', Subject)
-        #print('Page :', Number_of_pages)
-        #print('page_size :', page_size)
+                Title =  (information.title)
+                Author =  (information.author)
+                Creator =  (information.creator)
+                Producer =  (information.producer)
+                Subject =  (information.subject)
+                Number_of_pages =  (number_of_pages)
 
-        DetailFunction.DetailFunction(Name, Title, Author, Creator, Producer, Subject, Number_of_pages, page_size)
+                w_in_user_space_units = p.mediaBox.getWidth()
+                h_in_user_space_units = p.mediaBox.getHeight()      
 
+                # 1 user space unit is 1/72 inch
+                # 1/72 inch ~ 0.352 millimeters     
+
+                w = int(float(p.mediaBox.getWidth()) * 0.352)
+                h = int(float(p.mediaBox.getHeight()) * 0.352)
+
+                page_size = (w,'mm' ,'x',h,'mm')
+
+                if Title == '':
+                    Title = 'Unknown Title'
+                elif Author == '':
+                    Author = 'Unknown Author'
+                elif Creator == '':
+                    Creator = 'Unknown Creator'
+                elif Producer == '':
+                    Producer = 'Unknown Producer'
+                elif Subject == '':
+                    Subject = 'Unknown Subject'
+
+
+                #print('Name :', Name)
+                #print('Title :', Title)
+                #print('Author :', Author)
+                #print('Creator :', Creator)
+                #print('Producer :', Producer)
+                #print('Subject :', Subject)
+                #print('Page :', Number_of_pages)
+                #print('page_size :', page_size)
+
+            DetailFunction.DetailFunction(Name, Title, Author, Creator, Producer, Subject, Number_of_pages, page_size)
+
+        except IndexError as e :
+            tkinter.messagebox.showwarning('Warning', 'Please choose one book for show Detail')
 
 if __name__ == "__main__":
     MainfileApplication() 

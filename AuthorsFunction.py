@@ -1,15 +1,16 @@
 import os
 import sqlite3
 import Database
+from contextlib import contextmanager
 
 class Function():
+
     def __init__(self, ID, Title, Author, Number_of_Pages, Last_Read, Add_Date):
 
         self.AuthorNameList_Databas = []
         if Author == None:
             Author = 'Unknown Author'
 
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Database')
         self.conn = sqlite3.connect('Libraries.db')
         self.c = self.conn.cursor()
 
@@ -20,7 +21,7 @@ class Function():
             self.AuthorNameList_Databas.append(item[0])
 
         if Author in self.AuthorNameList_Databas:
-
+        
             AuthorName = [Author]
             if AuthorName[0] == None:
                 AuthorsData = [
@@ -62,3 +63,4 @@ class Function():
                     self.conn.commit()
 
         self.conn.close()
+

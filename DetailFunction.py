@@ -8,6 +8,7 @@ from PIL import Image, ImageTk
 from tkinter import *
 from tkinter import ttk
 from tkmacosx import Button , SFrame
+from contextlib import contextmanager
 
 #import ImageExtraction
 
@@ -37,21 +38,9 @@ class DetailFunction():
         self.lblDetailofBook = Label(self.TopFrame_DetailInterface, text = 'Book Detail', font = ('Times',24,'bold'), bg = '#00EBFF', fg = '#F0FFFF')
         self.lblDetailofBook.pack()
 
-
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Data')
-
-        pdffile = Name
-        doc = fitz.open(pdffile)
-        page = doc.loadPage(0)  # number of page
-        pix = page.getPixmap()
-        os.chdir('/Users/privateman/Documents/Project/Book_Manager/Img')
-        output = (f"{Name}.png")
-        pix.writePNG(output)
-        
-        path = ('/Users/privateman/Documents/Project/Book_Manager/Img/' + str(Name)+ '.png')
-
-        Photo = PhotoImage(file = path)
-        Potho_image = Photo.subsample(2,2)
+        with self.change_dir('Img'):
+            Photo = PhotoImage(file = (os.getcwd() + "/" + str(Name)+ '.png'))
+            Potho_image = Photo.subsample(2,2)
 
         self.lblPhoto_PhotoFrame = Label(self.PhotoFrame_DetailInterface, image = Potho_image, bg = 'red')
         self.lblPhoto_PhotoFrame.pack(side = 'top')
@@ -87,10 +76,22 @@ class DetailFunction():
             self.lblName.grid(row = row, column = 0, sticky = 'e')
 
         self.btnDone = Button(self.bottomFrame_DetailInterface, text = 'Done', borderless = 10, width = 100, height = 40, command = self.DetailViewerInterface.destroy)
-        self.btnDone.pack(side = 'right', padx = 10, pady = 10) 
+        self.btnDone.pack(side = 'right', padx = 10, pady = 10)
+        self.btnDone.focus()
+        self.btnDone.bind('<Return>', self.Done) 
 
         self.DetailViewerInterface.mainloop()
 
-    #def ImageExtraction(self, name):
+    def Done(self, event):
+        self.DetailViewerInterface.destroy()
+
+    @contextmanager
+    def change_dir(self, Destinetion):
+        try:
+            cwd = os.getcwd()
+            os.chdir(Destinetion)
+            yield
+        finally:
+            os.chdir(cwd)
 
 
