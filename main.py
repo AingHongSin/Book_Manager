@@ -1,22 +1,22 @@
-from tkinter import *
-import tkinter.messagebox
-from tkinter import ttk
 import os
-from PIL import ImageTk, Image
-from tkinter import filedialog
-from PyPDF2 import PdfFileReader
+import tkinter.messagebox
 import datetime
 import sqlite3
 import shutil
 import Database
 import NewAlbum
 import FavoriteAdding
-from tkmacosx import Button, CircleButton
 import subprocess
 import AuthorsFunction
 import DetailFunction
-from contextlib import contextmanager
 import fitz
+from tkinter import * 
+from tkinter import ttk
+from PIL import ImageTk, Image
+from tkinter import filedialog
+from PyPDF2 import PdfFileReader
+from tkmacosx import Button, CircleButton
+from contextlib import contextmanager
 #import ImageExtraction
 
 
@@ -34,6 +34,9 @@ class MainfileApplication():
         #self.Main_windown.config(background = 'systemTransparent')
         #self.Main_Window.attributes('-transparentcolor','blue')
         #self.Main_Window.overrideredirect(True)
+        #with self.change_dir('icon'):
+        #    photo = ttk.PhotoImage(file = "mybookLogo.ico")
+        #    self.Main_Window.iconphoto(True, photo)
 
         self.Amount_Book = 0
         self.datalist_of_Database = []
@@ -195,7 +198,6 @@ class MainfileApplication():
             self.btnAlbum_homeInterfac = Button(self.mainFrame_HomeInterface, image = self.AlbumPotho_image_HomeInterface, text = 'Album',activebackground = ('white'), font = ('Comic Sans MS', 26,'bold'), borderless = 1, border = 4 , command = self.AlbumInterface)
             self.btnAlbum_homeInterfac.grid(row = 0, column = 2)
 
-        print(os.getcwd())
         self.btnClearListRecentBook_HomeInterface = Button(self.lblFrame, text = 'Clear Recent', borderless = 10, width = 100, command = self.ClearRecentListBook_in_Database)
         self.btnClearListRecentBook_HomeInterface.pack(anchor = 'ne')
 
@@ -476,8 +478,8 @@ class MainfileApplication():
         self.btnDeleteBook_AlbumInterface = Button(self.topFrame_AlbumInterface, text = 'Delete Album', border = 0, borderless = 10, width = 100, height = 30, command = self.DeleteData_from_list_and_Database)
         self.btnDeleteBook_AlbumInterface.pack(side = 'left')      
 
-        self.btnDeleteBook_AlbumInterface = Button(self.topFrame_AlbumInterface, text = 'Edit Album', border = 0, borderless = 10, width = 100, height = 30)
-        self.btnDeleteBook_AlbumInterface.pack(side = 'left')      
+        self.btnEditAlbum_AlbumInterface = Button(self.topFrame_AlbumInterface, text = 'Edit Album', border = 0, borderless = 10, width = 100, height = 30)
+        self.btnEditAlbum_AlbumInterface.pack(side = 'left')      
 
         self.lblnameTap_AlbumInterface = Label(self.topFrame_AlbumInterface, text = 'Album\t\t\t\t\t', font = ('Times',20,'bold'), bg = '#00EBFF')
         self.lblnameTap_AlbumInterface.pack(side = 'right')
@@ -518,7 +520,9 @@ class MainfileApplication():
         self.listAllAlbum_AuthorInterface.bind("<Double-Button-1>", self.AlbumSelection_and_ShowData_in_DataList)
 
         self.ShwoDataIntoListAlbum()
+
 #___________________________________________________________________________________________BACK-END__________________________________________________________________#
+
 
     @contextmanager
     def change_dir(self, destination):
@@ -528,7 +532,6 @@ class MainfileApplication():
             yield
         finally:
             os.chdir(cwd)
-
 
     def Add_Data_Into_Database(self):
         # Database
@@ -604,11 +607,8 @@ class MainfileApplication():
                         with self.change_dir('Database'): 
                             AuthorsFunction.Function(ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
 
-
     def extractImageformPDF(self, Name):
-        
         with self.change_dir('Data'):
-
             pdffile = Name
             doc = fitz.open(pdffile)
             page = doc.loadPage(0)  # number of page
@@ -618,8 +618,6 @@ class MainfileApplication():
             output = (f"{Name}.png")
             pix.writePNG(output)
             
-
-
     def library_Data_Adding(self):
         for widget in self.listBook_libraryInterface.winfo_children():
             widget.destroy()
@@ -785,7 +783,7 @@ class MainfileApplication():
                 print('Data in Favorite Datalist', favoriteList)
                 if FD in favoriteList:
                     print('Loading Please wait ...')
-                    tkinter.messagebox.showerror('Error', 'This book already have in Favorite Library')
+                    tkinter.messagebox.showerror('Error', 'This file has been added. ')
                 else:
                     if FD != favoriteList:
                         FavoriteManyData = [
@@ -862,6 +860,7 @@ class MainfileApplication():
         self.Recent_Adding_to_list()
 
     def ShwoDataIntoListAlbum(self):
+        print(os.getcwd())
         with self.change_dir('Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()

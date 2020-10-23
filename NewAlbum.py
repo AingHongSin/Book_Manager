@@ -187,6 +187,7 @@ class NewAlbumAction():
 
     def ReviewFunction(self):
 
+
         self.Data_in_AlbumName = []
         j = self.AlbumName_in_AlbumTable
 
@@ -206,6 +207,7 @@ class NewAlbumAction():
 
             tk.messagebox.showerror('Error', 'Your book had not been add in to your album.')
 
+        os.chdir(os.path.dirname(os.getcwd()))
         self.AddData_into_List.destroy()
 
 
@@ -235,7 +237,6 @@ class NewAlbumAction():
                         )
                     ]
                 p = self.AlbumName[0]
-                print(p)
 
                 self.c.executemany(f"INSERT INTO [{p}] VALUES (?,?,?,?,?,?) ", Data_Adding_to_Database)
                 self.conn.commit()
@@ -251,7 +252,6 @@ class NewAlbumAction():
 
             SelectData = self.listBook_Interface.focus()
             Data = self.listBook_Interface.item(SelectData, "values")
-            print(Data)
 
             Data_Adding_to_Database = [
                     (
@@ -259,7 +259,6 @@ class NewAlbumAction():
                     )
                 ]
             p = self.AlbumName[0]
-            print(p)
 
             self.c.executemany(f"INSERT INTO {p} VALUES (?,?,?,?,?,?) ", Data_Adding_to_Database)
             self.conn.commit()
