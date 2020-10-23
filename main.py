@@ -2,14 +2,17 @@ import os
 import tkinter.messagebox
 import datetime
 import sqlite3
+import fitz
 import shutil
-import Database
+
+#import Database
 import NewAlbum
 import FavoriteAdding
 import subprocess
 import AuthorsFunction
 import DetailFunction
-import fitz
+import EditAlbumFuntion
+
 from tkinter import * 
 from tkinter import ttk
 from PIL import ImageTk, Image
@@ -478,7 +481,7 @@ class MainfileApplication():
         self.btnDeleteBook_AlbumInterface = Button(self.topFrame_AlbumInterface, text = 'Delete Album', border = 0, borderless = 10, width = 100, height = 30, command = self.DeleteData_from_list_and_Database)
         self.btnDeleteBook_AlbumInterface.pack(side = 'left')      
 
-        self.btnEditAlbum_AlbumInterface = Button(self.topFrame_AlbumInterface, text = 'Edit Album', border = 0, borderless = 10, width = 100, height = 30)
+        self.btnEditAlbum_AlbumInterface = Button(self.topFrame_AlbumInterface, text = 'Edit Album', border = 0, borderless = 10, width = 100, height = 30, command = EditAlbumFuntion.AlbumEditing)
         self.btnEditAlbum_AlbumInterface.pack(side = 'left')      
 
         self.lblnameTap_AlbumInterface = Label(self.topFrame_AlbumInterface, text = 'Album\t\t\t\t\t', font = ('Times',20,'bold'), bg = '#00EBFF')
@@ -860,7 +863,6 @@ class MainfileApplication():
         self.Recent_Adding_to_list()
 
     def ShwoDataIntoListAlbum(self):
-        print(os.getcwd())
         with self.change_dir('Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
