@@ -766,7 +766,7 @@ class MainfileApplication():
 
     def FavoriteAdding_Function(self):
         FavoriteAdding.FavoriteAdding_from_Library()
-        self.FavoritInterface()
+        #self.FavoritInterface()
 
     def FavoritAddingBackend(self):
         try:

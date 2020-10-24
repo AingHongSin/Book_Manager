@@ -16,7 +16,7 @@ class DetailFunction():
     def __init__(self, Name, Title, Author, Creator, Producer, Subject, Number_of_pages, page_size):
         self.DetailViewerInterface = Toplevel()
         self.DetailViewerInterface.title("Book Detail")
-        self.DetailViewerInterface.geometry('600x800+550+120')
+        self.DetailViewerInterface.geometry('600x775+550+120')
         self.DetailViewerInterface.config(background = '#98F5FF')
 
         self.TopFrame_DetailInterface = Frame(self.DetailViewerInterface)
@@ -75,8 +75,8 @@ class DetailFunction():
             self.lblName = Label(self.mainFrame_DetailInterface, text = LabelName[row], height = 2)
             self.lblName.grid(row = row, column = 0, sticky = 'e')
 
-        self.btnDone = Button(self.bottomFrame_DetailInterface, text = 'Done', borderless = 10, width = 100, height = 40, command = self.DetailViewerInterface.destroy)
-        self.btnDone.pack(side = 'right', padx = 10, pady = 10)
+        self.btnDone = Button(self.bottomFrame_DetailInterface, text = 'Done', borderless = 10, width = 100, height = 30, command = self.DetailViewerInterface.destroy)
+        self.btnDone.pack(side = 'right', padx = 5, pady = 5)
         self.btnDone.focus()
         self.btnDone.bind('<Return>', self.Done) 
 

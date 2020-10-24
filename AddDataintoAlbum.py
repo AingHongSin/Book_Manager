@@ -1,16 +1,18 @@
 import os
 import sqlite3
+from tkinter import *
 import tkinter.messagebox
 from tkinter import ttk
-from tkinter import *
 from tkmacosx import Button
 from contextlib import contextmanager
 
-class FavoriteAdding_from_Library():
-    def __init__(self):
+class Adding_from_Library_into_Adlbum():
+    def __init__(self, AlbumNamne):
         
+        self.AlbumNamne = AlbumNamne
+
         self.AddData_into_List = Toplevel()
-        self.AddData_into_List.title('FavoriteAdding')
+        self.AddData_into_List.title('Album Adding Data')
         self.AddData_into_List.geometry('730x330+500+250')
         
         # Frame
@@ -25,6 +27,7 @@ class FavoriteAdding_from_Library():
         
         self.BottomFrame = Frame(self.AddData_into_List, bg = '#00ebff')
         self.BottomFrame.pack(side = 'bottom', fill = 'x')
+
 
         # Interface
         self.lblTitle = Label(self.topFrame, text = 'Album Adding Data', bg = '#00EBFF', font = ('Times', 21, 'bold'))
@@ -57,50 +60,54 @@ class FavoriteAdding_from_Library():
         self.btnDone = Button(self.BottomFrame, text = 'Done', borderless = 4, height = 30, command = self.DoneFunction)
         self.btnDone.pack(side = 'right', padx = 5, pady = 5)
 
-        with self.change_dir('Database'):
+
+        with self.change_dir('Database'):   
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
 
             self.c.execute("SELECT * FROM Data_list ")
-
             self.items = self.c.fetchall()
-
             for item in self.items:
                 if item[2] == None:
                     self.listBook_Interface.insert("", END, values = (item[0], item[1], 'Unknown Author', item[3],  item[4], item[5] ))
                 else: 
                     self.listBook_Interface.insert("", END, values = (item[0], item[1], item[2], item[3],  item[4], item[5] ))
+            self.conn.commit()
+            self.conn.close()
 
         self.AddData_into_List.mainloop()
-        
+
     def DataAdding(self):
-        
-        FavoriteDatalist = []
-        with self.change_dir('Database'):
-            self.conn = sqlite3.connect('Libraries.db')
-            self.c = self.conn.cursor()
+        try:        
+            AlbumDatalist = []
+            with self.change_dir('Database'):
+                self.conn = sqlite3.connect('Libraries.db')
+                self.c = self.conn.cursor()
 
-            self.c.execute("SELECT * FROM Favorite")
-            for t in self.c.fetchall():
-                FavoriteDatalist.append(t[1])
+                self.c.execute(f"SELECT * FROM [{self.AlbumNamne}]")
+                for t in self.c.fetchall():
+                    AlbumDatalist.append(t[1])
 
-            SelectData = self.listBook_Interface.focus()
-            Data = self.listBook_Interface.item(SelectData, "values")
-            FavoriteData = str(Data[1])
+                SelectData = self.listBook_Interface.focus()
+                Data = self.listBook_Interface.item(SelectData, "values")
+                AlbumData = str(Data[1])
 
-            if FavoriteData in FavoriteDatalist:
-                tkinter.messagebox.showerror('Error', 'This book already added.')
-            else:
-                if FavoriteData != FavoriteDatalist:
-                    Data_Adding_to_Database = [
-                            (
-                                Data[0], Data[1], Data[2], Data[3], Data[4], Data[5]
-                            )
-                        ]
+                if AlbumData in AlbumDatalist:
+                    tkinter.messagebox.showerror('Error', 'This book already added.')
+                else:
+                    if AlbumData != AlbumDatalist:
+                        Data_Adding_to_Database = [
+                                (
+                                    Data[0], Data[1], Data[2], Data[3], Data[4], Data[5]
+                                )
+                            ]
 
-                    self.c.executemany(f"INSERT INTO Favorite VALUES (?,?,?,?,?,?) ", Data_Adding_to_Database)
-                    self.conn.commit()
-            self.conn.close()
+                        self.c.executemany(f"INSERT INTO [{self.AlbumNamne}] VALUES (?,?,?,?,?,?) ", Data_Adding_to_Database)
+                        self.conn.commit()
+                self.conn.close()
+
+        except IndexError as e:
+            tkinter.messagebox.showwarning('Warning', 'Please Choose one file.')
 
     def DoneFunction(self):
         self.AddData_into_List.destroy()
@@ -113,3 +120,7 @@ class FavoriteAdding_from_Library():
             yield
         finally:
             os.chdir(cwd)
+
+
+#if __name__ == '__main__':
+#    Adding_from_Library_into_Adlbum()

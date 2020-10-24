@@ -1,5 +1,7 @@
 import os
 import sqlite3
+import AddDataintoAlbum
+import tkinter.messagebox
 from tkinter import *
 from tkinter import ttk
 from tkmacosx import Button
@@ -10,7 +12,7 @@ class AlbumEditing():
     def __init__(self):
         self.EditingAlbum_TopLevel = Toplevel()
         self.EditingAlbum_TopLevel.title("Album Edting")
-        self.EditingAlbum_TopLevel.geometry("730x350+500+250")
+        self.EditingAlbum_TopLevel.geometry("730x330+500+250")
 
         # Frame
         self.TopFrame = Frame(self.EditingAlbum_TopLevel, bg = '#00EBFF')
@@ -34,8 +36,9 @@ class AlbumEditing():
 
         ItemList = ['']
 
-        self.sptTitle = ttk.Separator(self.TopFrame)
-        self.sptTitle.pack(fill = 'x', padx = 10)
+        #self.sptTitle = ttk.Separator(self.TopFrame)
+        #self.sptTitle.pack(fill = 'x', padx = 10)
+
         with self.change_dir('Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
@@ -52,13 +55,13 @@ class AlbumEditing():
         self.lblNameAlbum.pack(side = 'left')
 
         self.spinAlbumName = ttk.Combobox(self.TopFrame_MainFrame, style = 'TCombobox', values = ItemList , height = 20)
-        self.spinAlbumName.pack(side = 'left')
+        self.spinAlbumName.pack(side = 'left', pady = 5)
         self.spinAlbumName.bind('<<ComboboxSelected>>', self.AlbumName)
 
         self.btnRename = Button(self.TopFrame_MainFrame, text = 'Rename', borderless = 10)
         self.btnRename.pack(side = 'right', pady = 5)
 
-        self.btnAdd = Button(self.TopFrame_MainFrame, text = 'Add', borderless = 10)
+        self.btnAdd = Button(self.TopFrame_MainFrame, text = 'Add', borderless = 10, command = self.AddingFunciton)
         self.btnAdd.pack(side = 'right', pady = 5)
 
         self.btnDelete = Button(self.TopFrame_MainFrame, text = 'Delete', borderless = 10, command = self.DeleteDataFromAlbumList)
@@ -113,35 +116,37 @@ class AlbumEditing():
         self.listBook_Interface.heading('Date Added', text = 'Date Added')
 
     def DeleteDataFromAlbumList(self):
+        try:
+            Select = self.listBook_Interface.selection()
+            Name = str(self.listBook_Interface.item(Select, 'values')[1])
+            p = [Name]
+            print(p[0])
 
-        Select = self.listBook_Interface.selection()
-        Name = str(self.listBook_Interface.item(Select, 'values')[1])
-        p = [Name]
-        print(p[0])
+            AlbumNamne = self.spinAlbumName.get()
+            t = [AlbumNamne]
+            with self.change_dir('Database'):
+                self.conn = sqlite3.connect('Libraries.db')
+                self.c = self.conn.cursor()
 
-        AlbumNamne = self.spinAlbumName.get()
-        t = [AlbumNamne]
-        with self.change_dir('Database'):
-            self.conn = sqlite3.connect('Libraries.db')
-            self.c = self.conn.cursor()
-
-            self.c.execute(f"DELETE FROM [{AlbumNamne}] WHERE Title = (?)", p)
-            self.conn.commit()
-            
-            dt = []
-            self.c.execute(f"SELECT * FROM [{AlbumNamne}]")
-            for y in self.c.fetchall():
-                dt.append(y[0])
-            if dt == []:
-                self.c.execute(f"DROP TABLE [{AlbumNamne}]")
+                self.c.execute(f"DELETE FROM [{AlbumNamne}] WHERE Title = (?)", p)
                 self.conn.commit()
 
-                self.c.execute("DELETE FROM Album WHERE Album_NameList = (?)", t )
-                self.conn.commit()
-                
-                self.Reface_Interface()
+                dt = []
+                self.c.execute(f"SELECT * FROM [{AlbumNamne}]")
+                for y in self.c.fetchall():
+                    dt.append(y[0])
+                if dt == []:
+                    self.c.execute(f"DROP TABLE [{AlbumNamne}]")
+                    self.conn.commit()
 
-        self.conn.close()
+                    self.c.execute("DELETE FROM Album WHERE Album_NameList = (?)", t )
+                    self.conn.commit()
+
+                    self.Reface_Interface()
+
+            self.conn.close()
+        except IndexError :
+            tkinter.messagebox.showwarning('Warning', 'If you want to delete any file Please selelct any file first.')
     
     def Reface_Interface(self):
         os.chdir(os.path.dirname(os.getcwd()))
@@ -150,6 +155,14 @@ class AlbumEditing():
 
     def Recall_Function(self):
         self.listBook()
+
+    def AddingFunciton(self):
+        AlbumNamne = self.spinAlbumName.get()
+        if AlbumNamne != '':
+            AddDataintoAlbum.Adding_from_Library_into_Adlbum(AlbumNamne)
+            #self.EditingAlbum_TopLevel.destroy()
+            #self.__init__()
+
 
     @contextmanager
     def change_dir(self, destination):

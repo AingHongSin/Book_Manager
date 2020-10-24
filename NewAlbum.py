@@ -1,4 +1,6 @@
-import tkinter as tk
+from tkinter import *
+from tkmacosx import Button
+from tkinter import ttk
 import tkinter.messagebox
 import sqlite3
 import Database
@@ -9,34 +11,34 @@ from contextlib import contextmanager
 class NewAlbumAction():
     def __init__(self):
 
-        self.VarName = tk.StringVar()
+        self.VarName = StringVar()
         self.AlbumName = []
 
-        self.addAlbum_Interface = tk.Toplevel()
+        self.addAlbum_Interface = Toplevel()
         self.addAlbum_Interface.title("Album Adding")
         self.addAlbum_Interface.geometry('280x100+600+400')
 
-        self.mainFrame_AlbumAdding_topLevel = tk.Frame(self.addAlbum_Interface)
+        self.mainFrame_AlbumAdding_topLevel = Frame(self.addAlbum_Interface)
         self.mainFrame_AlbumAdding_topLevel.pack()
 
-        self.buttonFrame_AlbumAdding_topLevel = tk.Frame(self.addAlbum_Interface)
+        self.buttonFrame_AlbumAdding_topLevel = Frame(self.addAlbum_Interface)
         self.buttonFrame_AlbumAdding_topLevel.pack(pady = 10)
 
-        self.lblTitleAlbum = tk.Label(self.mainFrame_AlbumAdding_topLevel, text = 'Album Title', font = ('defult', 14, 'bold'))
+        self.lblTitleAlbum = Label(self.mainFrame_AlbumAdding_topLevel, text = 'Album Title', font = ('defult', 14, 'bold'))
         self.lblTitleAlbum.grid(row = 0, column = 0, columnspan = 2)
 
-        self.lblNameAlbum = tk.Label(self.mainFrame_AlbumAdding_topLevel, text = 'Name')
+        self.lblNameAlbum = Label(self.mainFrame_AlbumAdding_topLevel, text = 'Name')
         self.lblNameAlbum.grid(row = 1, column = 0)
 
-        self.inputNameAlbum = tk.Entry(self.mainFrame_AlbumAdding_topLevel, width = '20', textvariable = self.VarName)
+        self.inputNameAlbum = Entry(self.mainFrame_AlbumAdding_topLevel, width = '20', textvariable = self.VarName)
         self.inputNameAlbum.grid(row = 1, column = 1)
         self.inputNameAlbum.bind('<Return>', self.AddAlbumName_to_Database_usingReturnButton)
         self.inputNameAlbum.focus()
 
-        self.btnCancel = tk.Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Cancel', width = '10', command = self.addAlbum_Interface.destroy)
+        self.btnCancel = Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Cancel', borderless = 4,  command = self.addAlbum_Interface.destroy)
         self.btnCancel.grid(row = 1, column = 0)
 
-        self.btnDone = tk.Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Done', width = '10', command = self.AddAlbumName_to_Database)
+        self.btnDone = Button(self.buttonFrame_AlbumAdding_topLevel, text = 'Done', borderless = 4,  command = self.AddAlbumName_to_Database)
         self.btnDone.grid(row = 1, column = 1)
 
         self.addAlbum_Interface.mainloop()
@@ -63,25 +65,32 @@ class NewAlbumAction():
                 self.c.execute("INSERT INTO Album (Album_NameList) VALUES (?)", self.AlbumName[0:])
                 self.conn.commit()
 
-                self.AddData_into_List = tk.Toplevel()
+                self.AddData_into_List = Toplevel()
+                self.AddData_into_List.title('AlbumAdding')
+                self.AddData_into_List.geometry('730x330+500+250')
 
-                self.topFrame = tk.Frame(self.AddData_into_List)
-                self.topFrame.pack(side = 'top')
 
-                self.lblTitle = tk.Label(self.topFrame, text = 'Add Book into your Album')
-                self.lblTitle.pack()
+                self.topFrame = Frame(self.AddData_into_List, bg = '#00ebff')
+                self.topFrame.pack(fill = 'x', side = 'top')
 
-                self.mainFrame = tk.LabelFrame(self.AddData_into_List, text = 'Main List')
+                self.SecondFrame = Frame(self.AddData_into_List)
+                self.SecondFrame.pack(fill = 'x')
+
+                self.mainFrame = LabelFrame(self.AddData_into_List)
                 self.mainFrame.pack()
 
-                self.btnAdd  = tk.Button(self.mainFrame, text = 'Add', width = 10, command = self.AddingFunction)
-                self.btnAdd.pack(anchor = 'ne')
+                self.BottomFrame = Frame(self.AddData_into_List, bg = '#00ebff')
+                self.BottomFrame.pack(side = 'bottom', fill = 'x')
 
-                self.btnDone = tk.Button(self.mainFrame, text = 'Done', width = 10, command = self.ReviewFunction)
-                self.btnDone.pack(side = 'bottom')
+                # Interface
+                self.lblTitle = Label(self.topFrame, text = 'Album Adding Data', bg = '#00EBFF', font = ('Times', 21, 'bold'))
+                self.lblTitle.pack()
 
-                self.listBook_Interface = tk.ttk.Treeview(self.mainFrame, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = '10')
-                self.listBook_Interface.pack(padx = '10', pady = '10')
+                self.btnAdd  = Button(self.SecondFrame, text = 'Add', borderless = 4, command = self.AddingFunction)
+                self.btnAdd.pack(side = 'right', pady = 5)
+
+                self.listBook_Interface = ttk.Treeview(self.mainFrame, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = '10')
+                self.listBook_Interface.pack(padx = 10, pady = 10)
 
                 self.listBook_Interface.column('ID', width = '30')
                 self.listBook_Interface.heading('ID', text = 'ID')
@@ -101,20 +110,21 @@ class NewAlbumAction():
                 self.listBook_Interface.column('Date Added', width = '160')
                 self.listBook_Interface.heading('Date Added', text = 'Date Added')
 
-                self.listBook_Interface.bind(("<Double-Button-1>", self.AddingFunction_usingDounble_Click))
-
+                self.btnDone = Button(self.BottomFrame, text = 'Done', borderless = 4, height = 30, command = self.ReviewFunction)
+                self.btnDone.pack(side = 'right', padx = 5, pady = 5)
+                
                 self.c.execute("SELECT * FROM Data_list ")
 
                 self.items = self.c.fetchall()
 
                 for item in self.items:
                     if item[2] == None:
-                        self.listBook_Interface.insert("", tk.END, values = (item[0], item[1], 'Unknown Author', item[3],  item[4], item[5] ))
+                        self.listBook_Interface.insert("", END, values = (item[0], item[1], 'Unknown Author', item[3],  item[4], item[5] ))
                     else: 
-                        self.listBook_Interface.insert("", tk.END, values = (item[0], item[1], item[2], item[3],  item[4], item[5] ))
+                        self.listBook_Interface.insert("", END, values = (item[0], item[1], item[2], item[3],  item[4], item[5] ))
 
                 self.AddData_into_List.mainloop()
-            else: tk.messagebox.showwarning('Warmming', "Please Enter Data into the box")
+            else: tkinter.messagebox.showwarning('Warmming', "Please Enter Data into the box")
 
 
 
@@ -138,7 +148,7 @@ class NewAlbumAction():
             self.conn.commit()
             self.conn.close()
 
-            tk.messagebox.showerror('Error', 'Your book had not been add in to your album.')
+            tkinter.messagebox.showerror('Error', 'Your book had not been add in to your album.')
 
         os.chdir(os.path.dirname(os.getcwd()))
         self.AddData_into_List.destroy()
@@ -160,7 +170,7 @@ class NewAlbumAction():
         DatafromList = str(Data[1])
 
         if DatafromList in DatainAlbumDatabase:
-            tk.messagebox.showerror('Error', 'This book was added already.')
+            tkinter.messagebox.showerror('Error', 'This book was added already.')
         else:
             if DatafromList != DatainAlbumDatabase:
                 Data_Adding_to_Database = [
