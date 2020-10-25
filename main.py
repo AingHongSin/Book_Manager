@@ -1,14 +1,15 @@
+from CreateDatabase import change_dir
 import os
 import tkinter.messagebox
 import datetime
 import sqlite3
 import fitz
 import shutil
+import subprocess
 
 #import Database
 import NewAlbum
 import FavoriteAdding
-import subprocess
 import AuthorsFunction
 import DetailFunction
 import EditAlbumFuntion
@@ -18,7 +19,7 @@ from tkinter import ttk
 from PIL import ImageTk, Image
 from tkinter import filedialog
 from PyPDF2 import PdfFileReader
-from tkmacosx import Button, CircleButton
+from tkmacosx import Button
 from contextlib import contextmanager
 #import ImageExtraction
 
@@ -231,6 +232,7 @@ class MainfileApplication():
 
         self.listRecentBook_HomeInterface = ttk.Treeview(self.lblFrame, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = 10)
         self.listRecentBook_HomeInterface.pack(pady = 10, padx = 10)
+        self.listRecentBook_HomeInterface.bind("<Double-Button-1>", self.openFeature_in_RecrntList)
 
         self.listRecentBook_HomeInterface.column('ID', width = 30)
         self.listRecentBook_HomeInterface.heading('ID', text = 'ID')
@@ -346,16 +348,6 @@ class MainfileApplication():
         self.btnFavorit_leftFrame.config(background = 'white')
 
                 # Interface
-
-        #self.btnAddBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Add Author', border = 0, borderless = 10, width = 100, height = 30)
-        #self.btnAddBook_AuthorInterface.pack(side = 'left')
-
-        #self.btnDeleteBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Delete Author', border = 0, borderless = 10, width = 100, height = 30)
-        #self.btnDeleteBook_AuthorInterface.pack(side = 'left')      
-
-        #self.btnDeleteBook_AuthorInterface = Button(self.topFrame_AuthorInterface, text = 'Edit Author', border = 0, borderless = 10, width = 100, height = 30)
-        #self.btnDeleteBook_AuthorInterface.pack(side = 'left')      
-      
 
         self.lblnameTap_AuthorInterface = Label(self.topFrame_AuthorInterface, text = 'Author', font = ('Times',20,'bold'), bg = '#00EBFF')
         self.lblnameTap_AuthorInterface.pack()
@@ -606,7 +598,6 @@ class MainfileApplication():
 
                         os.chdir(os.path.dirname(os.getcwd()))
                         self.extractImageformPDF(pdf_path)
-                        print(os.getcwd())
                         with self.change_dir('Database'): 
                             AuthorsFunction.Function(ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
 
@@ -646,16 +637,45 @@ class MainfileApplication():
         self.listBook_libraryInterface.selection_toggle(self.listBook_libraryInterface.focus())
 
     def FileOpening_in_FavoriteInterface(self, event):
-        with self.change_dir('Data'):
-                item = self.listBook_FavoriteInterface.selection()
-                Name_Data = str(self.listBook_FavoriteInterface.item(item, "values")[1])
+        time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
+        ot = [time_Now]
+        item = self.listBook_FavoriteInterface.selection()
+        Name_Data = str(self.listBook_FavoriteInterface.item(item, "values")[1])
+        ND = [Name_Data]
 
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
+
+            tabelinDatabase = []
+            self.c.execute('SELECT name from sqlite_master where type = "table"')
+            for items in self.c.fetchall():
+                tabelinDatabase.append(items[0])
+            for Name_Table in (tabelinDatabase):
+                if Name_Table != 'Album' and Name_Table != 'Authors':
+
+                    TitleNameList = []
+                    self.c.execute(f"SELECT * FROM [{Name_Table}]")
+                    for TitleName in self.c.fetchall():
+                        TitleNameList.append(TitleName[1])
+
+                    if Name_Data in TitleNameList:
+                        rowID = []
+                        self.c.execute(f"SELECT rowid, * FROM [{Name_Table}] WHERE Title = (?)", ND)
+                        for ID in self.c.fetchall():
+                            rowID.append(ID[0])
+
+                        self.c.execute(f"UPDATE [{Name_Table}] SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+                        self.conn.commit()
+
+            self.conn.close()
+
+        with self.change_dir('Data'):
                 FileName = (os.getcwd() + "/" + Name_Data)
                 subprocess.call(['open', FileName])
+        self.Recent_Adding_Backend_fromFavorite(ND, ot)
 
-        self.Recent_Adding_Backend_fromFavorite()
-
-    def Recent_Adding_Backend_fromFavorite(self):
+    def Recent_Adding_Backend_fromFavorite(self, ND,  ot):
         with self.change_dir('Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
@@ -671,9 +691,54 @@ class MainfileApplication():
 
             self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
             self.conn.commit()
+
+            rowID = []
+            self.c.execute(f"SELECT rowid, * FROM Recent WHERE Title = (?)", ND)
+            for ID in self.c.fetchall():
+                rowID.append(ID[0])
+
+            self.c.execute(f"UPDATE Recent SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+            self.conn.commit()
+
             self.conn.close()
+        
+        self.FavoritInterface()
 
     def OpenFunction_fromAlbumInterface(self, event):  
+        time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
+        ot = [time_Now]
+        item = self.listBook_AlbumInterface.selection()
+        Name_Data = str(self.listBook_AlbumInterface.item(item, "values")[1])
+        ND = [Name_Data]
+
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
+
+            tabelinDatabase = []
+            self.c.execute('SELECT name from sqlite_master where type = "table"')
+            for items in self.c.fetchall():
+                tabelinDatabase.append(items[0])
+
+            for Name_Table in (tabelinDatabase):
+                if Name_Table != 'Album' and Name_Table != 'Authors':
+
+                    TitleNameList = []
+                    self.c.execute(f"SELECT * FROM [{Name_Table}]")
+                    for TitleName in self.c.fetchall():
+                        TitleNameList.append(TitleName[1])
+
+                    if Name_Data in TitleNameList:
+                        rowID = []
+                        self.c.execute(f"SELECT rowid, * FROM [{Name_Table}] WHERE Title = (?)", ND)
+                        for ID in self.c.fetchall():
+                            rowID.append(ID[0])
+
+                        self.c.execute(f"UPDATE [{Name_Table}] SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+                        self.conn.commit()
+
+            self.conn.close()
+
         with self.change_dir('Data'):
             item = self.listBook_AlbumInterface.selection()
             Name_Data = str(self.listBook_AlbumInterface.item(item, "values")[1])
@@ -681,13 +746,12 @@ class MainfileApplication():
             FileName = (os.getcwd() + "/" + Name_Data)
             subprocess.call(['open', FileName])
 
-        self.Recent_Adding_Backend_fromAlbum()
+        self.Recent_Adding_Backend_fromAlbum(ND, ot)
 
-    def Recent_Adding_Backend_fromAlbum(self):
+    def Recent_Adding_Backend_fromAlbum(self, ND, ot):
         with self.change_dir('Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
-
 
             self.Recent_Selection = self.listBook_AlbumInterface.selection()
             self.Recent_Data_From_AlbumList = self.listBook_AlbumInterface.item(self.Recent_Selection,'values')
@@ -700,39 +764,57 @@ class MainfileApplication():
 
             self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
             self.conn.commit()
+
+            rowID = []
+            self.c.execute(f"SELECT rowid, * FROM Recent WHERE Title = (?)", ND)
+            for ID in self.c.fetchall():
+                rowID.append(ID[0])
+
+            self.c.execute(f"UPDATE Recent SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+            self.conn.commit()
+
             self.conn.close()
 
     def openFeature(self, event):
+        time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
+        ot = [time_Now]
+        item = self.listBook_libraryInterface.selection()
+        Name_Data = str(self.listBook_libraryInterface.item(item, "values")[1])
+        ND = [Name_Data]
 
         with self.change_dir('Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
 
-            time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
-            ot = [time_Now]
-            item = self.listBook_libraryInterface.selection()
-            Name_Data = str(self.listBook_libraryInterface.item(item, "values")[1])
-            print(Name_Data, 'Open at', time_Now)
-            ND = [Name_Data]
+            tabelinDatabase = []
+            self.c.execute('SELECT name from sqlite_master where type = "table"')
+            for items in self.c.fetchall():
+                tabelinDatabase.append(items[0])
 
-            D = ND[0][0:]
-            t = ot[0][0:]
+            for Name_Table in (tabelinDatabase):
+                if Name_Table != 'Album' and Name_Table != 'Authors':
 
-            print(D)
-            print(t)
+                    TitleNameList = []
+                    self.c.execute(f"SELECT * FROM [{Name_Table}]")
+                    for TitleName in self.c.fetchall():
+                        TitleNameList.append(TitleName[1])
 
-        #    self.c.execute(f"UPDATE Data_list SET Last_readded  = {(t)} WHERE Title = {(D)}")
-        #    self.conn.commit()
-        #    self.conn.close()
+                    if Name_Data in TitleNameList:
+                        rowID = []
+                        self.c.execute(f"SELECT rowid, * FROM [{Name_Table}] WHERE Title = (?)", ND)
+                        for ID in self.c.fetchall():
+                            rowID.append(ID[0])
 
-        print("Done...")
+                        self.c.execute(f"UPDATE [{Name_Table}] SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+                        self.conn.commit()
+
+            self.conn.close()
         with self.change_dir('Data'):
             FileName = (os.getcwd() + "/" + Name_Data)
             subprocess.call(['open', FileName])
+        self.Recent_Adding_Backend_fromLibrary(ND, ot)
 
-        self.Recent_Adding_Backend_fromLibrary()
-
-    def Recent_Adding_Backend_fromLibrary(self):
+    def Recent_Adding_Backend_fromLibrary(self, ND, ot):
         with self.change_dir('Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
@@ -748,7 +830,17 @@ class MainfileApplication():
 
             self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
             self.conn.commit()
+
+            rowID = []
+            self.c.execute(f"SELECT rowid, * FROM Recent WHERE Title = (?)", ND)
+            for ID in self.c.fetchall():
+                rowID.append(ID[0])
+
+            self.c.execute(f"UPDATE Recent SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+            self.conn.commit()
+
             self.conn.close()
+        self.libraryInterface()
 
     def Recent_Adding_to_list(self):
         with self.change_dir('Database'):
@@ -764,6 +856,74 @@ class MainfileApplication():
 
             self.conn.close()
 
+    def openFeature_in_RecrntList(self, event):
+        time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
+        ot = [time_Now]
+        item = self.listRecentBook_HomeInterface.selection()
+        Name_Data = str(self.listRecentBook_HomeInterface.item(item, "values")[1])
+        ND = [Name_Data]
+
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
+
+            tabelinDatabase = []
+            self.c.execute('SELECT name from sqlite_master where type = "table"')
+            for items in self.c.fetchall():
+                tabelinDatabase.append(items[0])
+
+            for Name_Table in (tabelinDatabase):
+                if Name_Table != 'Album' and Name_Table != 'Authors':
+
+                    TitleNameList = []
+                    self.c.execute(f"SELECT * FROM [{Name_Table}]")
+                    for TitleName in self.c.fetchall():
+                        TitleNameList.append(TitleName[1])
+                    
+                    if Name_Data in TitleNameList:
+                        rowID = []
+                        self.c.execute(f"SELECT rowid, * FROM [{Name_Table}] WHERE Title = (?)", ND)
+                        for ID in self.c.fetchall():
+                            rowID.append(ID[0])
+
+                        self.c.execute(f"UPDATE [{Name_Table}] SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+                        self.conn.commit()
+
+            self.conn.close()
+        with self.change_dir('Data'):
+            FileName = (os.getcwd() + "/" + Name_Data)
+            subprocess.call(['open', FileName])
+        self.Recent_Adding_Backend_fromRecent(ND, ot)
+
+    def Recent_Adding_Backend_fromRecent(self, ND, ot):
+        with self.change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
+
+            self.Recent_Selection = self.listRecentBook_HomeInterface.selection()
+            self.Recent_Data_From_LibraryList = self.listRecentBook_HomeInterface.item(self.Recent_Selection,'values')
+
+            self.RecentItem = [
+                (
+                self.Recent_Data_From_LibraryList[0], self.Recent_Data_From_LibraryList[1], self.Recent_Data_From_LibraryList[2], self.Recent_Data_From_LibraryList[3], self.Recent_Data_From_LibraryList[4], self.Recent_Data_From_LibraryList[5]
+                )
+            ]
+
+            self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
+            self.conn.commit()
+
+            rowID = []
+            self.c.execute(f"SELECT rowid, * FROM Recent WHERE Title = (?)", ND)
+            for ID in self.c.fetchall():
+                rowID.append(ID[0])
+
+            self.c.execute(f"UPDATE Recent SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+            self.conn.commit()
+
+            self.conn.close()
+        self.homeInterfaceInterface()
+        self.Recent_Adding_to_list()
+
     def FavoriteAdding_Function(self):
         FavoriteAdding.FavoriteAdding_from_Library()
         #self.FavoritInterface()
@@ -777,15 +937,12 @@ class MainfileApplication():
                 favoriteList = []
                 Dataitem = self.listBook_libraryInterface.selection()
                 FavoriteData = (self.listBook_libraryInterface.item(Dataitem, "values"))
-                print('Data in Library for check...', FavoriteData[0])
 
                 FD = str(FavoriteData[1])
                 self.c.execute("SELECT * FROM Favorite")
                 for f in self.c.fetchall():
                     favoriteList.append(f[1])
-                print('Data in Favorite Datalist', favoriteList)
                 if FD in favoriteList:
-                    print('Loading Please wait ...')
                     tkinter.messagebox.showerror('Error', 'This file has been added. ')
                 else:
                     if FD != favoriteList:
@@ -823,7 +980,6 @@ class MainfileApplication():
             self.destinationPath = os.getcwd()
 
             pdf_path = self.orginalpath
-            #print(self.orginalpath)
             with open(pdf_path, 'rb') as f:
                 self.pdf = PdfFileReader(f)
                 if self.pdf.isEncrypted:
@@ -831,7 +987,6 @@ class MainfileApplication():
                 else:
                     if self.orginalpath != '':
                         shutil.copy(self.orginalpath, self.destinationPath)
-                    print("Adding...")
 
         self.Add_Data_Into_Database()
         #self.AuthorFunction()
@@ -971,7 +1126,6 @@ class MainfileApplication():
                 self.listBook_AuthorInterface.delete(row)
 
             item = self.tvListName_AuthorInterface.selection()
-            print("This is ", str(self.tvListName_AuthorInterface.item(item ,"values")[0]))
 
             AuthorsNameItem = self.tvListName_AuthorInterface.item(item ,"values")[0]
 
@@ -981,24 +1135,44 @@ class MainfileApplication():
             self.conn.close()
     
     def openFeature_inAuthorInterface(self, event):
+        time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
+        ot = [time_Now]
+        item = self.listBook_AuthorInterface.selection()
+        Name_Data = str(self.listBook_AuthorInterface.item(item, "values")[1])
+        ND = [Name_Data]
+
+        with change_dir('Database'):
+            self.conn = sqlite3.connect('Libraries.db')
+            self.c = self.conn.cursor()
+
+            tabelinDatabase = []
+            self.c.execute('SELECT name from sqlite_master where type = "table"')
+            for items in self.c.fetchall():
+                tabelinDatabase.append(items[0])
+
+            for Name_Table in (tabelinDatabase):
+                if Name_Table != 'Album' and Name_Table != 'Authors':
+
+                    TitleNameList = []
+                    self.c.execute(f"SELECT * FROM [{Name_Table}]")
+                    for TitleName in self.c.fetchall():
+                        TitleNameList.append(TitleName[1])
+
+                    if Name_Data in TitleNameList:
+                        rowID = []
+                        self.c.execute(f"SELECT rowid, * FROM [{Name_Table}] WHERE Title = (?)", ND)
+                        for ID in self.c.fetchall():
+                            rowID.append(ID[0])
+
+                        self.c.execute(f"UPDATE [{Name_Table}] SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+                        self.conn.commit()
+
         with self.change_dir('Data'):
-            ot = []
-            ND = []
-
-            time_Now = (datetime.datetime.now().astimezone().strftime("%Y/%m/%d  %H:%M:%S"))
-            ot.append(time_Now)
-            item = self.listBook_AuthorInterface.selection()
-            Name_Data = str(self.listBook_AuthorInterface.item(item, "values")[1])
-            print(Name_Data, 'Open at', time_Now)
-            ND.append(Name_Data)
-            print(ND[0:])
-
             FileName = (os.getcwd() + "/" + Name_Data)
             subprocess.call(['open', FileName])
-            print(ot)
-        self.Recent_Adding_Backend_fromAuthors_Inyterface()
+        self.Recent_Adding_Backend_fromAuthors_Inyterface(ND, ot)
 
-    def Recent_Adding_Backend_fromAuthors_Inyterface(self):
+    def Recent_Adding_Backend_fromAuthors_Inyterface(self, ND, ot):
         with self.change_dir('Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
@@ -1014,7 +1188,16 @@ class MainfileApplication():
     
             self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
             self.conn.commit()
-            self.conn.close()        
+
+            rowID = []
+            self.c.execute(f"SELECT rowid, * FROM Recent WHERE Title = (?)", ND)
+            for ID in self.c.fetchall():
+                rowID.append(ID[0])
+
+            self.c.execute(f"UPDATE Recent SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+            self.conn.commit()
+
+            self.conn.close()    
 
     def DeleteFile_FromData(self):
         with self.change_dir('Img'):
@@ -1023,9 +1206,7 @@ class MainfileApplication():
                 self.NameSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[1]
                 self.IDSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[0]
 
-                os.remove(os.getcwd() + "/" + self.NameSelectionItem + ".png" )
-                print(os.getcwd() + "/" + self.NameSelectionItem + ".png" )
-                
+                os.remove(os.getcwd() + "/" + self.NameSelectionItem + ".png" )                
 
             except IndexError as e:
                 tkinter.messagebox.showwarning('Warning', 'Please Choose one file.')
@@ -1088,7 +1269,6 @@ class MainfileApplication():
 
             self.conn.commit()
             self.conn.close() 
-            print(IDSelection," Succcessfully!")
 
         self.libraryInterface()
 
@@ -1096,8 +1276,6 @@ class MainfileApplication():
         try:
             selectItem = self.listBook_libraryInterface.selection()
             Name = self.listBook_libraryInterface.item(selectItem, 'values')[1]
-
-            print(Name)
 
             with self.change_dir('Data'):
 
@@ -1138,16 +1316,6 @@ class MainfileApplication():
                     Producer = 'Unknown Producer'
                 elif Subject == '':
                     Subject = 'Unknown Subject'
-
-
-                #print('Name :', Name)
-                #print('Title :', Title)
-                #print('Author :', Author)
-                #print('Creator :', Creator)
-                #print('Producer :', Producer)
-                #print('Subject :', Subject)
-                #print('Page :', Number_of_pages)
-                #print('page_size :', page_size)
 
             DetailFunction.DetailFunction(Name, Title, Author, Creator, Producer, Subject, Number_of_pages, page_size)
 

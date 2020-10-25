@@ -2,6 +2,7 @@ import os
 import sqlite3
 import AddDataintoAlbum
 import tkinter.messagebox
+import RenamAlbumName
 from tkinter import *
 from tkinter import ttk
 from tkmacosx import Button
@@ -58,7 +59,7 @@ class AlbumEditing():
         self.spinAlbumName.pack(side = 'left', pady = 5)
         self.spinAlbumName.bind('<<ComboboxSelected>>', self.AlbumName)
 
-        self.btnRename = Button(self.TopFrame_MainFrame, text = 'Rename', borderless = 10)
+        self.btnRename = Button(self.TopFrame_MainFrame, text = 'Rename', borderless = 10, command = self.RenameFucniotn)
         self.btnRename.pack(side = 'right', pady = 5)
 
         self.btnAdd = Button(self.TopFrame_MainFrame, text = 'Add', borderless = 10, command = self.AddingFunciton)
@@ -72,7 +73,12 @@ class AlbumEditing():
         self.btnDone = Button(self.ButtomFrame, text = 'Done', height = 30, border = 0, borderless = 4, command = self.EditingAlbum_TopLevel.destroy)
         self.btnDone.pack(side = 'right', padx = 5, pady = 5)
 
-        self.EditingAlbum_TopLevel.mainloop()        
+        self.EditingAlbum_TopLevel.mainloop()   
+
+    def RenameFucniotn(self):
+        Album_Name = self.spinAlbumName.get()
+        if Album_Name != '':
+            RenamAlbumName.RenameTable_and_AlbumData(Album_Name)     
         
     def AlbumName(self, event):
         for row in self.listBook_Interface.get_children():
