@@ -1,4 +1,4 @@
-from CreateDatabase import change_dir
+#from CreateDatabase import change_dir
 import os
 import tkinter.messagebox
 import datetime
@@ -8,6 +8,7 @@ import shutil
 import subprocess
 
 #import Database
+import CreateDatabase
 import NewAlbum
 import FavoriteAdding
 import AuthorsFunction
@@ -28,6 +29,8 @@ class MainfileApplication():
 
     def __init__(self):
                 
+        CreateDatabase.CreateDatabaseFunction()
+
         self.Main_Window = Tk()
         self.Main_Window.title("My_BooK")
         self.Main_Window.geometry("1220x650+100+100")
