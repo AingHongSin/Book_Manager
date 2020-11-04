@@ -1,7 +1,4 @@
 import os
-import io
-import fitz
-import PIL
 #import pdf2image
 #from pdf2image import convert_from_path, convert_from_bytes
 from PIL import Image, ImageTk
@@ -38,7 +35,7 @@ class DetailFunction():
         self.lblDetailofBook = Label(self.TopFrame_DetailInterface, text = 'Book Detail', font = ('Times',24,'bold'), bg = '#00EBFF', fg = '#F0FFFF')
         self.lblDetailofBook.pack()
 
-        with self.change_dir('Img'):
+        with self.change_dir('my_BookData/Img'):
             Photo = PhotoImage(file = (os.getcwd() + "/" + str(Name)+ '.png'))
             Potho_image = Photo.subsample(2,2)
 

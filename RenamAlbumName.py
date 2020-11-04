@@ -64,7 +64,7 @@ class RenameTable_and_AlbumData():
         DNL = [destinyName]
         rowID = []
 
-        with self.change_dir('Database'):
+        with self.change_dir('my_BookData/Database'):
            
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()

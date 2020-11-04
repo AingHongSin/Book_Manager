@@ -61,7 +61,7 @@ class Adding_from_Library_into_Adlbum():
         self.btnDone.pack(side = 'right', padx = 5, pady = 5)
 
 
-        with self.change_dir('Database'):   
+        with self.change_dir('my_BookData/Database'):   
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
 
@@ -80,7 +80,7 @@ class Adding_from_Library_into_Adlbum():
     def DataAdding(self):
         try:        
             AlbumDatalist = []
-            with self.change_dir('Database'):
+            with self.change_dir('my_BookData/Database'):
                 self.conn = sqlite3.connect('Libraries.db')
                 self.c = self.conn.cursor()
 

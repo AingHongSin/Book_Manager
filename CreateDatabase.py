@@ -5,7 +5,7 @@ from contextlib import contextmanager
 class CreateDatabaseFunction():
     def __init__(self):
 
-        with self.change_dir('Database'):
+        with self.change_dir('my_BookData/Database'):
             #conn = sqlite3.connect(':memory:')
             conn = sqlite3.connect('Libraries.db')
             # Create a cursor

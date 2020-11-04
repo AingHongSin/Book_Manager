@@ -43,13 +43,15 @@ class NewAlbumAction():
 
         self.addAlbum_Interface.mainloop()
     
-        self.addAlbum_Interface.destroy
+
 
     def AddAlbumName_to_Database_usingReturnButton(self, event):
         self.AddAlbumName_to_Database()
 
     def AddAlbumName_to_Database(self):
-        with self.change_dir('Database'):
+        #os.chdir(os.path.dirname(os.getcwd()))
+        print(os.getcwd())
+        with self.change_dir('my_BookData/Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
 
@@ -151,6 +153,8 @@ class NewAlbumAction():
             tkinter.messagebox.showerror('Error', 'Your book had not been add in to your album.')
 
         os.chdir(os.path.dirname(os.getcwd()))
+        os.chdir(os.path.dirname(os.getcwd()))
+        print(os.getcwd())
         self.AddData_into_List.destroy()
 
 

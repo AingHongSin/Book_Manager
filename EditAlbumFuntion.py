@@ -40,7 +40,7 @@ class AlbumEditing():
         #self.sptTitle = ttk.Separator(self.TopFrame)
         #self.sptTitle.pack(fill = 'x', padx = 10)
 
-        with self.change_dir('Database'):
+        with self.change_dir('my_BookData/Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
 
@@ -88,7 +88,7 @@ class AlbumEditing():
             print(self.spinAlbumName.get())
             AlbumList = self.spinAlbumName.get()
 
-            with self.change_dir('Database'):
+            with self.change_dir('my_BookData/Database'):
                 self.conn = sqlite3.connect('Libraries.db')
                 self.c = self.conn.cursor()
 
@@ -130,7 +130,7 @@ class AlbumEditing():
 
             AlbumNamne = self.spinAlbumName.get()
             t = [AlbumNamne]
-            with self.change_dir('Database'):
+            with self.change_dir('my_BookData/Database'):
                 self.conn = sqlite3.connect('Libraries.db')
                 self.c = self.conn.cursor()
 

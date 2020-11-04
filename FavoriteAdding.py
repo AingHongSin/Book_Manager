@@ -57,7 +57,7 @@ class FavoriteAdding_from_Library():
         self.btnDone = Button(self.BottomFrame, text = 'Done', borderless = 4, height = 30, command = self.DoneFunction)
         self.btnDone.pack(side = 'right', padx = 5, pady = 5)
 
-        with self.change_dir('Database'):
+        with self.change_dir('my_BookData/Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
 
@@ -76,7 +76,7 @@ class FavoriteAdding_from_Library():
     def DataAdding(self):
         
         FavoriteDatalist = []
-        with self.change_dir('Database'):
+        with self.change_dir('my_BookData/Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
 
