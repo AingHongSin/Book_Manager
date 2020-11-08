@@ -7,7 +7,6 @@ from PyPDF2 import PdfFileReader, PdfFileWriter
 class Splitting_and_Converting():
     def __init__(self, Name):
 
-        print(os.getcwd())
         with self.change_dir('Data'):
             path = Name
             self.pdf_splitter(path)

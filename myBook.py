@@ -1,28 +1,31 @@
 #from CreateDatabase import change_dir
-import CreateDatabase
-import os
-import tkinter.messagebox
 import datetime
-import sqlite3
+import os
 #import fitz
 import shutil
+import sqlite3
 import subprocess
+import tkinter.messagebox
 
-#import Database
-import NewAlbum
-import FavoriteAdding
+from contextlib import contextmanager
+from tkinter import *
+from tkinter import filedialog, ttk
+from PIL import Image, ImageTk
+from tkmacosx import Button
+
+import LibraryInterfaceaInList
+import LibraryInterfaceInGird
+import ExtractMetadaFromPDF
 import AuthorsFunction
+import Convert_fomPdf_toImage
+import CreateDatabase
 import DetailFunction
 import EditAlbumFuntion
-import Convert_fomPdf_toImage
-
-from tkinter import * 
-from tkinter import ttk
-from PIL import ImageTk, Image
-from tkinter import filedialog
+import FavoriteAdding
+#import Database
+import NewAlbum
 from PyPDF2 import PdfFileReader
-from tkmacosx import Button
-from contextlib import contextmanager
+
 #import ImageExtraction
 
 
@@ -30,7 +33,6 @@ class MainfileApplication():
 
     def __init__(self):
                 
-        CreateDatabase.CreateDatabaseFunction()
 
         self.Main_Window = Tk()
         self.Main_Window.title("My_BooK")
@@ -46,12 +48,20 @@ class MainfileApplication():
         #    photo = ttk.PhotoImage(file = "mybookLogo.ico")
         #    self.Main_Window.iconphoto(True, photo)
 
+        CreateDatabase.CreateDatabaseFunction()
+        ExtractMetadaFromPDF.Extract_Metada_From_PDF()
+
+
+            # Global Variabel
         self.Amount_Book = 0
-        self.datalist_of_Database = []
         self.AuthorNameList_Databas = []
-        self.Add_Data_Into_Database()
+
         self.RangeofAuhtorList = 1
         self.ItemList = []
+        
+        self.btnList = True
+                
+
         #self.AuthorFunction()
 
         # Frame
@@ -63,8 +73,14 @@ class MainfileApplication():
         #self.topFrame_mainWindow.pack(side = 'top', fill = 'x')
         #self.topFrame_mainWindow.config(background = '#666666')
         
-        self.rightFrame_mainWindow = Frame(self.Main_Window)
-        self.rightFrame_mainWindow.pack(fill = 'both', pady = 2, padx = 2, )
+        self.holdrightFrame_mainwindow = Frame(self.Main_Window)
+        self.holdrightFrame_mainwindow.pack(fill = 'both', pady = 2, padx = 2,)
+        
+        self.ToprightFrame_mianwindow = Frame(self.holdrightFrame_mainwindow, bg = 'red')
+        self.ToprightFrame_mianwindow.pack(fill = 'x', side = 'top')
+        
+        self.rightFrame_mainWindow = Frame(self.holdrightFrame_mainwindow)
+        self.rightFrame_mainWindow.pack(fill = 'x' )
 
             #
         with self.change_dir('Resourse/icon'):
@@ -134,7 +150,11 @@ class MainfileApplication():
 
         self.spt_leftFrame_TopExitButton = ttk.Separator(self.leftFrame_mainWindow, orient = 'horizontal')
         self.spt_leftFrame_TopExitButton.pack(side = 'bottom', fill = 'x', padx = 15)
-
+        
+        self.btnListAndGrid_mainrightFrame  = Button(self.ToprightFrame_mianwindow, text = 'List', borderless = 10, border = 10, borderwidth = 0, height = 45, bg = 'lime', command = self.ConfiguringListandGrid)
+        self.btnListAndGrid_mainrightFrame.pack(side = 'left')
+        
+    
         self.homeInterfaceInterface()
 
         self.Main_Window.mainloop()
@@ -142,6 +162,16 @@ class MainfileApplication():
     def homeInterfaceInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
+
+        
+        
+        self.Library = False
+        self.Author = False
+        self.Favorite = False
+        self.Album = False
+
+
+
 
         # Frame
         self.topFrame_HomeInterface = Frame(self.rightFrame_mainWindow)
@@ -264,73 +294,59 @@ class MainfileApplication():
     def libraryInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
+            
+        self.Library = True
+        self.Author = False
+        self.Favorite = False
+        self.Album = False
 
-        # Frame
-        self.topFrame_LibraryInterface = Frame(self.rightFrame_mainWindow)
-        self.topFrame_LibraryInterface.pack(side = 'top', fill = 'x')
-        self.topFrame_LibraryInterface.config(background = '#00EBFF')
+        if self.Library == True:
 
-        self.mainFrame_libraryInterface = Frame(self.rightFrame_mainWindow)
-        self.mainFrame_libraryInterface.pack()
 
+            self.btnLibrary_leftFrame.config(background = '#3d84a8')
+            self.btnAuthor_leftFrame.config(background = 'white')
+            #self.btnCategory_leftFrame.config(background = 'white')
+            self.btnAlbum_leftFrame.config(background = 'white')
+            self.btnFavorit_leftFrame.config(background = 'white')
+
+            if self.btnList == True:
+                self.LibraryOnterface_in_List()
+            if self.btnList == False:
+                self.LibararyInterface_in_Grid()
+            
+    def LibraryOnterface_in_List(self):
+        LibraryInterfaceaInList.LibraryInterfacea_in_List_Function(self.Main_Window ,self.rightFrame_mainWindow)
         
-        # Interface
-                            # Tapbar
-        self.lblnameTap_libraryInterface = Label(self.topFrame_LibraryInterface, text = 'Library\t\t\t\t', font = ('Times',20,'bold'), bg = '#00EBFF')
-        self.lblnameTap_libraryInterface.pack(side = 'right')
-
-        self.btnAddBook_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Add', border = 0, borderless = 10, width = 100, height = 30, command = self.openFileDailog_for_AddFile)
-        self.btnAddBook_LibraryInterface.pack(side = 'left')
-
-        self.btnDeleteBook_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Delete', border = 0, borderless = 10, width = 100, height = 30, command = self.DeleteFile_FromData)
-        self.btnDeleteBook_LibraryInterface.pack(side = 'left')      
-
-        self.btnBookDetail_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Detail', border = 0, borderless = 10, width = 100, height = 30, command = self.DetailFunction_LibraryInterface)
-        self.btnBookDetail_LibraryInterface.pack(side = 'left')   
-
-        self.btnFavoritAdding_LibraryInterface = Button(self.topFrame_LibraryInterface, text = 'Favorit Adding', border = 0, borderless = 10, width = 130, height = 30, command = self.FavoritAddingBackend)
-        self.btnFavoritAdding_LibraryInterface.pack(side = 'left')
-
-        self.btnLibrary_leftFrame.config(background = '#3d84a8')
-        self.btnAuthor_leftFrame.config(background = 'white')
-        #self.btnCategory_leftFrame.config(background = 'white')
-        self.btnAlbum_leftFrame.config(background = 'white')
-        self.btnFavorit_leftFrame.config(background = 'white')
-
-        
-                            # main Interface
-        self.listBook_libraryInterface = ttk.Treeview(self.mainFrame_libraryInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
-        self.listBook_libraryInterface.pack(padx = '10', pady = '10')
-        self.listBook_libraryInterface.bind("<Double-Button-1>", self.openFeature)
-
-        self.listBook_libraryInterface.column('ID', width = '40')
-        self.listBook_libraryInterface.heading('ID', text = 'ID')
-
-        self.listBook_libraryInterface.column('Title', width = '250')
-        self.listBook_libraryInterface.heading('Title', text = 'Title')
-
-        self.listBook_libraryInterface.column('Author', width = '210')
-        self.listBook_libraryInterface.heading('Author', text = 'Author')
-
-        self.listBook_libraryInterface.column('Lenght', width = '120')
-        self.listBook_libraryInterface.heading('Lenght', text = 'Length')
-    
-        self.listBook_libraryInterface.column('Last Readed', width = '170')
-        self.listBook_libraryInterface.heading('Last Readed', text = 'Last Readed')
-
-        self.listBook_libraryInterface.column('Date Added', width = '170')
-        self.listBook_libraryInterface.heading('Date Added', text = 'Date Added')
-
-        #self.listBook_libraryInterface.column('Favorite', width = '80')
-        #self.listBook_libraryInterface.heading('Favorite', text = 'Favorite')
-
-        self.library_Data_Adding()
+    def LibararyInterface_in_Grid(self):
+        LibraryInterfaceInGird.Library_Interface_in_Gird_Function(self.rightFrame_mainWindow)
 
     def AuthorInterface(self):
 
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
+        
+        self.Library = False
+        self.Author = True
+        self.Favorite = False
+        self.Album = False
 
+
+            
+        if self.Author == True:   
+            self.btnAuthor_leftFrame.config(background = '#3d84a8')
+            self.btnLibrary_leftFrame.config(background = 'white')
+            #self.btnCategory_leftFrame.config(background = 'white')
+            self.btnAlbum_leftFrame.config(background = 'white')
+            self.btnFavorit_leftFrame.config(background = 'white')
+
+
+            if self.btnList == True:
+                self.AuthorInterface_in_list()
+
+            if self.btnList == False:
+                self.AuthorInterface_in_grid()
+
+    def AuthorInterface_in_list(self):
         # Frame
         self.topFrame_AuthorInterface = Frame(self.rightFrame_mainWindow)
         self.topFrame_AuthorInterface.pack(side = 'top', fill = 'x')
@@ -345,11 +361,6 @@ class MainfileApplication():
         self.mainFrame_AuthorInterface = Frame(self.listFrame_AuthorInterface)
         self.mainFrame_AuthorInterface.pack(fill = 'both', padx = 5)
 
-        self.btnAuthor_leftFrame.config(background = '#3d84a8')
-        self.btnLibrary_leftFrame.config(background = 'white')
-        #self.btnCategory_leftFrame.config(background = 'white')
-        self.btnAlbum_leftFrame.config(background = 'white')
-        self.btnFavorit_leftFrame.config(background = 'white')
 
                 # Interface
 
@@ -373,15 +384,15 @@ class MainfileApplication():
 
         self.listBook_AuthorInterface.column('Lenght', width = '65')
         self.listBook_AuthorInterface.heading('Lenght', text = 'Length')
-    
+
         self.listBook_AuthorInterface.column('Last Readed', width = '160')
         self.listBook_AuthorInterface.heading('Last Readed', text = 'Last Readed')
 
         self.listBook_AuthorInterface.column('Date Added', width = '160')
         self.listBook_AuthorInterface.heading('Date Added', text = 'Date Added')
-        
-        #self.listBook_AuthorInterface.column(7, width = '100')
-        #self.listBook_AuthorInterface.heading(7, text = 'Favorite')
+
+    def AuthorInterface_in_grid(self):
+        pass
 
     def AuthorNameList_AutorInterface(self):
 
@@ -397,6 +408,25 @@ class MainfileApplication():
     def FavoritInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
+        
+        self.Library = False
+        self.Author = False
+        self.Favorite = True
+        self.Album = False
+
+        if self.Favorite == True:
+            self.btnAuthor_leftFrame.config(background = 'white')
+            self.btnLibrary_leftFrame.config(background = 'white')
+            #self.btnCategory_leftFrame.config(background = 'white')
+            self.btnAlbum_leftFrame.config(background = 'white')
+            self.btnFavorit_leftFrame.config(background = '#3d84a8')
+
+            if self.btnList == True:
+                self.FavoritInterface_in_list()
+            if self.btnList == False:
+                self.FavoritInterface_in_grid()
+    
+    def FavoritInterface_in_list(self):
         # Frame
         self.topFrame_FavoriteInterface = Frame(self.rightFrame_mainWindow)
         self.topFrame_FavoriteInterface.pack(side = 'top', fill = 'x')
@@ -416,11 +446,6 @@ class MainfileApplication():
         self.btnDeleteBook_FavoriteInterface = Button(self.topFrame_FavoriteInterface, text = 'Delete', border = 0, borderless = 10, width = 100, height = 30, command = self.DeleteData_From_FavoriteList)
         self.btnDeleteBook_FavoriteInterface.pack(side = 'left')     
 
-        self.btnAuthor_leftFrame.config(background = 'white')
-        self.btnLibrary_leftFrame.config(background = 'white')
-        #self.btnCategory_leftFrame.config(background = 'white')
-        self.btnAlbum_leftFrame.config(background = 'white')
-        self.btnFavorit_leftFrame.config(background = '#3d84a8')
 
                             # main Interface
         self.listBook_FavoriteInterface = ttk.Treeview(self.mainFrame_FevoriteInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = '40')
@@ -452,9 +477,33 @@ class MainfileApplication():
 
         self.Favorite_Insrerting_Data_to_List()
 
+    def FavoritInterface_in_grid(self):
+        pass
+
     def AlbumInterface(self):
         for widget in self.rightFrame_mainWindow.winfo_children():
             widget.destroy()
+
+        self.Library = False
+        self.Author = False
+        self.Favorite = False
+        self.Album = True
+
+
+
+        if self.Album == True:
+            self.btnLibrary_leftFrame.config(background = 'white')
+            self.btnAuthor_leftFrame.config(background = 'white')
+            #self.btnCategory_leftFrame.config(background = 'white')
+            self.btnAlbum_leftFrame.config(background = '#3d84a8')
+            self.btnFavorit_leftFrame.config(background = 'white')
+
+            if self.btnList == True:
+                self.AlbumInterface_in_list()
+            if self.btnList == False:
+                self.AlbumInterface_in_grid()
+
+    def AlbumInterface_in_list(self):
 
         # Frame
         self.topFrame_AlbumInterface = Frame(self.rightFrame_mainWindow)
@@ -483,11 +532,6 @@ class MainfileApplication():
         self.lblnameTap_AlbumInterface = Label(self.topFrame_AlbumInterface, text = 'Album\t\t\t\t\t', font = ('Times',20,'bold'), bg = '#00EBFF')
         self.lblnameTap_AlbumInterface.pack(side = 'right')
 
-        self.btnLibrary_leftFrame.config(background = 'white')
-        self.btnAuthor_leftFrame.config(background = 'white')
-        #self.btnCategory_leftFrame.config(background = 'white')
-        self.btnAlbum_leftFrame.config(background = '#3d84a8')
-        self.btnFavorit_leftFrame.config(background = 'white')
 
         self.listBook_AlbumInterface = ttk.Treeview(self.mainFrame_AlbumInterface, column = ('ID', 'Title', 'Author', 'Lenght', 'Last Readed', 'Date Added'), show = 'headings', height = 40)
         self.listBook_AlbumInterface.pack()
@@ -521,6 +565,10 @@ class MainfileApplication():
 
         self.ShwoDataIntoListAlbum()
 
+    def AlbumInterface_in_grid(self):
+        pass
+
+
 #___________________________________________________________________________________________BACK-END__________________________________________________________________#
 
 
@@ -533,108 +581,7 @@ class MainfileApplication():
         finally:
             os.chdir(cwd)
 
-    def Add_Data_Into_Database(self):
-        # Database
-        with self.change_dir('my_BookData/Database'):
-            self.conn = sqlite3.connect('Libraries.db')
-            self.c = self.conn.cursor()
-
-            self.c.execute("SELECT * FROM Data_list ")
-            self.items = self.c.fetchall()
-
-        with self.change_dir('my_BookData/Data'):
-            self.dataFromDataFolder = os.listdir()
-            print(os.getcwd())
-
-            for item in self.items:
-                self.datalist_of_Database.append(item[1])
-
-            self.Amount_Book = len(self.items) + 1
-
-            PASSWORD = None
-
-            for self.row in self.dataFromDataFolder:
-                if self.row != '.DS_Store':
-                    if self.row in self.datalist_of_Database:
-                        print("", end="")
-                    else:
-                        pdf_path = str(self.row)
-                        print("pdf_path :", os.getcwd())
-                        with open(pdf_path, 'rb') as f:
-                            self.pdf = PdfFileReader(f)
-                            if self.pdf.isEncrypted:
-                                try:
-                                    self.pdf.decrypt(PASSWORD)
-                                except NotImplementedError:
-                                    command = (f"qpdf --password='{PASSWORD}' --decrypt {self.row} {self.row};")
-                                    os.system(command)            
-                                    with open(pdf_path, mode='rb') as fp:
-                                        self.pdf = PdfFileReader(fp)
-                                        self.information = self.pdf.getDocumentInfo()
-                                        self.number_of_pages = self.pdf.getNumPages()
-                                            
-                            self.information = self.pdf.getDocumentInfo()
-                            self.number_of_pages = self.pdf.getNumPages()
-
-                        ID = self.Amount_Book 
-                        Title = str(self.row)
-                        Author = (self.information.author)
-                        Number_of_Pages = (self.number_of_pages)
-                        Last_Read = (None)
-                        Add_Date = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
-
-                        if Author == None:
-                            libraryData = [
-                                        (ID, Title, 'Unkonwn Author', Number_of_Pages, Last_Read, Add_Date)
-                                        ]
-
-                            self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?)" , libraryData)
-                            self.conn.commit()
-                            self.Amount_Book += 1
-                        else: 
-                            libraryData = [
-                                        (ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
-                                        ]
-
-                            self.c.executemany("INSERT INTO Data_list VALUES (?,?,?,?,?,?)" , libraryData)
-                            self.conn.commit()
-                            self.Amount_Book += 1
-
-
-                        os.chdir(os.path.dirname(os.getcwd()))
-                        Convert_fomPdf_toImage.Splitting_and_Converting(pdf_path)
-                        with self.change_dir('Database'): 
-                            AuthorsFunction.Function(ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
-                            
-                        os.chdir('Data/')
-                        print("After Extraced :",os.getcwd())
-                        
-        self.conn.commit()
-        self.conn.close()
              
-    def library_Data_Adding(self):
-        for widget in self.listBook_libraryInterface.winfo_children():
-            widget.destroy()
-
-        with self.change_dir('my_BookData/Database'):
-            self.conn = sqlite3.connect('Libraries.db')
-            self.c = self.conn.cursor()
-
-            self.c.execute("SELECT * FROM Data_list ")
-            self.items = self.c.fetchall()
-
-            for item in self.items:
-                if item[2] == None:
-                    self.listBook_libraryInterface.insert("", END, values = (int(item[0]), item[1], 'Unknown Author', item[3],  item[4], item[5] ))
-                else: 
-                    self.listBook_libraryInterface.insert("", END, values = (int(item[0]), item[1], item[2], item[3],  item[4], item[5] ))
-
-                #if int(item[0]) % 2 == 0:
-                #    self.listBook_libraryInterface.configure(even, background = 'blue')
-
-            self.conn.close()
-
-        self.listBook_libraryInterface.selection_toggle(self.listBook_libraryInterface.focus())
 
     def FileOpening_in_FavoriteInterface(self, event):
         time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
@@ -775,76 +722,6 @@ class MainfileApplication():
 
             self.conn.close()
 
-    def openFeature(self, event):
-        time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
-        ot = [time_Now]
-        item = self.listBook_libraryInterface.focus()
-        try:
-            Name_Data = str(self.listBook_libraryInterface.item(item, "values")[1])
-
-            ND = [Name_Data]
-
-            with self.change_dir('my_BookData/Database'):
-                self.conn = sqlite3.connect('Libraries.db')
-                self.c = self.conn.cursor()
-
-                tabelinDatabase = []
-                self.c.execute('SELECT name from sqlite_master where type = "table"')
-                for items in self.c.fetchall():
-                    tabelinDatabase.append(items[0])
-
-                for Name_Table in (tabelinDatabase):
-                    if Name_Table != 'Album' and Name_Table != 'Authors':
-
-                        TitleNameList = []
-                        self.c.execute(f"SELECT * FROM [{Name_Table}]")
-                        for TitleName in self.c.fetchall():
-                            TitleNameList.append(TitleName[1])
-
-                        if Name_Data in TitleNameList:
-                            rowID = []
-                            self.c.execute(f"SELECT rowid, * FROM [{Name_Table}] WHERE Title = (?)", ND)
-                            for ID in self.c.fetchall():
-                                rowID.append(ID[0])
-
-                            self.c.execute(f"UPDATE [{Name_Table}] SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
-                            self.conn.commit()
-
-                self.conn.close()
-            with self.change_dir('my_BookData/Data'):
-                FileName = (os.getcwd() + "/" + Name_Data)
-                subprocess.call(['open', FileName])
-            self.Recent_Adding_Backend_fromLibrary(ND, ot)
-        except IndexError:
-            print('', end='')
-
-    def Recent_Adding_Backend_fromLibrary(self, ND, ot):
-        with self.change_dir('my_BookData/Database'):
-            self.conn = sqlite3.connect('Libraries.db')
-            self.c = self.conn.cursor()
-
-            self.Recent_Selection = self.listBook_libraryInterface.selection()
-            self.Recent_Data_From_LibraryList = self.listBook_libraryInterface.item(self.Recent_Selection,'values')
-
-            self.RecentItem = [
-                (
-                self.Recent_Data_From_LibraryList[0], self.Recent_Data_From_LibraryList[1], self.Recent_Data_From_LibraryList[2], self.Recent_Data_From_LibraryList[3], self.Recent_Data_From_LibraryList[4], self.Recent_Data_From_LibraryList[5]
-                )
-            ]
-
-            self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)
-            self.conn.commit()
-
-            rowID = []
-            self.c.execute(f"SELECT rowid, * FROM Recent WHERE Title = (?)", ND)
-            for ID in self.c.fetchall():
-                rowID.append(ID[0])
-
-            self.c.execute(f"UPDATE Recent SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
-            self.conn.commit()
-
-            self.conn.close()
-        self.libraryInterface()
 
     def Recent_Adding_to_list(self):
         with self.change_dir('my_BookData/Database'):
@@ -933,36 +810,8 @@ class MainfileApplication():
         FavoriteAdding.FavoriteAdding_from_Library()
         #self.FavoritInterface()
 
-    def FavoritAddingBackend(self):
-        try:
-            with self.change_dir('my_BookData/Database'):
-                self.conn = sqlite3.connect('Libraries.db')
-                self.c = self.conn.cursor()
-
-                favoriteList = []
-                Dataitem = self.listBook_libraryInterface.selection()
-                FavoriteData = (self.listBook_libraryInterface.item(Dataitem, "values"))
-
-                FD = str(FavoriteData[1])
-                self.c.execute("SELECT * FROM Favorite")
-                for f in self.c.fetchall():
-                    favoriteList.append(f[1])
-                if FD in favoriteList:
-                    tkinter.messagebox.showerror('Error', 'This file has been added. ')
-                else:
-                    if FD != favoriteList:
-                        FavoriteManyData = [
-                                (
-                                FavoriteData[0], FavoriteData[1], FavoriteData[2], FavoriteData[3], FavoriteData[4], FavoriteData[5]
-                                )
-                            ]
-
-                        self.c.executemany("INSERT INTO Favorite VALUES (?,?,?,?,?,?)", FavoriteManyData)
-                        self.conn.commit()
-                        self.conn.close()
-
-        except IndexError as e :
-            tkinter.messagebox.showwarning('Warning', 'Please choose one book for add into Favorite')
+    def FavoritAddingBackend_from_LibraryInterface(self):
+        LibraryInterfaceaInList.LibraryInterfacea_in_List_Function.FavoritAddingBackend_from_LibraryInterface(self)
 
     def Favorite_Insrerting_Data_to_List(self):
         with self.change_dir('my_BookData/Database'):
@@ -976,29 +825,6 @@ class MainfileApplication():
             for FavoriteItem in self.FavoriteItems:
                 self.listBook_FavoriteInterface.insert("", END, values = (FavoriteItem[0], FavoriteItem[1], FavoriteItem[2], FavoriteItem[3], FavoriteItem[4], FavoriteItem[5]))
             self.conn.close()
-
-    def openFileDailog_for_AddFile(self):
-        with self.change_dir('my_BookData/Data'):
-            self.Main_Window.filename = filedialog.askopenfilename(initialdir = "/Users/privateman/Documents", title = "Select a pdf file", filetypes = (("pdf files", "*.pdf"),("all files", "*.*")) )
-
-            self.orginalpath = self.Main_Window.filename
-            self.destinationPath = os.getcwd()
-
-            pdf_path = self.orginalpath
-            try:
-                with open(pdf_path, 'rb') as f:
-                    self.pdf = PdfFileReader(f)
-                    if self.pdf.isEncrypted:
-                        tkinter.messagebox.showerror('Error', "This file has not support")
-                    else:
-                        if self.orginalpath != '':
-                            shutil.copy(self.orginalpath, self.destinationPath)
-            except FileNotFoundError:
-                print("", end='')
-
-        self.Add_Data_Into_Database()
-        #self.AuthorFunction()
-        self.libraryInterface()
 
     def DeleteData_From_FavoriteList(self):
         with self.change_dir('my_BookData/Database'):
@@ -1208,136 +1034,56 @@ class MainfileApplication():
             self.conn.close()    
 
     def DeleteFile_FromData(self):
-
-        with self.change_dir('my_BookData/splitting'):
-            self.SelectionItemfromList = self.listBook_libraryInterface.selection()
-            self.NameSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[1]
-
-            os.remove(f"{self.NameSelectionItem}")
-
-        with self.change_dir('my_BookData/Img'):
-            try:
-                self.SelectionItemfromList = self.listBook_libraryInterface.selection()
-                self.NameSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[1]
-                self.IDSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[0]
-
-                os.remove(os.getcwd() + "/" + self.NameSelectionItem + ".png" )                
-
-            except IndexError as e:
-                tkinter.messagebox.showwarning('Warning', 'Please Choose one file.')
-
-        with self.change_dir('my_BookData/Data'):
-            try:
-                self.SelectionItemfromList = self.listBook_libraryInterface.selection()
-                self.NameSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[1]
-                self.IDSelectionItem = self.listBook_libraryInterface.item(self.SelectionItemfromList, 'values')[0]
-
-                os.remove(f"{self.NameSelectionItem}")
-                os.chdir(os.path.dirname(os.getcwd()))
-                self.deleteDatafromDatabase(self.NameSelectionItem)     
-
-            except IndexError as e:
-                tkinter.messagebox.showwarning('Warning', 'Please Choose one file.')
-
-    def deleteDatafromDatabase(self, IDSelection):
-        IDSelectionItem = str(IDSelection)
-        tabelinDatabase = []
-
-        with self.change_dir('Database'):
-            self.conn = sqlite3.connect('Libraries.db')
-            self.c = self.conn.cursor()
-
-            self.c.execute('SELECT name from sqlite_master where type = "table"')
-            for items in self.c.fetchall():
-                tabelinDatabase.append(items[0])
-
-            for t in range(len(tabelinDatabase)):
-                o = str(tabelinDatabase[t])
-
-                tabelinDatabase[t] = []
-                self.c.execute(f"SELECT * FROM [{o}]")
-                for k in self.c.fetchall():
-                    tabelinDatabase[t].append(k[1])
+        LibraryInterfaceaInList.LibraryInterfacea_in_List_Function.DeleteFile_FromData()
 
 
-                if IDSelectionItem in tabelinDatabase[t]:
-                    dt = []
-                    ID  = [IDSelectionItem]
-                    self.c.execute(f"DELETE FROM [{o}] WHERE Title = (?)", ID[0:] )
-                    self.conn.commit()
+            
+    def ConfiguringListandGrid(self):
+        
+        
+        if self.btnList == False:
+            self.btnListAndGrid_mainrightFrame.config(text = 'List')
+            self.btnListAndGrid_mainrightFrame.config(bg = 'lime')
+            self.btnList = True
+        
+            if self.Library == True:
+                self.libraryInterface()
+            if self.Author == True:
+                self.AuthorInterface()
+            if self.Favorite == True:
+                self.FavoritInterface()
+            if self.Album == True:
+                self.AlbumInterface()
 
-                    self.c.execute(f"SELECT * FROM [{o}]")
-                    for y in self.c.fetchall():
-                        dt.append(y[0])
-                    if dt == []:
-                        if o != 'Album' and o != 'Favorite' and  o != 'Recent' and o != 'Data_list' and o != 'Authors':
-                            self.c.execute(f"DROP TABLE [{o}]")
-                            self.conn.commit()
+            #self.libraryInterface()
+            #self.AuthorInterface()
+            #self.FavoritInterface()
+            #self.AlbumInterface()
 
-                            rt = [o]
-                            self.c.execute("DELETE FROM Authors WHERE Authors_NameList = (?)", rt[0:])
-                            self.conn.commit()
-
-                            at = [o]
-                            self.c.execute("DELETE FROM Album WHERE Album_NameList = (?)", at[0:])
-                            self.conn.commit()
-
-            self.conn.commit()
-            self.conn.close() 
-
-        print(os.getcwd())
-        os.chdir(os.path.dirname(os.getcwd()))
-        self.libraryInterface()
-
-    def DetailFunction_LibraryInterface(self):
-        try:
-            selectItem = self.listBook_libraryInterface.selection()
-            Name = self.listBook_libraryInterface.item(selectItem, 'values')[1]
-
-            with self.change_dir('my_BookData/Data'):
-
-                pdf_path = str(Name)
-
-                with open(pdf_path, 'rb') as f:
-                    pdf = PdfFileReader(f)
-                    information = pdf.getDocumentInfo()
-                    number_of_pages = pdf.getNumPages()
-                    p = pdf.getPage(0)
-
-
-                Title =  (information.title)
-                Author =  (information.author)
-                Creator =  (information.creator)
-                Producer =  (information.producer)
-                Subject =  (information.subject)
-                Number_of_pages =  (number_of_pages)
-
-                w_in_user_space_units = p.mediaBox.getWidth()
-                h_in_user_space_units = p.mediaBox.getHeight()      
-
-                # 1 user space unit is 1/72 inch
-                # 1/72 inch ~ 0.352 millimeters     
-
-                w = int(float(p.mediaBox.getWidth()) * 0.352)
-                h = int(float(p.mediaBox.getHeight()) * 0.352)
-
-                page_size = (w,'mm' ,'x',h,'mm')
-
-                if Title == '':
-                    Title = 'Unknown Title'
-                elif Author == '':
-                    Author = 'Unknown Author'
-                elif Creator == '':
-                    Creator = 'Unknown Creator'
-                elif Producer == '':
-                    Producer = 'Unknown Producer'
-                elif Subject == '':
-                    Subject = 'Unknown Subject'
-
-            DetailFunction.DetailFunction(Name, Title, Author, Creator, Producer, Subject, Number_of_pages, page_size)
-
-        except IndexError as e :
-            tkinter.messagebox.showwarning('Warning', 'Please choose one book for show Detail')
+            
+            
+        else:    
+            self.btnListAndGrid_mainrightFrame.config(text = 'Grid')
+            self.btnListAndGrid_mainrightFrame.config(bg = 'gray')
+            self.btnList = False
+            
+            if self.Library == True:
+                self.libraryInterface()
+            if self.Author == True:
+                self.AuthorInterface()
+            if self.Favorite == True:
+                self.FavoritInterface()
+            if self.Album == True:
+                self.AlbumInterface()
+                
+            #self.libraryInterface()
+            #self.AuthorInterface()
+            #self.FavoritInterface()
+            #self.AlbumInterface()
+            
+            
+            
+            
 
 if __name__ == "__main__":
     MainfileApplication() 
