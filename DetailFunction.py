@@ -90,5 +90,3 @@ class DetailFunction():
             yield
         finally:
             os.chdir(cwd)
-
-

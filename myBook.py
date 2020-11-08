@@ -544,6 +544,7 @@ class MainfileApplication():
 
         with self.change_dir('my_BookData/Data'):
             self.dataFromDataFolder = os.listdir()
+            print(os.getcwd())
 
             for item in self.items:
                 self.datalist_of_Database.append(item[1])
@@ -558,6 +559,7 @@ class MainfileApplication():
                         print("", end="")
                     else:
                         pdf_path = str(self.row)
+                        print("pdf_path :", os.getcwd())
                         with open(pdf_path, 'rb') as f:
                             self.pdf = PdfFileReader(f)
                             if self.pdf.isEncrypted:
@@ -598,15 +600,18 @@ class MainfileApplication():
                             self.conn.commit()
                             self.Amount_Book += 1
 
-                        self.conn.commit()
-                        self.conn.close()
 
                         os.chdir(os.path.dirname(os.getcwd()))
                         Convert_fomPdf_toImage.Splitting_and_Converting(pdf_path)
                         with self.change_dir('Database'): 
                             AuthorsFunction.Function(ID, Title, Author, Number_of_Pages, Last_Read, Add_Date)
-
-            
+                            
+                        os.chdir('Data/')
+                        print("After Extraced :",os.getcwd())
+                        
+        self.conn.commit()
+        self.conn.close()
+             
     def library_Data_Adding(self):
         for widget in self.listBook_libraryInterface.winfo_children():
             widget.destroy()
@@ -773,41 +778,45 @@ class MainfileApplication():
     def openFeature(self, event):
         time_Now = (datetime.datetime.now().astimezone().strftime("%Y-%m-%d  %H:%M:%S"))
         ot = [time_Now]
-        item = self.listBook_libraryInterface.selection()
-        Name_Data = str(self.listBook_libraryInterface.item(item, "values")[1])
-        ND = [Name_Data]
+        item = self.listBook_libraryInterface.focus()
+        try:
+            Name_Data = str(self.listBook_libraryInterface.item(item, "values")[1])
 
-        with self.change_dir('my_BookData/Database'):
-            self.conn = sqlite3.connect('Libraries.db')
-            self.c = self.conn.cursor()
+            ND = [Name_Data]
 
-            tabelinDatabase = []
-            self.c.execute('SELECT name from sqlite_master where type = "table"')
-            for items in self.c.fetchall():
-                tabelinDatabase.append(items[0])
+            with self.change_dir('my_BookData/Database'):
+                self.conn = sqlite3.connect('Libraries.db')
+                self.c = self.conn.cursor()
 
-            for Name_Table in (tabelinDatabase):
-                if Name_Table != 'Album' and Name_Table != 'Authors':
+                tabelinDatabase = []
+                self.c.execute('SELECT name from sqlite_master where type = "table"')
+                for items in self.c.fetchall():
+                    tabelinDatabase.append(items[0])
 
-                    TitleNameList = []
-                    self.c.execute(f"SELECT * FROM [{Name_Table}]")
-                    for TitleName in self.c.fetchall():
-                        TitleNameList.append(TitleName[1])
+                for Name_Table in (tabelinDatabase):
+                    if Name_Table != 'Album' and Name_Table != 'Authors':
 
-                    if Name_Data in TitleNameList:
-                        rowID = []
-                        self.c.execute(f"SELECT rowid, * FROM [{Name_Table}] WHERE Title = (?)", ND)
-                        for ID in self.c.fetchall():
-                            rowID.append(ID[0])
+                        TitleNameList = []
+                        self.c.execute(f"SELECT * FROM [{Name_Table}]")
+                        for TitleName in self.c.fetchall():
+                            TitleNameList.append(TitleName[1])
 
-                        self.c.execute(f"UPDATE [{Name_Table}] SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
-                        self.conn.commit()
+                        if Name_Data in TitleNameList:
+                            rowID = []
+                            self.c.execute(f"SELECT rowid, * FROM [{Name_Table}] WHERE Title = (?)", ND)
+                            for ID in self.c.fetchall():
+                                rowID.append(ID[0])
 
-            self.conn.close()
-        with self.change_dir('my_BookData/Data'):
-            FileName = (os.getcwd() + "/" + Name_Data)
-            subprocess.call(['open', FileName])
-        self.Recent_Adding_Backend_fromLibrary(ND, ot)
+                            self.c.execute(f"UPDATE [{Name_Table}] SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
+                            self.conn.commit()
+
+                self.conn.close()
+            with self.change_dir('my_BookData/Data'):
+                FileName = (os.getcwd() + "/" + Name_Data)
+                subprocess.call(['open', FileName])
+            self.Recent_Adding_Backend_fromLibrary(ND, ot)
+        except IndexError:
+            print('', end='')
 
     def Recent_Adding_Backend_fromLibrary(self, ND, ot):
         with self.change_dir('my_BookData/Database'):
@@ -883,6 +892,7 @@ class MainfileApplication():
 
                         self.c.execute(f"UPDATE [{Name_Table}] SET Last_Readed  = (?) WHERE rowID = {rowID[0]}", ot)
                         self.conn.commit()
+                        
 
             self.conn.close()
         with self.change_dir('my_BookData/Data'):
@@ -1016,7 +1026,6 @@ class MainfileApplication():
         self.Recent_Adding_to_list()
 
     def ShwoDataIntoListAlbum(self):
-        print(os.getcwd())
         with self.change_dir('my_BookData/Database'):
             self.conn = sqlite3.connect('Libraries.db')
             self.c = self.conn.cursor()
