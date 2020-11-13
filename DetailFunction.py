@@ -37,8 +37,7 @@ class DetailFunction():
 
         with self.change_dir('my_BookData/Img'):
             Photo = PhotoImage(file = (os.getcwd() + "/" + str(Name)+ '.png'))
-            Potho_image = Photo.subsample(2,2)
-
+            Potho_image = Photo.subsample(1,1)
         self.lblPhoto_PhotoFrame = Label(self.PhotoFrame_DetailInterface, image = Potho_image, bg = 'red')
         self.lblPhoto_PhotoFrame.pack(side = 'top')
                          

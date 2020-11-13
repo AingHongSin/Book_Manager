@@ -6,6 +6,7 @@ import tkinter.messagebox
 import tkinter.dialog
 import shutil
 
+import myBook
 import DetailFunction
 import ExtractMetadaFromPDF
 
@@ -141,6 +142,7 @@ class LibraryInterfacea_in_List_Function():
             self.Recent_Adding_Backend_fromLibrary(ND, ot)
         except IndexError:
             print('', end='')
+        #myBook.LibraryInterfaceaInList()
 
     def Recent_Adding_Backend_fromLibrary(self, ND, ot):
         with self.change_dir('my_BookData/Database'):
@@ -150,7 +152,12 @@ class LibraryInterfacea_in_List_Function():
             self.Recent_Data_From_LibraryList = self.listBook_libraryInterface.item(self.Recent_Selection,'values')
             self.RecentItem = [
                 (
-                self.Recent_Data_From_LibraryList[0], self.Recent_Data_From_LibraryList[1], self.Recent_Data_From_LibraryList[2], self.Recent_Data_From_LibraryList[3], self.Recent_Data_From_LibraryList[4], self.Recent_Data_From_LibraryList[5]
+                self.Recent_Data_From_LibraryList[0], 
+                self.Recent_Data_From_LibraryList[1], 
+                self.Recent_Data_From_LibraryList[2], 
+                self.Recent_Data_From_LibraryList[3], 
+                self.Recent_Data_From_LibraryList[4], 
+                self.Recent_Data_From_LibraryList[5]
                 )
             ]
             self.c.executemany("INSERT INTO Recent VALUES (?,?,?,?,?,?)", self.RecentItem)

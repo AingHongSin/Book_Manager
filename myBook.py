@@ -1,30 +1,31 @@
-#from CreateDatabase import change_dir
+    #from CreateDatabase import change_dir
 import datetime
 import os
-#import fitz
-import shutil
+    #import fitz
+    #import shutil
 import sqlite3
 import subprocess
-import tkinter.messagebox
+    #import tkinter.messagebox
 
 from contextlib import contextmanager
 from tkinter import *
 from tkinter import filedialog, ttk
 from PIL import Image, ImageTk
 from tkmacosx import Button
+from tkmacosx.widget import CircleButton 
 
 import LibraryInterfaceaInList
 import LibraryInterfaceInGird
 import ExtractMetadaFromPDF
-import AuthorsFunction
-import Convert_fomPdf_toImage
+    #import AuthorsFunction
+    #import Convert_fomPdf_toImage
 import CreateDatabase
-import DetailFunction
+    #import DetailFunction
 import EditAlbumFuntion
 import FavoriteAdding
-#import Database
+    #import Database
 import NewAlbum
-from PyPDF2 import PdfFileReader
+    #from PyPDF2 import PdfFileReader
 
 #import ImageExtraction
 
@@ -36,8 +37,8 @@ class MainfileApplication():
 
         self.Main_Window = Tk()
         self.Main_Window.title("My_BooK")
-        self.Main_Window.geometry("1220x650+100+100")
-        self.Main_Window.resizable(False, False)
+        self.Main_Window.geometry("1220x690+100+100")
+        #self.Main_Window.resizable(False, False)
         self.Main_Window.config(background = '#00EBFF')
         self.Main_Window.attributes('-alpha', 1)
         #self.Main_Window.attributes('-transparent', True)
@@ -151,7 +152,7 @@ class MainfileApplication():
         self.spt_leftFrame_TopExitButton = ttk.Separator(self.leftFrame_mainWindow, orient = 'horizontal')
         self.spt_leftFrame_TopExitButton.pack(side = 'bottom', fill = 'x', padx = 15)
         
-        self.btnListAndGrid_mainrightFrame  = Button(self.ToprightFrame_mianwindow, text = 'List', borderless = 10, border = 10, borderwidth = 0, height = 45, bg = 'lime', command = self.ConfiguringListandGrid)
+        self.btnListAndGrid_mainrightFrame  = CircleButton(self.ToprightFrame_mianwindow, text = '􀋲', borderless = 10, border = 10, borderwidth = 0, height = 60, bg = 'lime', command = self.ConfiguringListandGrid)
         self.btnListAndGrid_mainrightFrame.pack(side = 'left')
         
     
@@ -722,7 +723,6 @@ class MainfileApplication():
 
             self.conn.close()
 
-
     def Recent_Adding_to_list(self):
         with self.change_dir('my_BookData/Database'):
             self.conn = sqlite3.connect('Libraries.db')
@@ -809,9 +809,6 @@ class MainfileApplication():
     def FavoriteAdding_Function(self):
         FavoriteAdding.FavoriteAdding_from_Library()
         #self.FavoritInterface()
-
-    def FavoritAddingBackend_from_LibraryInterface(self):
-        LibraryInterfaceaInList.LibraryInterfacea_in_List_Function.FavoritAddingBackend_from_LibraryInterface(self)
 
     def Favorite_Insrerting_Data_to_List(self):
         with self.change_dir('my_BookData/Database'):
@@ -1032,17 +1029,12 @@ class MainfileApplication():
             self.conn.commit()
 
             self.conn.close()    
-
-    def DeleteFile_FromData(self):
-        LibraryInterfaceaInList.LibraryInterfacea_in_List_Function.DeleteFile_FromData()
-
-
             
     def ConfiguringListandGrid(self):
         
         
         if self.btnList == False:
-            self.btnListAndGrid_mainrightFrame.config(text = 'List')
+            self.btnListAndGrid_mainrightFrame.config(text = '􀋲')
             self.btnListAndGrid_mainrightFrame.config(bg = 'lime')
             self.btnList = True
         
@@ -1063,7 +1055,7 @@ class MainfileApplication():
             
             
         else:    
-            self.btnListAndGrid_mainrightFrame.config(text = 'Grid')
+            self.btnListAndGrid_mainrightFrame.config(text = '􀇴')
             self.btnListAndGrid_mainrightFrame.config(bg = 'gray')
             self.btnList = False
             

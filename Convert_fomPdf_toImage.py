@@ -29,7 +29,7 @@ class Splitting_and_Converting():
     def extractImageformPDF(self, Name):
         with self.change_dir('splitting'):
             file = Name
-            pages = convert_from_path(file, 100)
+            pages = convert_from_path(file, 50)
             for page in range(1):
                 os.chdir(os.path.dirname(os.getcwd()))
                 with self.change_dir('Img'):
